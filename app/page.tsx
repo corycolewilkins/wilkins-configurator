@@ -358,22 +358,6 @@ export default function Page() {
               </div>
             </div>
 
-            {/* Simple “visual” strip */}
-            <div className="mt-4 rounded-xl border border-neutral-800 bg-transparent p-4">
-              <p className="text-sm text-neutral-300">Visual</p>
-              <div
-                className="mt-3 grid gap-2"
-                style={{ gridTemplateColumns: `repeat(${Math.max(doors, 1)}, minmax(0, 1fr))` }}
-              >
-                {doorFinishes.map((f, idx) => (
-                  <div key={idx} className="overflow-hidden rounded-lg border border-neutral-800">
-                    <div className={`h-16 ${finishSwatchClass(f)}`} />
-                    <div className="bg-transparent px-2 py-1 text-center text-xs text-neutral-200">Door {idx + 1}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
             <div className="mt-4 grid gap-3">
               {doorFinishes.map((f, idx) => (
                 <div
