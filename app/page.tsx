@@ -30,6 +30,10 @@ function getDoorBand(widthMm: number) {
   return { minDoors: 0, maxDoors: 0, label: "Out of range" };
 }
 
+function clamp(n: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, n));
+}
+
 function finishLabel(f: Finish) {
   if (f === "mirror") return "Mirror (Standard)";
   if (f === "glass") return `Coloured Glass (+${money(PRICE.upgradeGlass)} / door)`;
@@ -126,6 +130,45 @@ export default function Page() {
   }, [doors, counts, includeInterior, includeExterior]);
 
   const showQuote = !outOfRange && doors > 0;
+
+    // --- Bedroom wall preview sizing ---
+  const PREVIEW = {
+    wallMaxW: 560, // px (max width of the wall on screen)
+    wallMinW: 320, // px (min width of the wall on screen)
+    wallMaxH: 320, // px (max wall height)
+    wallMinH: 220, // px (min wall height)
+    widthRange: { min: 800, max: 5199 },
+    heightRange: { min: 1800, max: 3000 },
+  } as const;
+
+  const wallDims = useMemo(() => {
+    // If width/height not entered yet, use a sensible default preview size
+    const w = Number.isFinite(widthNumber) ? widthNumber : 0;
+    const h = typeof height === "number" ? height : 0;
+
+    const wRatio =
+      w > 0
+        ? (clamp(w, PREVIEW.widthRange.min, PREVIEW.widthRange.max) - PREVIEW.widthRange.min) /
+          (PREVIEW.widthRange.max - PREVIEW.widthRange.min)
+        : 0.35;
+
+    const hRatio =
+      h > 0
+        ? (clamp(h, PREVIEW.heightRange.min, PREVIEW.heightRange.max) - PREVIEW.heightRange.min) /
+          (PREVIEW.heightRange.max - PREVIEW.heightRange.min)
+        : 0.55;
+
+    const wallW = Math.round(PREVIEW.wallMinW + wRatio * (PREVIEW.wallMaxW - PREVIEW.wallMinW));
+    const wallH = Math.round(PREVIEW.wallMinH + hRatio * (PREVIEW.wallMaxH - PREVIEW.wallMinH));
+
+    // Doors all of wall height, with a no headroom
+    const doorTopGap = 0; // px
+    const skirting = 0; // px
+    const doorH = Math.max(140, wallH - doorTopGap - skirting);
+
+    return { wallW, wallH, doorH, doorTopGap, skirting };
+  }, [widthNumber, height, PREVIEW.widthRange.min, PREVIEW.widthRange.max, PREVIEW.heightRange.min, PREVIEW.heightRange.max]);
+
 
   return (
     <div className="min-h-screen text-neutral-50">
@@ -230,6 +273,90 @@ export default function Page() {
             </div>
 
             <h2 className="mt-8 text-lg font-semibold">3) Configure Each Door</h2>
+
+            {/* Bedroom wall preview */}
+            <div className="mt-4 rounded-xl border border-neutral-800 bg-transparent p-4">
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-sm text-neutral-300">Bedroom wall preview</p>
+                <p className="text-xs text-neutral-400">
+                  {typeof width === "number" ? `${width}mm` : "—"} wide • {typeof height === "number" ? `${height}mm` : "—"} high
+                </p>
+              </div>
+
+              <div className="mt-3 flex justify-center">
+                <div
+                  className="relative overflow-hidden rounded-2xl border border-neutral-800"
+                  style={{ width: wallDims.wallW, height: wallDims.wallH }}
+                >
+                  {/* Wall background */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-neutral-900/40 to-neutral-950/40" />
+
+                  {/* Subtle vignette */}
+                  <div className="absolute inset-0 shadow-[inset_0_0_60px_rgba(0,0,0,0.45)]" />
+
+                  {/* Skirting / floor line */}
+                  <div
+                    className="absolute left-0 right-0 bg-neutral-800/70"
+                    style={{ height: wallDims.skirting, bottom: 0 }}
+                  />
+                  <div className="absolute left-0 right-0 bottom-[18px] h-px bg-neutral-700/70" />
+
+                  {/* Doors */}
+                  {doors > 0 && !outOfRange ? (
+                    <div
+                      className="absolute left-4 right-4 grid gap-2"
+                      style={{
+                        top: wallDims.doorTopGap,
+                        bottom: wallDims.skirting + 8,
+                        gridTemplateColumns: `repeat(${doors}, minmax(0, 1fr))`,
+                      }}
+                    >
+                      {doorFinishes.map((f, i) => (
+                        <div key={i} className="relative overflow-hidden rounded-xl border border-neutral-700/80">
+                          {/* Door finish fill */}
+                          <div className={`absolute inset-0 ${finishSwatchClass(f)}`} />
+
+                          {/* Door frame effect */}
+                          <div className="absolute inset-0 shadow-[inset_0_0_0_2px_rgba(0,0,0,0.25)]" />
+
+                          {/* Split line / meeting stile */}
+                          <div className="absolute right-0 top-0 h-full w-[2px] bg-neutral-900/30" />
+
+                          {/* Small label */}
+                          <div className="absolute bottom-1 left-1 right-1 rounded-md bg-neutral-950/50 px-2 py-1 text-center text-[11px] text-neutral-100">
+                            Door {i + 1}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center px-6 text-center text-sm text-neutral-300">
+                      Enter a valid width, then select door count to preview against a wall.
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <p className="mt-3 text-xs text-neutral-400">
+                This is a visual guide only — proportions are scaled for screen preview.
+              </p>
+            </div>
+
+            {/* Simple “visual” strip */}
+            <div className="mt-4 rounded-xl border border-neutral-800 bg-transparent p-4">
+              <p className="text-sm text-neutral-300">Visual</p>
+              <div
+                className="mt-3 grid gap-2"
+                style={{ gridTemplateColumns: `repeat(${Math.max(doors, 1)}, minmax(0, 1fr))` }}
+              >
+                {doorFinishes.map((f, idx) => (
+                  <div key={idx} className="overflow-hidden rounded-lg border border-neutral-800">
+                    <div className={`h-16 ${finishSwatchClass(f)}`} />
+                    <div className="bg-transparent px-2 py-1 text-center text-xs text-neutral-200">Door {idx + 1}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
 
             {/* Simple “visual” strip */}
             <div className="mt-4 rounded-xl border border-neutral-800 bg-transparent p-4">
