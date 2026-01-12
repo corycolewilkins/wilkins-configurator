@@ -140,14 +140,14 @@ export default function Page() {
 
         <div className="mt-8 grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
           {/* LEFT: Inputs */}
-          <div className="rounded-2xl border border-neutral-800 bg-neutral-900/40 p-5">
+          <div className="rounded-2xl border border-neutral-800 bg-transparent p-5">
             <h2 className="text-lg font-semibold">1) Your Opening</h2>
 
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
               <label className="grid gap-2">
                 <span className="text-sm text-neutral-300">Opening width (mm)</span>
                 <input
-                  className="rounded-xl border border-neutral-800 bg-neutral-950 px-3 py-2 text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40"
+                  className="rounded-xl border border-neutral-800 bg-transparent px-3 py-2 text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40"
                   type="number"
                   min={800}
                   max={5199}
@@ -165,7 +165,7 @@ export default function Page() {
               <label className="grid gap-2">
                 <span className="text-sm text-neutral-300">Opening height (mm)</span>
                 <input
-                  className="rounded-xl border border-neutral-800 bg-neutral-950 px-3 py-2 text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40"
+                  className="rounded-xl border border-neutral-800 bg-transparent px-3 py-2 text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40"
                   type="number"
                   min={1800}
                   max={3000}
@@ -181,7 +181,7 @@ export default function Page() {
               </label>
             </div>
 
-            <div className="mt-6 rounded-xl border border-neutral-800 bg-neutral-950/40 p-4">
+            <div className="mt-6 rounded-xl border border-neutral-800 bg-transparent p-4">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div>
                   <p className="text-sm text-neutral-300">
@@ -207,7 +207,7 @@ export default function Page() {
             <div className="mt-4 grid gap-2">
               <span className="text-sm text-neutral-300">Number of sliding doors</span>
               <select
-                className="rounded-xl border border-neutral-800 bg-neutral-950 px-3 py-2 text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40 disabled:opacity-50"
+                className="rounded-xl border border-neutral-800 bg-transparent px-3 py-2 text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40 disabled:opacity-50"
                 value={doors || ""}
                 onChange={(e) => setDoors(parseInt(e.target.value, 10))}
                 disabled={outOfRange}
@@ -232,7 +232,7 @@ export default function Page() {
             <h2 className="mt-8 text-lg font-semibold">3) Configure Each Door</h2>
 
             {/* Simple “visual” strip */}
-            <div className="mt-4 rounded-xl border border-neutral-800 bg-neutral-950/40 p-4">
+            <div className="mt-4 rounded-xl border border-neutral-800 bg-transparent p-4">
               <p className="text-sm text-neutral-300">Visual</p>
               <div
                 className="mt-3 grid gap-2"
@@ -241,7 +241,7 @@ export default function Page() {
                 {doorFinishes.map((f, idx) => (
                   <div key={idx} className="overflow-hidden rounded-lg border border-neutral-800">
                     <div className={`h-16 ${finishSwatchClass(f)}`} />
-                    <div className="bg-neutral-950 px-2 py-1 text-center text-xs text-neutral-200">Door {idx + 1}</div>
+                    <div className="bg-transparent px-2 py-1 text-center text-xs text-neutral-200">Door {idx + 1}</div>
                   </div>
                 ))}
               </div>
@@ -251,7 +251,7 @@ export default function Page() {
               {doorFinishes.map((f, idx) => (
                 <div
                   key={idx}
-                  className="flex flex-col gap-2 rounded-xl border border-neutral-800 bg-neutral-950/40 p-4 sm:flex-row sm:items-center sm:justify-between"
+                  className="flex flex-col gap-2 rounded-xl border border-neutral-800 bg-transparent p-4 sm:flex-row sm:items-center sm:justify-between"
                 >
                   <div>
                     <p className="font-semibold">Door {idx + 1}</p>
@@ -259,7 +259,7 @@ export default function Page() {
                   </div>
 
                   <select
-                    className="w-full rounded-xl border border-neutral-800 bg-neutral-950 px-3 py-2 text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40 sm:w-[360px]"
+                    className="w-full rounded-xl border border-neutral-800 bg-transparent px-3 py-2 text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40 sm:w-[360px]"
                     value={f}
                     onChange={(e) => {
                       const next = [...doorFinishes];
@@ -278,7 +278,7 @@ export default function Page() {
             <h2 className="mt-8 text-lg font-semibold">4) Interior & Exterior</h2>
 
             <div className="mt-4 grid gap-4">
-              <label className="flex items-center justify-between rounded-xl border border-neutral-800 bg-neutral-950/40 p-4">
+              <label className="flex items-center justify-between rounded-xl border border-neutral-800 bg-transparent p-4">
                 <div>
                   <p className="font-semibold">Popular Interior Layout</p>
                   <p className="text-sm text-neutral-400">Adds a practical, popular layout inside the wardrobe.</p>
@@ -292,7 +292,7 @@ export default function Page() {
                 />
               </label>
 
-              <label className="flex items-center justify-between rounded-xl border border-neutral-800 bg-neutral-950/40 p-4">
+              <label className="flex items-center justify-between rounded-xl border border-neutral-800 bg-transparent p-4">
                 <div>
                   <p className="font-semibold">Exterior Frame</p>
                   <p className="text-sm text-neutral-400">Adds the exterior frame for a fully built-in finish.</p>
@@ -307,7 +307,7 @@ export default function Page() {
               </label>
             </div>
 
-            <div className="mt-6 rounded-xl border border-neutral-800 bg-neutral-950/40 p-4 text-sm text-neutral-300">
+            <div className="mt-6 rounded-xl border border-neutral-800 bg-transparent p-4 text-sm text-neutral-300">
               <p className="font-semibold text-neutral-50">What this guide price includes</p>
               <ul className="mt-2 list-disc space-y-1 pl-5">
                 <li>Base price (doors only): {money(PRICE.base)}</li>
@@ -321,7 +321,7 @@ export default function Page() {
           </div>
 
           {/* RIGHT: Summary */}
-          <div className="rounded-2xl border border-neutral-800 bg-neutral-900/40 p-5">
+          <div className="rounded-2xl border border-neutral-800 bg-transparent p-5">
             <h2 className="text-lg font-semibold">Your Guide Price</h2>
 
             <div className="mt-4 rounded-2xl bg-transparent p-5">
@@ -369,7 +369,7 @@ export default function Page() {
                     <span>{money(price.total)}</span>
                   </div>
 
-                  <div className="mt-4 rounded-xl border border-neutral-800 bg-neutral-900/50 p-3">
+                  <div className="mt-4 rounded-xl border border-neutral-800 bg-transparent p-3">
                     <p className="text-xs text-neutral-300">
                       Finish breakdown:{" "}
                       <span className="font-semibold text-neutral-50">{counts.mirror}</span> mirror,{" "}
@@ -394,15 +394,15 @@ export default function Page() {
               }}
             >
               <input
-                className="rounded-xl border border-neutral-800 bg-neutral-950 px-3 py-2 text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40"
+                className="rounded-xl border border-neutral-800 bg-transparent px-3 py-2 text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40"
                 placeholder="Name"
               />
               <input
-                className="rounded-xl border border-neutral-800 bg-neutral-950 px-3 py-2 text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40"
+                className="rounded-xl border border-neutral-800 bg-transparent px-3 py-2 text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40"
                 placeholder="Postcode"
               />
               <input
-                className="rounded-xl border border-neutral-800 bg-neutral-950 px-3 py-2 text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40"
+                className="rounded-xl border border-neutral-800 bg-transparent px-3 py-2 text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40"
                 placeholder="Mobile / Email"
               />
               <button
