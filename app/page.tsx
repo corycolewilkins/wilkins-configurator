@@ -128,7 +128,7 @@ export default function Page() {
   const showQuote = !outOfRange && doors > 0;
 
   return (
-    <div className="min-h-screen text-neutral-50">
+    <div className="min-h-screen bg-neutral-950 text-neutral-50">
       <div className="mx-auto max-w-5xl px-4 py-10">
         <div className="flex flex-col gap-2">
           <h1 className="text-3xl font-semibold tracking-tight">Sliding Wardrobe Price Estimator</h1>
@@ -324,7 +324,7 @@ export default function Page() {
           <div className="rounded-2xl border border-neutral-800 bg-neutral-900/40 p-5">
             <h2 className="text-lg font-semibold">Your Guide Price</h2>
 
-            <div className="mt-4 rounded-2xl bg-neutral-950 p-5">
+            <div className="mt-4 rounded-2xl bg-transparent p-5">
               <p className="text-sm text-neutral-300">Estimated guide price</p>
               <p className="mt-1 text-4xl font-semibold tracking-tight">{showQuote ? money(price.total) : "—"}</p>
               <p className="mt-2 text-sm text-neutral-400">
