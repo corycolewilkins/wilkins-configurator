@@ -326,9 +326,9 @@ export default function Page() {
                               className="absolute inset-0"
                               style={{
                                 backgroundImage:
-                                  "linear-gradient(90deg,#ff3b3b 0%,#ff9a3b 16%,#ffd23b 32%,#8cff3b 48%,#3bffec 64%,#3b66ff 80%,#9b3bff 100%)",
-                                backgroundSize: `${doors * 100}% 100%`,
-                                backgroundPosition: doors > 1 ? `${(i / (doors - 1)) * 100}% 0` : `50% 0`,
+                                  "linear-gradient(90deg,#f5efde 0%,#e9e0c8 40%,#dfd2b1 60%,#d7c8a0 100%)",
+                                backgroundSize: `100% 100%`,
+                                backgroundPosition: `center center`,
                               }}
                             />
                           ) : (
