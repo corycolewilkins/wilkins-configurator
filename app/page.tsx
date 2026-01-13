@@ -294,22 +294,17 @@ export default function Page() {
                   {/* Subtle vignette */}
                   <div className="absolute inset-0 shadow-[inset_0_0_60px_rgba(0,0,0,0.45)]" />
 
-                  {/* Skirting / floor line */}
-                  <div
-                    className="absolute left-0 right-0 bg-neutral-800/70"
-                    style={{ height: wallDims.skirting, bottom: 0 }}
-                  />
-                  <div className="absolute left-0 right-0 bottom-[18px] h-px bg-neutral-700/70" />
+                  {/* Skirting / floor line removed so doors reach the bottom */}
 
                   {/* Doors */}
                   {doors > 0 && !outOfRange ? (
                     <div
                       className="absolute left-0 right-0 grid gap-0"
                       style={{
-                        top: wallDims.doorTopGap,
-                        bottom: wallDims.skirting + 8,
-                        gridTemplateColumns: `repeat(${doors}, minmax(0, 1fr))`,
-                      }}
+                          top: 0,
+                          bottom: 0,
+                          gridTemplateColumns: `repeat(${doors}, minmax(0, 1fr))`,
+                        }}
                     >
                       {doorFinishes.map((f, i) => (
                         <div
