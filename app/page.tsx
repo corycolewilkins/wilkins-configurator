@@ -250,7 +250,7 @@ export default function Page() {
             <div className="mt-4 grid gap-2">
               <span className="text-sm text-neutral-300">Number of sliding doors</span>
               <select
-                className="rounded-xl border border-neutral-800 bg-gradient-to-br from-neutral-900/40 to-neutral-950/60 px-3 py-2 text-neutral-100 outline-none focus:ring-2 focus:ring-amber-400/40 disabled:opacity-50"
+                className="rounded-xl border border-neutral-800 bg-gradient-to-br from-neutral-900/40 to-neutral-950/60 px-3 py-2 text-neutral-100 outline-none focus:ring-2 focus:ring-amber-400/40 disabled:opacity-50 hover:bg-gradient-to-br hover:from-neutral-900/40 hover:to-neutral-950/60 focus:bg-gradient-to-br focus:from-neutral-900/40 focus:to-neutral-950/60 active:bg-gradient-to-br active:from-neutral-900/40 active:to-neutral-950/60"
                 value={doors || ""}
                 onChange={(e) => setDoors(parseInt(e.target.value, 10))}
                 disabled={outOfRange}
@@ -354,7 +354,7 @@ export default function Page() {
                   </div>
 
                   <select
-                    className="w-full rounded-xl border border-neutral-800 bg-gradient-to-br from-neutral-900/40 to-neutral-950/60 px-3 py-2 text-neutral-100 outline-none focus:ring-2 focus:ring-amber-400/40 sm:w-[360px]"
+                    className="w-full rounded-xl border border-neutral-800 bg-gradient-to-br from-neutral-900/40 to-neutral-950/60 px-3 py-2 text-neutral-100 outline-none focus:ring-2 focus:ring-amber-400/40 sm:w-[360px] hover:bg-gradient-to-br hover:from-neutral-900/40 hover:to-neutral-950/60 focus:bg-gradient-to-br focus:from-neutral-900/40 focus:to-neutral-950/60 active:bg-gradient-to-br active:from-neutral-900/40 active:to-neutral-950/60"
                     value={f}
                     onChange={(e) => {
                       const next = [...doorFinishes];
