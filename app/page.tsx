@@ -321,7 +321,19 @@ export default function Page() {
                           }`}
                         >
                           {/* Door finish fill */}
-                          <div className={`absolute inset-0 ${finishSwatchClass(f)}`} />
+                          {f === "glass" ? (
+                            <div
+                              className="absolute inset-0"
+                              style={{
+                                backgroundImage:
+                                  "linear-gradient(90deg,#ff3b3b 0%,#ff9a3b 16%,#ffd23b 32%,#8cff3b 48%,#3bffec 64%,#3b66ff 80%,#9b3bff 100%)",
+                                backgroundSize: `${doors * 100}% 100%`,
+                                backgroundPosition: doors > 1 ? `${(i / (doors - 1)) * 100}% 0` : `50% 0`,
+                              }}
+                            />
+                          ) : (
+                            <div className={`absolute inset-0 ${finishSwatchClass(f)}`} />
+                          )}
 
                           {/* Door frame effect */}
                           <div className="absolute inset-0 shadow-[inset_0_0_0_2px_rgba(0,0,0,0.25)]" />
