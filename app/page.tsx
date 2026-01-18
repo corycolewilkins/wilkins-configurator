@@ -213,7 +213,7 @@ export default function Page() {
                   min={1800}
                   max={3000}
                   step={1}
-                  value={height}S
+                  value={height}
                   onChange={(e) => {
                     const v = e.target.value;
                     setHeight(v === "" ? "" : parseInt(v, 10));
