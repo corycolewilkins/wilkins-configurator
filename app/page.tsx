@@ -6,7 +6,7 @@ type Finish = "mirror" | "glass" | "wood";
 type BarOption = 0 | 2 | 3;
 
 const PRICE = {
-  base: 795, // BASE = doors + running gear + fitting (NO interior, NO exterior)
+  base: 850, // BASE = doors + running gear + fitting (NO interior, NO exterior)
   extraDoor: 400,
   upgradeGlass: 120,
   upgradeWood: 150,
