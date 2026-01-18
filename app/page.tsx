@@ -10,6 +10,7 @@ const PRICE = {
   extraDoor: 400,
   upgradeGlass: 120,
   upgradeWood: 150,
+  decorativeBar: 20,
   interior: 450,
   exterior: 450,
 } as const;
@@ -134,18 +135,19 @@ export default function Page() {
 
   const price = useMemo(() => {
     if (doors <= 0) {
-      return { extraDoorsCost: 0, upgradesCost: 0, interiorCost: 0, exteriorCost: 0, total: 0 };
+      return { extraDoorsCost: 0, upgradesCost: 0, barsCost: 0, interiorCost: 0, exteriorCost: 0, total: 0 };
     }
 
     const extraDoorsCost = Math.max(0, doors - 2) * PRICE.extraDoor;
     const upgradesCost = counts.glass * PRICE.upgradeGlass + counts.wood * PRICE.upgradeWood;
+    const barsCost = doorBars.reduce((sum, bars) => sum + (bars * PRICE.decorativeBar), 0);
     const interiorCost = includeInterior ? PRICE.interior : 0;
     const exteriorCost = includeExterior ? PRICE.exterior : 0;
 
-    const total = PRICE.base + extraDoorsCost + upgradesCost + interiorCost + exteriorCost;
+    const total = PRICE.base + extraDoorsCost + upgradesCost + barsCost + interiorCost + exteriorCost;
 
-    return { extraDoorsCost, upgradesCost, interiorCost, exteriorCost, total };
-  }, [doors, counts, includeInterior, includeExterior]);
+    return { extraDoorsCost, upgradesCost, barsCost, interiorCost, exteriorCost, total };
+  }, [doors, counts, doorBars, includeInterior, includeExterior]);
 
   const showQuote = !outOfRange && doors > 0;
 
@@ -494,6 +496,7 @@ export default function Page() {
                 <li>Extra doors: +{money(PRICE.extraDoor)} each over 2</li>
                 <li>Coloured glass upgrade: +{money(PRICE.upgradeGlass)} per door</li>
                 <li>Wood finish upgrade: +{money(PRICE.upgradeWood)} per door</li>
+                <li>Decorative bars: +{money(PRICE.decorativeBar)} per bar</li>
                 <li>Optional interior layout: +{money(PRICE.interior)}</li>
                 <li>Optional exterior frame: +{money(PRICE.exterior)}</li>
               </ul>
@@ -541,6 +544,13 @@ export default function Page() {
                     <span>Finish upgrades</span>
                     <span className="text-neutral-50">{money(price.upgradesCost)}</span>
                   </div>
+
+                  {price.barsCost > 0 && (
+                    <div className="flex items-center justify-between text-neutral-300">
+                      <span>Decorative bars</span>
+                      <span className="text-neutral-50">{money(price.barsCost)}</span>
+                    </div>
+                  )}
 
                   <div className="my-2 h-px bg-neutral-800" />
 
