@@ -354,7 +354,7 @@ export default function Page() {
                               className="absolute inset-0"
                               style={{
                                 backgroundImage:
-                                  "linear-gradient(90deg,#f5efde 0%,#e9e0c8 40%,#dfd2b1 60%,#d7c8a0 100%)",
+                                  "linear-gradient(90deg,#d8cac0 0%,#c4b5a8 40%,#b8a898 60%,#aa9985 100%)",
                                 backgroundSize: `100% 100%`,
                                 backgroundPosition: `center center`,
                               }}
