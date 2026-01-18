@@ -343,9 +343,7 @@ export default function Page() {
                       {doorFinishes.map((f, i) => (
                         <div
                           key={i}
-                          className={`relative overflow-hidden h-full border border-neutral-700/80 ${
-                            i === 0 ? "rounded-l-xl" : i === doors - 1 ? "rounded-r-xl" : "rounded-none"
-                          }`}
+                          className="relative overflow-hidden h-full border border-neutral-700/80 rounded-none"
                         >
                           {/* Door finish fill */}
                           {f === "glass" ? (
