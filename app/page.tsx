@@ -45,7 +45,7 @@ function finishLabel(f: Finish) {
 function finishSwatchClass(f: Finish) {
   if (f === "mirror") return "bg-gradient-to-br from-slate-200 to-slate-400";
   if (f === "glass") return "bg-gradient-to-br from-sky-200 to-sky-500";
-  return "bg-gradient-to-br from-yellow-900 to-amber-900";
+  return "bg-gray-400";
 }
 
 function barLabel(bars: BarOption) {
@@ -355,6 +355,16 @@ export default function Page() {
                               style={{
                                 backgroundImage:
                                   "linear-gradient(90deg,#d8cac0 0%,#c4b5a8 40%,#b8a898 60%,#aa9985 100%)",
+                                backgroundSize: `100% 100%`,
+                                backgroundPosition: `center center`,
+                              }}
+                            />
+                          ) : f === "wood" ? (
+                            <div
+                              className="absolute inset-0"
+                              style={{
+                                backgroundImage:
+                                  "linear-gradient(90deg,#b8956a 0%,#a08860 35%,#8b7355 65%,#6b5a47 100%)",
                                 backgroundSize: `100% 100%`,
                                 backgroundPosition: `center center`,
                               }}
