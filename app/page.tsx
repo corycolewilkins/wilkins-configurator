@@ -317,7 +317,7 @@ export default function Page() {
 
               <div className="mt-3 flex justify-center overflow-x-auto">
                 <div
-                  className={`relative overflow-hidden rounded-2xl flex-shrink-0 ${
+                  className={`relative overflow-hidden rounded-none flex-shrink-0 ${
                     includeExterior ? "border-8 border-white" : "border border-neutral-800"
                   }`}
                   style={{ width: wallDims.wallW, height: wallDims.wallH }}
