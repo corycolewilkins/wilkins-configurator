@@ -3,6 +3,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 
 type Finish = "mirror" | "glass" | "wood";
+type BarOption = 0 | 2 | 3;
 
 const PRICE = {
   base: 795, // BASE = doors + running gear + fitting (NO interior, NO exterior)
@@ -88,6 +89,9 @@ export default function Page() {
   // Per-door finishes
   const [doorFinishes, setDoorFinishes] = useState<Finish[]>([]);
 
+  // Per-door decorative bars
+  const [doorBars, setDoorBars] = useState<BarOption[]>([]);
+
   // Resize finishes array when door count changes
   useEffect(() => {
     setDoorFinishes((prev) => {
@@ -95,6 +99,20 @@ export default function Page() {
       if (doors <= 0) return [];
       if (doors > next.length) {
         for (let i = next.length; i < doors; i++) next.push("mirror");
+      } else if (doors < next.length) {
+        next.length = doors;
+      }
+      return next;
+    });
+  }, [doors]);
+
+  // Resize bars array when door count changes
+  useEffect(() => {
+    setDoorBars((prev) => {
+      const next = [...prev];
+      if (doors <= 0) return [];
+      if (doors > next.length) {
+        for (let i = next.length; i < doors; i++) next.push(0);
       } else if (doors < next.length) {
         next.length = doors;
       }
@@ -338,6 +356,18 @@ export default function Page() {
                           {/* Door frame effect */}
                           <div className="absolute inset-0 shadow-[inset_0_0_0_2px_rgba(0,0,0,0.25)]" />
 
+                          {/* Decorative bars */}
+                          {doorBars[i] && doorBars[i] > 0 && (
+                            <div className="absolute inset-0 flex flex-col justify-around px-1">
+                              {Array.from({ length: doorBars[i] }).map((_, barIdx) => (
+                                <div
+                                  key={barIdx}
+                                  className="h-[2px] bg-neutral-900/40 rounded-full"
+                                />
+                              ))}
+                            </div>
+                          )}
+
                           {/* Split line / meeting stile */}
                           <div className="absolute right-0 top-0 h-full w-[2px] bg-neutral-900/30" />
 
@@ -391,6 +421,27 @@ export default function Page() {
                     <option value="mirror">{finishLabel("mirror")}</option>
                     <option value="glass">{finishLabel("glass")}</option>
                     <option value="wood">{finishLabel("wood")}</option>
+                  </select>
+
+                  <select
+                    className="appearance-none w-full rounded-lg border border-neutral-800 bg-gradient-to-br from-neutral-900/40 to-neutral-950/60 px-2.5 py-1.5 text-sm sm:text-base text-neutral-100 outline-none focus:ring-2 focus:ring-amber-400/40 sm:w-full hover:bg-gradient-to-br hover:from-neutral-900/40 hover:to-neutral-950/60 focus:bg-gradient-to-br focus:from-neutral-900/40 focus:to-neutral-950/60 active:bg-gradient-to-br active:from-neutral-900/40 active:to-neutral-950/60"
+                    style={{
+                      backgroundImage: "linear-gradient(to bottom right, rgba(15,23,42,0.4), rgba(2,6,23,0.6))",
+                      backgroundColor: "rgba(2,6,23,0.6)",
+                      color: "#E6E7E8",
+                      WebkitAppearance: "none",
+                      MozAppearance: "none",
+                    }}
+                    value={doorBars[idx]}
+                    onChange={(e) => {
+                      const next = [...doorBars];
+                      next[idx] = parseInt(e.target.value, 10) as BarOption;
+                      setDoorBars(next);
+                    }}
+                  >
+                    <option value="0">No decorative bars</option>
+                    <option value="2">2 horizontal bars</option>
+                    <option value="3">3 horizontal bars</option>
                   </select>
                 </div>
               ))}
