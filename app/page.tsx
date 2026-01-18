@@ -147,8 +147,8 @@ export default function Page() {
     const upgradesCost = counts.glass * PRICE.upgradeGlass + counts.wood * PRICE.upgradeWood;
     const barsCost = doorBars.reduce((sum: number, bars) => sum + (bars * PRICE.decorativeBar), 0);
     
-    // Interior cost increases for wider openings (>3000mm)
-    const interiorPrice = includeInterior ? (widthNumber > 3000 ? 550 : PRICE.interior) : 0;
+    // Interior cost increases for wider openings (>=4000mm)
+    const interiorPrice = includeInterior ? (widthNumber >= 4000 ? 550 : PRICE.interior) : 0;
     const interiorCost = interiorPrice;
     const exteriorCost = includeExterior ? PRICE.exterior : 0;
 
@@ -471,8 +471,8 @@ export default function Page() {
               <label className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-lg border border-neutral-800 bg-transparent p-3">
                 <div>
                   <p className="text-sm font-semibold">Popular Interior Layout</p>
-                  <p className="text-xs text-neutral-400">Adds a practical, popular layout inside the wardrobe which includes {widthNumber > 3000 ? "2 x shelving units" : "1 x shelving unit"}, 1 x 18" deep top shelf and an assortment of hanging rails.</p>
-                  <p className="mt-1 text-xs text-neutral-200">+{money(widthNumber > 3000 ? 550 : PRICE.interior)}</p>
+                  <p className="text-xs text-neutral-400">Adds a practical, popular layout inside the wardrobe which includes {widthNumber >= 4000 ? "2 x shelving units" : "1 x shelving unit"}, 1 x 18" deep top shelf and an assortment of hanging rails.</p>
+                  <p className="mt-1 text-xs text-neutral-200">+{money(widthNumber >= 4000 ? 550 : PRICE.interior)}</p>
                 </div>
                 <input
                   type="checkbox"
