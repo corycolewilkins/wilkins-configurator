@@ -151,8 +151,8 @@ export default function Page() {
 
     // --- Bedroom wall preview sizing ---
   const PREVIEW = {
-    wallMaxW: 280, // px (max width of the wall on screen on mobile, scales up on larger screens)
-    wallMinW: 200, // px (min width of the wall on screen)
+    wallMaxW: 560, // px (max width on desktop)
+    wallMinW: 200, // px (min width on mobile)
     wallMaxH: 320, // px (max wall height)
     wallMinH: 220, // px (min wall height)
     widthRange: { min: 800, max: 5199 },
@@ -163,6 +163,11 @@ export default function Page() {
     // If width/height not entered yet, use a sensible default preview size
     const w = Number.isFinite(widthNumber) ? widthNumber : 0;
     const h = typeof height === "number" ? height : 0;
+
+    // Scale max width based on screen size (mobile: 280px, md: 400px, lg: 560px)
+    const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+    const isTablet = typeof window !== "undefined" && window.innerWidth < 1024;
+    const responsiveMaxW = isMobile ? 280 : isTablet ? 400 : PREVIEW.wallMaxW;
 
     const wRatio =
       w > 0
@@ -176,7 +181,7 @@ export default function Page() {
           (PREVIEW.heightRange.max - PREVIEW.heightRange.min)
         : 0.55;
 
-    const wallW = Math.round(PREVIEW.wallMinW + wRatio * (PREVIEW.wallMaxW - PREVIEW.wallMinW));
+    const wallW = Math.round(PREVIEW.wallMinW + wRatio * (responsiveMaxW - PREVIEW.wallMinW));
     const wallH = Math.round(PREVIEW.wallMinH + hRatio * (PREVIEW.wallMaxH - PREVIEW.wallMinH));
 
     // Doors all of wall height, with a no headroom
