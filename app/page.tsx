@@ -48,6 +48,11 @@ function finishSwatchClass(f: Finish) {
   return "bg-gradient-to-br from-amber-200 to-amber-600";
 }
 
+function barLabel(bars: BarOption) {
+  if (bars === 0) return "No decorative bars";
+  return `${bars} horizontal bars (+${money(bars * PRICE.decorativeBar)})`;
+}
+
 export default function Page() {
   // Start BLANK (no prefilled measurements)
   const [width, setWidth] = useState<number | "">("");
@@ -449,9 +454,9 @@ export default function Page() {
                       setDoorBars(next);
                     }}
                   >
-                    <option value="0">No decorative bars</option>
-                    <option value="2">2 horizontal bars</option>
-                    <option value="3">3 horizontal bars</option>
+                    <option value="0">{barLabel(0)}</option>
+                    <option value="2">{barLabel(2)}</option>
+                    <option value="3">{barLabel(3)}</option>
                   </select>
                 </div>
               ))}
