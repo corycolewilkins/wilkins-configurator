@@ -181,10 +181,10 @@ export default function Page() {
           </p>
         </div>
 
-        <div className="mt-8 grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+        <div className="mt-6 sm:mt-8 grid gap-4 sm:gap-6 lg:grid-cols-[1.2fr_0.8fr]">
           {/* LEFT: Inputs */}
-          <div className="rounded-2xl border border-neutral-800 bg-transparent p-4 sm:p-5">
-            <h2 className="text-lg font-semibold">1) Your Opening</h2>
+          <div className="rounded-2xl border border-neutral-800 bg-transparent p-3 sm:p-4 md:p-5">
+            <h2 className="text-base sm:text-lg font-semibold">1) Your Opening</h2>
 
             <div className="mt-4 grid gap-4 grid-cols-1 sm:grid-cols-2">
               <label className="grid gap-2">
@@ -225,19 +225,19 @@ export default function Page() {
             </div>
 
             <div className="mt-6 rounded-xl border border-neutral-800 bg-transparent p-4">
-              <div className="flex flex-wrap items-center justify-between gap-2">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                 <div>
-                  <p className="text-sm text-neutral-300">
+                  <p className="text-xs sm:text-sm text-neutral-300">
                     Door band for{" "}
                     <span className="font-semibold text-neutral-50">
                       {typeof width === "number" ? `${width}mm` : "—"}
                     </span>
                   </p>
-                  <p className="text-base font-semibold">{outOfRange ? "Enter a valid width to continue" : band.label}</p>
+                  <p className="text-sm sm:text-base font-semibold">{outOfRange ? "Enter a valid width to continue" : band.label}</p>
                 </div>
 
                 {!outOfRange && (
-                  <p className="text-sm text-neutral-300">
+                  <p className="text-xs sm:text-sm text-neutral-300">
                     Min <span className="font-semibold text-neutral-50">{band.minDoors}</span> / Max{" "}
                     <span className="font-semibold text-neutral-50">{band.maxDoors}</span>
                   </p>
@@ -245,7 +245,7 @@ export default function Page() {
               </div>
             </div>
 
-            <h2 className="mt-8 text-lg font-semibold">2) Door Count</h2>
+            <h2 className="mt-8 text-base sm:text-lg font-semibold">2) Door Count</h2>
 
             <div className="mt-4 grid gap-2">
               <span className="text-sm text-neutral-300">Number of sliding doors</span>
@@ -279,14 +279,14 @@ export default function Page() {
               )}
             </div>
 
-            <h2 className="mt-8 text-lg font-semibold">3) Configure Each Door</h2>
+            <h2 className="mt-8 text-base sm:text-lg font-semibold">3) Configure Each Door</h2>
 
             {/* Bedroom wall preview */}
             <div className="mt-4 rounded-xl border border-neutral-800 bg-transparent p-4">
-              <div className="flex items-center justify-between gap-3">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                 <p className="text-sm text-neutral-300">Bedroom wall preview</p>
                 <p className="text-xs text-neutral-400">
-                  {typeof width === "number" ? `${width}mm` : "—"} wide • {typeof height === "number" ? `${height}mm` : "—"} high
+                  {typeof width === "number" ? `${width}mm` : "—"} w • {typeof height === "number" ? `${height}mm` : "—"} h
                 </p>
               </div>
 
@@ -396,7 +396,7 @@ export default function Page() {
               ))}
             </div>
 
-            <h2 className="mt-8 text-lg font-semibold">4) Interior & Exterior</h2>
+            <h2 className="mt-8 text-base sm:text-lg font-semibold">4) Interior & Exterior</h2>
 
             <div className="mt-4 grid gap-4">
               <label className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-xl border border-neutral-800 bg-transparent p-4">
@@ -442,7 +442,7 @@ export default function Page() {
           </div>
 
           {/* RIGHT: Summary */}
-          <div className="rounded-2xl border border-neutral-800 bg-transparent p-4 sm:p-5">
+          <div className="rounded-2xl border border-neutral-800 bg-transparent p-3 sm:p-4 md:p-5">
             <h2 className="text-lg font-semibold">Your Guide Price</h2>
 
             <div className="mt-4 rounded-2xl bg-transparent p-5">
