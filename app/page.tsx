@@ -45,7 +45,7 @@ function finishLabel(f: Finish) {
 function finishSwatchClass(f: Finish) {
   if (f === "mirror") return "bg-gradient-to-br from-slate-200 to-slate-400";
   if (f === "glass") return "bg-gradient-to-br from-sky-200 to-sky-500";
-  return "bg-yellow-700";
+  return "bg-amber-900";
 }
 
 function barLabel(bars: BarOption) {
