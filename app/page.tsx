@@ -468,7 +468,7 @@ export default function Page() {
               <label className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-lg border border-neutral-800 bg-transparent p-3">
                 <div>
                   <p className="text-sm font-semibold">Popular Interior Layout</p>
-                  <p className="text-xs text-neutral-400">Adds a practical, popular layout inside the wardrobe.</p>
+                  <p className="text-xs text-neutral-400">Adds a practical, popular layout inside the wardrobe which includes 1 x shelving unit, 1 x 18" deep top shelf and an assortment of hanging rails.</p>
                   <p className="mt-1 text-xs text-neutral-200">+{money(PRICE.interior)}</p>
                 </div>
                 <input
