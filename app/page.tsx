@@ -500,7 +500,7 @@ export default function Page() {
             <div className="mt-6 rounded-lg border border-neutral-800 bg-transparent p-3 text-xs sm:text-sm text-neutral-300">
               <p className="font-semibold text-neutral-50">What this guide price includes</p>
               <ul className="mt-2 list-disc space-y-1 pl-5">
-                <li>Base price (doors only): {money(PRICE.base)}</li>
+                <li>Base price (doors & running gear): {money(PRICE.base)}</li>
                 <li>Extra doors: +{money(PRICE.extraDoor)} each over 2</li>
                 <li>Coloured glass upgrade: +{money(PRICE.upgradeGlass)} per door</li>
                 <li>Wood finish upgrade: +{money(PRICE.upgradeWood)} per door</li>
@@ -525,7 +525,7 @@ export default function Page() {
               {showQuote && (
                 <div className="mt-5 grid gap-2 text-sm">
                   <div className="flex items-center justify-between text-neutral-300">
-                    <span>Base (doors only)</span>
+                    <span>Base (doors & running gear)</span>
                     <span className="text-neutral-50">{money(PRICE.base)}</span>
                   </div>
 
