@@ -172,10 +172,10 @@ export default function Page() {
 
   return (
     <div className="min-h-screen text-neutral-50">
-      <div className="mx-auto max-w-5xl px-4 py-10">
+      <div className="mx-auto max-w-5xl px-3 sm:px-4 py-6 sm:py-10">
         <div className="flex flex-col gap-2">
-          <h1 className="text-3xl font-semibold tracking-tight">Sliding Wardrobe Price Estimator</h1>
-          <p className="text-neutral-300">
+          <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight">Sliding Wardrobe Price Estimator</h1>
+          <p className="text-sm sm:text-base text-neutral-300">
             Instant guide price based on your opening size and per-door finish selection. Final pricing is confirmed after
             a free home design visit.
           </p>
@@ -183,10 +183,10 @@ export default function Page() {
 
         <div className="mt-8 grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
           {/* LEFT: Inputs */}
-          <div className="rounded-2xl border border-neutral-800 bg-transparent p-5">
+          <div className="rounded-2xl border border-neutral-800 bg-transparent p-4 sm:p-5">
             <h2 className="text-lg font-semibold">1) Your Opening</h2>
 
-            <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            <div className="mt-4 grid gap-4 grid-cols-1 sm:grid-cols-2">
               <label className="grid gap-2">
                 <span className="text-sm text-neutral-300">Opening width (mm)</span>
                 <input
@@ -213,7 +213,7 @@ export default function Page() {
                   min={1800}
                   max={3000}
                   step={1}
-                  value={height}
+                  value={height}S
                   onChange={(e) => {
                     const v = e.target.value;
                     setHeight(v === "" ? "" : parseInt(v, 10));
@@ -373,7 +373,7 @@ export default function Page() {
                   </div>
 
                   <select
-                    className="appearance-none w-full rounded-xl border border-neutral-800 bg-gradient-to-br from-neutral-900/40 to-neutral-950/60 px-3 py-2 text-neutral-100 outline-none focus:ring-2 focus:ring-amber-400/40 sm:w-[360px] hover:bg-gradient-to-br hover:from-neutral-900/40 hover:to-neutral-950/60 focus:bg-gradient-to-br focus:from-neutral-900/40 focus:to-neutral-950/60 active:bg-gradient-to-br active:from-neutral-900/40 active:to-neutral-950/60"
+                    className="appearance-none w-full rounded-xl border border-neutral-800 bg-gradient-to-br from-neutral-900/40 to-neutral-950/60 px-3 py-2 text-neutral-100 outline-none focus:ring-2 focus:ring-amber-400/40 sm:w-full hover:bg-gradient-to-br hover:from-neutral-900/40 hover:to-neutral-950/60 focus:bg-gradient-to-br focus:from-neutral-900/40 focus:to-neutral-950/60 active:bg-gradient-to-br active:from-neutral-900/40 active:to-neutral-950/60"
                     style={{
                       backgroundImage: "linear-gradient(to bottom right, rgba(15,23,42,0.4), rgba(2,6,23,0.6))",
                       backgroundColor: "rgba(2,6,23,0.6)",
@@ -399,7 +399,7 @@ export default function Page() {
             <h2 className="mt-8 text-lg font-semibold">4) Interior & Exterior</h2>
 
             <div className="mt-4 grid gap-4">
-              <label className="flex items-center justify-between rounded-xl border border-neutral-800 bg-transparent p-4">
+              <label className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-xl border border-neutral-800 bg-transparent p-4">
                 <div>
                   <p className="font-semibold">Popular Interior Layout</p>
                   <p className="text-sm text-neutral-400">Adds a practical, popular layout inside the wardrobe.</p>
@@ -409,11 +409,11 @@ export default function Page() {
                   type="checkbox"
                   checked={includeInterior}
                   onChange={(e) => setIncludeInterior(e.target.checked)}
-                  className="h-5 w-5 accent-amber-400"
+                  className="h-5 w-5 accent-amber-400 mt-2 sm:mt-0"
                 />
               </label>
 
-              <label className="flex items-center justify-between rounded-xl border border-neutral-800 bg-transparent p-4">
+              <label className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-xl border border-neutral-800 bg-transparent p-4">
                 <div>
                   <p className="font-semibold">Exterior Frame</p>
                   <p className="text-sm text-neutral-400">Adds the exterior frame for a fully built-in finish.</p>
@@ -423,7 +423,7 @@ export default function Page() {
                   type="checkbox"
                   checked={includeExterior}
                   onChange={(e) => setIncludeExterior(e.target.checked)}
-                  className="h-5 w-5 accent-amber-400"
+                  className="h-5 w-5 accent-amber-400 mt-2 sm:mt-0"
                 />
               </label>
             </div>
@@ -442,7 +442,7 @@ export default function Page() {
           </div>
 
           {/* RIGHT: Summary */}
-          <div className="rounded-2xl border border-neutral-800 bg-transparent p-5">
+          <div className="rounded-2xl border border-neutral-800 bg-transparent p-4 sm:p-5">
             <h2 className="text-lg font-semibold">Your Guide Price</h2>
 
             <div className="mt-4 rounded-2xl bg-transparent p-5">
