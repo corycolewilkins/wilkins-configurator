@@ -140,7 +140,7 @@ export default function Page() {
 
     const extraDoorsCost = Math.max(0, doors - 2) * PRICE.extraDoor;
     const upgradesCost = counts.glass * PRICE.upgradeGlass + counts.wood * PRICE.upgradeWood;
-    const barsCost = doorBars.reduce((sum, bars) => sum + (bars * PRICE.decorativeBar), 0);
+    const barsCost = doorBars.reduce((sum: number, bars) => sum + (bars * PRICE.decorativeBar), 0);
     const interiorCost = includeInterior ? PRICE.interior : 0;
     const exteriorCost = includeExterior ? PRICE.exterior : 0;
 
