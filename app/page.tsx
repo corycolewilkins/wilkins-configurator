@@ -356,15 +356,23 @@ export default function Page() {
                           {/* Door frame effect */}
                           <div className="absolute inset-0 shadow-[inset_0_0_0_2px_rgba(0,0,0,0.25)]" />
 
-                          {/* Decorative bars */}
+                          {/* Decorative bars - split door into equal sections */}
                           {doorBars[i] && doorBars[i] > 0 && (
-                            <div className="absolute inset-0 flex flex-col justify-around px-1">
-                              {Array.from({ length: doorBars[i] }).map((_, barIdx) => (
-                                <div
-                                  key={barIdx}
-                                  className="h-[2px] bg-neutral-900/40 rounded-full"
-                                />
-                              ))}
+                            <div className="absolute inset-0 flex flex-col px-1">
+                              {Array.from({ length: doorBars[i] }).map((_, barIdx) => {
+                                // Calculate position to split door into equal sections
+                                // 2 bars: 33.33% and 66.66% (3 sections)
+                                // 3 bars: 25%, 50%, 75% (4 sections)
+                                const totalSections = doorBars[i] + 1;
+                                const barPosition = ((barIdx + 1) / totalSections) * 100;
+                                return (
+                                  <div
+                                    key={barIdx}
+                                    className="absolute w-full h-[2px] bg-neutral-900/40 rounded-full left-0"
+                                    style={{ top: `${barPosition}%`, transform: "translateY(-50%)" }}
+                                  />
+                                );
+                              })}
                             </div>
                           )}
 
