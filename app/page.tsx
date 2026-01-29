@@ -228,12 +228,12 @@ export default function Page() {
     const shelfUnitStartX = Math.round((interiorW - unitWidthPx) / 2);
     const shelfUnitEndX = shelfUnitStartX + unitWidthPx;
 
-    // 4 shelves equally spaced between bottom and top shelf
-    const shelfSpacing = Math.round((topShelfY - 0) / 5);
-    const shelf1Y = topShelfY - shelfSpacing * 4;
-    const shelf2Y = topShelfY - shelfSpacing * 3;
-    const shelf3Y = topShelfY - shelfSpacing * 2;
-    const shelf4Y = topShelfY - shelfSpacing;
+    // 4 shelves equally spaced between top shelf and bottom
+    const shelfSpacing = Math.round((interiorH - topShelfY) / 5);
+    const shelf1Y = topShelfY + shelfSpacing;
+    const shelf2Y = topShelfY + shelfSpacing * 2;
+    const shelf3Y = topShelfY + shelfSpacing * 3;
+    const shelf4Y = topShelfY + shelfSpacing * 4;
 
     // Hanging rails positioned
     const railY = shelf1Y - Math.round(shelfSpacing / 2);
