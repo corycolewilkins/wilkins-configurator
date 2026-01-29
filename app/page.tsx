@@ -588,9 +588,8 @@ export default function Page() {
                             x2={supportX}
                             y2={interiorDims.topShelfY}
                             stroke="#ffffff"
-                            strokeWidth="2"
-                            strokeDasharray="4,4"
-                            opacity="0.5"
+                            strokeWidth="3"
+                            strokeLinecap="round"
                           />
                         ))}
 
