@@ -498,39 +498,33 @@ export default function Page() {
                     <div className="flex justify-center">
                       <svg viewBox="0 0 320 280" className="w-full max-w-xs h-auto" xmlns="http://www.w3.org/2000/svg">
                         <defs>
-                          <linearGradient id="chrome" x1="0" y1="0" x2="1" y2="0">
+                          <linearGradient id="chromeInterior" x1="0" y1="0" x2="1" y2="0">
                             <stop offset="0%" stopColor="#bfc4c9" />
-                            <stop offset="25%" stopColor="#f5f7f9" />
+                            <stop offset="20%" stopColor="#ffffff" />
                             <stop offset="50%" stopColor="#9aa0a6" />
-                            <stop offset="75%" stopColor="#f0f2f4" />
+                            <stop offset="80%" stopColor="#f0f2f4" />
                             <stop offset="100%" stopColor="#b1b7bd" />
                           </linearGradient>
                         </defs>
 
-                        {/* White interior */}
-                        <rect width="320" height="280" fill="#ffffff" />
-                        <rect x="6" y="6" width="308" height="268" fill="#fafafa" stroke="#e5e7eb" strokeWidth="2" />
+                        {/* Black background */}
+                        <rect width="320" height="280" fill="#000000" />
 
-                        {/* Top shelf at ~3/4 height */}
-                        <rect x="12" y="70" width="296" height="26" fill="#ffffff" stroke="#d1d5db" strokeWidth="1" />
-                        <line x1="12" y1="83" x2="308" y2="83" stroke="#e5e7eb" strokeWidth="1" />
+                        {/* Top shelf at 3/4 height (y=210) - full width */}
+                        <line x1="10" y1="210" x2="310" y2="210" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
 
-                        {/* Shelving units (white) */}
-                        <rect x="12" y="110" width="144" height="155" fill="#ffffff" stroke="#d1d5db" strokeWidth="1" />
-                        <rect x="164" y="110" width="144" height="155" fill="#ffffff" stroke="#d1d5db" strokeWidth="1" />
-                        <line x1="12" y1="140" x2="156" y2="140" stroke="#e5e7eb" strokeWidth="1" />
-                        <line x1="12" y1="170" x2="156" y2="170" stroke="#e5e7eb" strokeWidth="1" />
-                        <line x1="12" y1="200" x2="156" y2="200" stroke="#e5e7eb" strokeWidth="1" />
-                        <line x1="12" y1="230" x2="156" y2="230" stroke="#e5e7eb" strokeWidth="1" />
-                        <line x1="164" y1="140" x2="308" y2="140" stroke="#e5e7eb" strokeWidth="1" />
-                        <line x1="164" y1="170" x2="308" y2="170" stroke="#e5e7eb" strokeWidth="1" />
-                        <line x1="164" y1="200" x2="308" y2="200" stroke="#e5e7eb" strokeWidth="1" />
-                        <line x1="164" y1="230" x2="308" y2="230" stroke="#e5e7eb" strokeWidth="1" />
+                        {/* Central shelving unit - positioned below top shelf */}
+                        {/* 5 shelves at equal intervals starting below top shelf */}
+                        <line x1="120" y1="225" x2="200" y2="225" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
+                        <line x1="120" y1="239" x2="200" y2="239" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
+                        <line x1="120" y1="253" x2="200" y2="253" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
+                        <line x1="120" y1="267" x2="200" y2="267" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
 
-                        {/* Chrome hanging rail across full width */}
-                        <line x1="16" y1="250" x2="304" y2="250" stroke="url(#chrome)" strokeWidth="4" strokeLinecap="round" />
-                        <circle cx="16" cy="250" r="3" fill="#c7ccd1" />
-                        <circle cx="304" cy="250" r="3" fill="#c7ccd1" />
+                        {/* Chrome hanging rails - left side */}
+                        <line x1="15" y1="235" x2="110" y2="235" stroke="url(#chromeInterior)" strokeWidth="4" strokeLinecap="round" />
+                        
+                        {/* Chrome hanging rails - right side */}
+                        <line x1="210" y1="235" x2="305" y2="235" stroke="url(#chromeInterior)" strokeWidth="4" strokeLinecap="round" />
                       </svg>
                     </div>
                     <p className="mt-2 text-xs text-neutral-400">
