@@ -497,91 +497,40 @@ export default function Page() {
                     <p className="text-xs sm:text-sm text-neutral-300 mb-3 font-semibold">Interior Layout Preview</p>
                     <div className="flex justify-center">
                       <svg viewBox="0 0 320 280" className="w-full max-w-xs h-auto" xmlns="http://www.w3.org/2000/svg">
-                        {/* Background - wardrobe interior */}
-                        <rect width="320" height="280" fill="#3a3a3a" />
-                      
-                        {/* Top shelf unit */}
-                        <rect x="10" y="15" width="300" height="35" fill="#4a4a4a" stroke="#2a2a2a" strokeWidth="1" />
-                        <line x1="10" y1="32" x2="310" y2="32" stroke="#2a2a2a" strokeWidth="1" />
-                      
-                        {/* Top shelf items - folded items indicator */}
-                        <rect x="20" y="20" width="25" height="12" fill="#6a6a6a" rx="2" />
-                        <rect x="50" y="20" width="25" height="12" fill="#6a6a6a" rx="2" />
-                        <rect x="80" y="20" width="25" height="12" fill="#6a6a6a" rx="2" />
-                        <rect x="110" y="20" width="25" height="12" fill="#6a6a6a" rx="2" />
-                        <rect x="140" y="20" width="25" height="12" fill="#6a6a6a" rx="2" />
-                        <rect x="170" y="20" width="25" height="12" fill="#6a6a6a" rx="2" />
-                        <rect x="200" y="20" width="25" height="12" fill="#6a6a6a" rx="2" />
-                        <rect x="230" y="20" width="25" height="12" fill="#6a6a6a" rx="2" />
-                        <rect x="260" y="20" width="35" height="12" fill="#6a6a6a" rx="2" />
-                      
-                        {/* Middle shelving unit - left side */}
-                        <rect x="10" y="65" width="145" height="190" fill="#4a4a4a" stroke="#2a2a2a" strokeWidth="1" />
-                        <line x1="10" y1="105" x2="155" y2="105" stroke="#2a2a2a" strokeWidth="1" />
-                        <line x1="10" y1="145" x2="155" y2="145" stroke="#2a2a2a" strokeWidth="1" />
-                        <line x1="10" y1="185" x2="155" y2="185" stroke="#2a2a2a" strokeWidth="1" />
-                        <line x1="10" y1="225" x2="155" y2="225" stroke="#2a2a2a" strokeWidth="1" />
-                      
-                        {/* Left shelving items */}
-                        <rect x="18" y="75" width="20" height="10" fill="#6a6a6a" rx="1" />
-                        <rect x="42" y="75" width="20" height="10" fill="#6a6a6a" rx="1" />
-                        <rect x="66" y="75" width="20" height="10" fill="#6a6a6a" rx="1" />
-                        <rect x="90" y="75" width="20" height="10" fill="#6a6a6a" rx="1" />
-                        <rect x="114" y="75" width="20" height="10" fill="#6a6a6a" rx="1" />
-                      
-                        <rect x="18" y="115" width="20" height="10" fill="#6a6a6a" rx="1" />
-                        <rect x="42" y="115" width="20" height="10" fill="#6a6a6a" rx="1" />
-                        <rect x="66" y="115" width="20" height="10" fill="#6a6a6a" rx="1" />
-                        <rect x="90" y="115" width="20" height="10" fill="#6a6a6a" rx="1" />
-                        <rect x="114" y="115" width="20" height="10" fill="#6a6a6a" rx="1" />
-                      
-                        {/* Middle shelving unit - right side */}
-                        <rect x="165" y="65" width="145" height="190" fill="#4a4a4a" stroke="#2a2a2a" strokeWidth="1" />
-                        <line x1="165" y1="105" x2="310" y2="105" stroke="#2a2a2a" strokeWidth="1" />
-                        <line x1="165" y1="145" x2="310" y2="145" stroke="#2a2a2a" strokeWidth="1" />
-                        <line x1="165" y1="185" x2="310" y2="185" stroke="#2a2a2a" strokeWidth="1" />
-                        <line x1="165" y1="225" x2="310" y2="225" stroke="#2a2a2a" strokeWidth="1" />
-                      
-                        {/* Right shelving items */}
-                        <rect x="173" y="75" width="20" height="10" fill="#6a6a6a" rx="1" />
-                        <rect x="197" y="75" width="20" height="10" fill="#6a6a6a" rx="1" />
-                        <rect x="221" y="75" width="20" height="10" fill="#6a6a6a" rx="1" />
-                        <rect x="245" y="75" width="20" height="10" fill="#6a6a6a" rx="1" />
-                        <rect x="269" y="75" width="20" height="10" fill="#6a6a6a" rx="1" />
-                      
-                        {/* Hanging rail left section */}
-                        <line x1="20" y1="250" x2="140" y2="250" stroke="#5a5a5a" strokeWidth="2" />
-                        <circle cx="30" cy="250" r="2" fill="#8a8a8a" />
-                        <circle cx="50" cy="250" r="2" fill="#8a8a8a" />
-                        <circle cx="70" cy="250" r="2" fill="#8a8a8a" />
-                        <circle cx="90" cy="250" r="2" fill="#8a8a8a" />
-                        <circle cx="110" cy="250" r="2" fill="#8a8a8a" />
-                        <circle cx="130" cy="250" r="2" fill="#8a8a8a" />
-                      
-                        {/* Hanging items left */}
-                        <line x1="30" y1="250" x2="30" y2="265" stroke="#7a5a3a" strokeWidth="3" />
-                        <line x1="50" y1="250" x2="50" y2="268" stroke="#6a4a2a" strokeWidth="3" />
-                        <line x1="70" y1="250" x2="70" y2="263" stroke="#7a5a3a" strokeWidth="3" />
-                        <line x1="90" y1="250" x2="90" y2="267" stroke="#6a4a2a" strokeWidth="3" />
-                        <line x1="110" y1="250" x2="110" y2="264" stroke="#7a5a3a" strokeWidth="3" />
-                        <line x1="130" y1="250" x2="130" y2="266" stroke="#6a4a2a" strokeWidth="3" />
-                      
-                        {/* Hanging rail right section */}
-                        <line x1="175" y1="250" x2="295" y2="250" stroke="#5a5a5a" strokeWidth="2" />
-                        <circle cx="185" cy="250" r="2" fill="#8a8a8a" />
-                        <circle cx="205" cy="250" r="2" fill="#8a8a8a" />
-                        <circle cx="225" cy="250" r="2" fill="#8a8a8a" />
-                        <circle cx="245" cy="250" r="2" fill="#8a8a8a" />
-                        <circle cx="265" cy="250" r="2" fill="#8a8a8a" />
-                        <circle cx="285" cy="250" r="2" fill="#8a8a8a" />
-                      
-                        {/* Hanging items right */}
-                        <line x1="185" y1="250" x2="185" y2="265" stroke="#5a6a8a" strokeWidth="3" />
-                        <line x1="205" y1="250" x2="205" y2="268" stroke="#4a5a7a" strokeWidth="3" />
-                        <line x1="225" y1="250" x2="225" y2="263" stroke="#5a6a8a" strokeWidth="3" />
-                        <line x1="245" y1="250" x2="245" y2="267" stroke="#4a5a7a" strokeWidth="3" />
-                        <line x1="265" y1="250" x2="265" y2="264" stroke="#5a6a8a" strokeWidth="3" />
-                        <line x1="285" y1="250" x2="285" y2="266" stroke="#4a5a7a" strokeWidth="3" />
+                        <defs>
+                          <linearGradient id="chrome" x1="0" y1="0" x2="1" y2="0">
+                            <stop offset="0%" stopColor="#bfc4c9" />
+                            <stop offset="25%" stopColor="#f5f7f9" />
+                            <stop offset="50%" stopColor="#9aa0a6" />
+                            <stop offset="75%" stopColor="#f0f2f4" />
+                            <stop offset="100%" stopColor="#b1b7bd" />
+                          </linearGradient>
+                        </defs>
+
+                        {/* White interior */}
+                        <rect width="320" height="280" fill="#ffffff" />
+                        <rect x="6" y="6" width="308" height="268" fill="#fafafa" stroke="#e5e7eb" strokeWidth="2" />
+
+                        {/* Top shelf at ~3/4 height */}
+                        <rect x="12" y="70" width="296" height="26" fill="#ffffff" stroke="#d1d5db" strokeWidth="1" />
+                        <line x1="12" y1="83" x2="308" y2="83" stroke="#e5e7eb" strokeWidth="1" />
+
+                        {/* Shelving units (white) */}
+                        <rect x="12" y="110" width="144" height="155" fill="#ffffff" stroke="#d1d5db" strokeWidth="1" />
+                        <rect x="164" y="110" width="144" height="155" fill="#ffffff" stroke="#d1d5db" strokeWidth="1" />
+                        <line x1="12" y1="140" x2="156" y2="140" stroke="#e5e7eb" strokeWidth="1" />
+                        <line x1="12" y1="170" x2="156" y2="170" stroke="#e5e7eb" strokeWidth="1" />
+                        <line x1="12" y1="200" x2="156" y2="200" stroke="#e5e7eb" strokeWidth="1" />
+                        <line x1="12" y1="230" x2="156" y2="230" stroke="#e5e7eb" strokeWidth="1" />
+                        <line x1="164" y1="140" x2="308" y2="140" stroke="#e5e7eb" strokeWidth="1" />
+                        <line x1="164" y1="170" x2="308" y2="170" stroke="#e5e7eb" strokeWidth="1" />
+                        <line x1="164" y1="200" x2="308" y2="200" stroke="#e5e7eb" strokeWidth="1" />
+                        <line x1="164" y1="230" x2="308" y2="230" stroke="#e5e7eb" strokeWidth="1" />
+
+                        {/* Chrome hanging rail across full width */}
+                        <line x1="16" y1="250" x2="304" y2="250" stroke="url(#chrome)" strokeWidth="4" strokeLinecap="round" />
+                        <circle cx="16" cy="250" r="3" fill="#c7ccd1" />
+                        <circle cx="304" cy="250" r="3" fill="#c7ccd1" />
                       </svg>
                     </div>
                     <p className="mt-2 text-xs text-neutral-400">
