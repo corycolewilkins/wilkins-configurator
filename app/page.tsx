@@ -514,11 +514,11 @@ export default function Page() {
                         <line x1="10" y1="210" x2="310" y2="210" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
 
                         {/* Central shelving unit - positioned below top shelf */}
-                        {/* 5 shelves at equal intervals starting below top shelf */}
-                        <line x1="120" y1="225" x2="200" y2="225" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
-                        <line x1="120" y1="239" x2="200" y2="239" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
-                        <line x1="120" y1="253" x2="200" y2="253" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
-                        <line x1="120" y1="267" x2="200" y2="267" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
+                        {/* 4 shelves evenly spaced below top shelf */}
+                        <line x1="120" y1="224" x2="200" y2="224" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
+                        <line x1="120" y1="240" x2="200" y2="240" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
+                        <line x1="120" y1="256" x2="200" y2="256" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
+                        <line x1="120" y1="272" x2="200" y2="272" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
 
                         {/* Chrome hanging rails - left side */}
                         <line x1="15" y1="235" x2="110" y2="235" stroke="url(#chromeInterior)" strokeWidth="4" strokeLinecap="round" />
