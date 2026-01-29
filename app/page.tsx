@@ -222,10 +222,19 @@ export default function Page() {
     const topShelfRatio = Math.min(2000 / actualHeight, 1); // 2000mm from bottom
     const topShelfY = Math.round(interiorH - interiorH * topShelfRatio);
 
-    // Shelving unit: 400mm wide, centered
+    // Door support lines at each door joint
+    const doorSupports: number[] = [];
+    if (doors > 1) {
+      const doorWidth = interiorW / doors;
+      for (let i = 1; i < doors; i++) {
+        doorSupports.push(Math.round(i * doorWidth));
+      }
+    }
+
+    // Shelving unit: 400mm wide, positioned at the first door joint (or centered if single door)
     const unitWidthMm = 400;
     const unitWidthPx = Math.round((unitWidthMm / actualHeight) * interiorH);
-    const shelfUnitStartX = Math.round((interiorW - unitWidthPx) / 2);
+    const shelfUnitStartX = doorSupports.length > 0 ? doorSupports[0] : Math.round((interiorW - unitWidthPx) / 2);
     const shelfUnitEndX = shelfUnitStartX + unitWidthPx;
 
     // 4 shelves equally spaced between top shelf and bottom
@@ -239,15 +248,6 @@ export default function Page() {
     const railY = shelf1Y - Math.round(shelfSpacing / 2);
     const railLeftEndX = shelfUnitStartX - Math.round(unitWidthPx * 0.3);
     const railRightStartX = shelfUnitEndX + Math.round(unitWidthPx * 0.3);
-
-    // Door support lines at each door joint
-    const doorSupports: number[] = [];
-    if (doors > 1) {
-      const doorWidth = interiorW / doors;
-      for (let i = 1; i < doors; i++) {
-        doorSupports.push(Math.round(i * doorWidth));
-      }
-    }
 
     return {
       interiorW,
