@@ -197,6 +197,75 @@ export default function Page() {
     return { wallW, wallH, doorH, doorTopGap, skirting };
   }, [widthNumber, height, PREVIEW.widthRange.min, PREVIEW.widthRange.max, PREVIEW.heightRange.min, PREVIEW.heightRange.max]);
 
+  // Interior illustration dimensions - scales with user input
+  const interiorDims = useMemo(() => {
+    const w = Number.isFinite(widthNumber) ? widthNumber : 0;
+    const h = typeof height === "number" ? height : 0;
+
+    const wRatio =
+      w > 0
+        ? (clamp(w, PREVIEW.widthRange.min, PREVIEW.widthRange.max) - PREVIEW.widthRange.min) /
+          (PREVIEW.widthRange.max - PREVIEW.widthRange.min)
+        : 0.35;
+
+    const hRatio =
+      h > 0
+        ? (clamp(h, PREVIEW.heightRange.min, PREVIEW.heightRange.max) - PREVIEW.heightRange.min) /
+          (PREVIEW.heightRange.max - PREVIEW.heightRange.min)
+        : 0.55;
+
+    const interiorW = Math.round(PREVIEW.wallMinW + wRatio * (PREVIEW.wallMaxW - PREVIEW.wallMinW));
+    const interiorH = Math.round(PREVIEW.wallMinH + hRatio * (PREVIEW.wallMaxH - PREVIEW.wallMinH));
+
+    // Top shelf at 2000mm from bottom - scale based on actual height
+    const actualHeight = typeof height === "number" ? height : 2400;
+    const topShelfRatio = Math.min(2000 / actualHeight, 1); // 2000mm from bottom
+    const topShelfY = Math.round(interiorH - interiorH * topShelfRatio);
+
+    // Shelving unit: 400mm wide, centered
+    const unitWidthMm = 400;
+    const unitWidthPx = Math.round((unitWidthMm / actualHeight) * interiorH);
+    const shelfUnitStartX = Math.round((interiorW - unitWidthPx) / 2);
+    const shelfUnitEndX = shelfUnitStartX + unitWidthPx;
+
+    // 4 shelves equally spaced between bottom and top shelf
+    const shelfSpacing = Math.round((topShelfY - 0) / 5);
+    const shelf1Y = topShelfY - shelfSpacing * 4;
+    const shelf2Y = topShelfY - shelfSpacing * 3;
+    const shelf3Y = topShelfY - shelfSpacing * 2;
+    const shelf4Y = topShelfY - shelfSpacing;
+
+    // Hanging rails positioned
+    const railY = shelf1Y - Math.round(shelfSpacing / 2);
+    const railLeftEndX = shelfUnitStartX - Math.round(unitWidthPx * 0.3);
+    const railRightStartX = shelfUnitEndX + Math.round(unitWidthPx * 0.3);
+
+    // Door support lines at each door joint
+    const doorSupports: number[] = [];
+    if (doors > 1) {
+      const doorWidth = interiorW / doors;
+      for (let i = 1; i < doors; i++) {
+        doorSupports.push(Math.round(i * doorWidth));
+      }
+    }
+
+    return {
+      interiorW,
+      interiorH,
+      topShelfY,
+      shelfUnitStartX,
+      shelfUnitEndX,
+      shelf1Y,
+      shelf2Y,
+      shelf3Y,
+      shelf4Y,
+      railY,
+      railLeftEndX,
+      railRightStartX,
+      doorSupports,
+    };
+  }, [widthNumber, height, doors]);
+
 
   return (
     <div className="min-h-screen overflow-x-hidden text-neutral-50">
@@ -496,7 +565,7 @@ export default function Page() {
                   <div className="rounded-lg border border-neutral-800 bg-transparent p-4">
                     <p className="text-xs sm:text-sm text-neutral-300 mb-3 font-semibold">Interior Layout Preview</p>
                     <div className="flex justify-center">
-                      <svg viewBox="0 0 320 280" className="w-full max-w-xs h-auto" xmlns="http://www.w3.org/2000/svg">
+                      <svg viewBox={`0 0 ${interiorDims.interiorW} ${interiorDims.interiorH}`} className="w-full max-w-xs h-auto" xmlns="http://www.w3.org/2000/svg">
                         <defs>
                           <linearGradient id="chromeInterior" x1="0" y1="0" x2="1" y2="0">
                             <stop offset="0%" stopColor="#bfc4c9" />
@@ -508,23 +577,43 @@ export default function Page() {
                         </defs>
 
                         {/* Black background */}
-                        <rect width="320" height="280" fill="#000000" />
+                        <rect width={interiorDims.interiorW} height={interiorDims.interiorH} fill="#000000" />
 
-                        {/* Top shelf at 3/4 height (y=210) - full width */}
-                        <line x1="10" y1="210" x2="310" y2="210" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
+                        {/* Vertical supports at each door joint - from bottom to top shelf */}
+                        {interiorDims.doorSupports.map((supportX, idx) => (
+                          <line
+                            key={`support-${idx}`}
+                            x1={supportX}
+                            y1={interiorDims.interiorH}
+                            x2={supportX}
+                            y2={interiorDims.topShelfY}
+                            stroke="#ffffff"
+                            strokeWidth="2"
+                            strokeDasharray="4,4"
+                            opacity="0.5"
+                          />
+                        ))}
 
-                        {/* Central shelving unit - positioned below top shelf */}
-                        {/* 4 shelves evenly spaced below top shelf */}
-                        <line x1="120" y1="224" x2="200" y2="224" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
-                        <line x1="120" y1="240" x2="200" y2="240" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
-                        <line x1="120" y1="256" x2="200" y2="256" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
-                        <line x1="120" y1="272" x2="200" y2="272" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
+                        {/* Top shelf at 2000mm from bottom - full width */}
+                        <line x1="0" y1={interiorDims.topShelfY} x2={interiorDims.interiorW} y2={interiorDims.topShelfY} stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
+
+                        {/* Shelving unit left side - from bottom to top shelf */}
+                        <line x1={interiorDims.shelfUnitStartX} y1={interiorDims.interiorH} x2={interiorDims.shelfUnitStartX} y2={interiorDims.topShelfY} stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
+
+                        {/* Shelving unit right side - from bottom to top shelf */}
+                        <line x1={interiorDims.shelfUnitEndX} y1={interiorDims.interiorH} x2={interiorDims.shelfUnitEndX} y2={interiorDims.topShelfY} stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
+
+                        {/* Shelves between left and right sides - 4 shelves */}
+                        <line x1={interiorDims.shelfUnitStartX} y1={interiorDims.shelf1Y} x2={interiorDims.shelfUnitEndX} y2={interiorDims.shelf1Y} stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
+                        <line x1={interiorDims.shelfUnitStartX} y1={interiorDims.shelf2Y} x2={interiorDims.shelfUnitEndX} y2={interiorDims.shelf2Y} stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
+                        <line x1={interiorDims.shelfUnitStartX} y1={interiorDims.shelf3Y} x2={interiorDims.shelfUnitEndX} y2={interiorDims.shelf3Y} stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
+                        <line x1={interiorDims.shelfUnitStartX} y1={interiorDims.shelf4Y} x2={interiorDims.shelfUnitEndX} y2={interiorDims.shelf4Y} stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
 
                         {/* Chrome hanging rails - left side */}
-                        <line x1="15" y1="235" x2="110" y2="235" stroke="url(#chromeInterior)" strokeWidth="4" strokeLinecap="round" />
+                        <line x1="0" y1={interiorDims.railY} x2={interiorDims.railLeftEndX} y2={interiorDims.railY} stroke="url(#chromeInterior)" strokeWidth="4" strokeLinecap="round" />
                         
                         {/* Chrome hanging rails - right side */}
-                        <line x1="210" y1="235" x2="305" y2="235" stroke="url(#chromeInterior)" strokeWidth="4" strokeLinecap="round" />
+                        <line x1={interiorDims.railRightStartX} y1={interiorDims.railY} x2={interiorDims.interiorW} y2={interiorDims.railY} stroke="url(#chromeInterior)" strokeWidth="4" strokeLinecap="round" />
                       </svg>
                     </div>
                     <p className="mt-2 text-xs text-neutral-400">
