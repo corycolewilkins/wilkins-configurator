@@ -654,8 +654,8 @@ export default function Page() {
                           </linearGradient>
                         </defs>
 
-                        {/* Light beige background */}
-                        <rect width={interiorDims.interiorW} height={interiorDims.interiorH} fill="#d4c4b0" />
+                        {/* Light grey background */}
+                        <rect width={interiorDims.interiorW} height={interiorDims.interiorH} fill="#b8b8b8" />
 
                         {/* Vertical supports at each door joint - from bottom to top shelf - offset 3D effect */}
                         {interiorDims.doorSupports.map((supportX, idx) =>
