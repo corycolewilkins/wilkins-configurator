@@ -279,6 +279,28 @@ export default function Page() {
     };
   }, [widthNumber, height, doors]);
 
+  const SHELF_DEPTH = 6;
+  const SHELF_THICKNESS = 8;
+  const renderShelf = (x: number, y: number, width: number, key: string) => (
+    <g key={key}>
+      {/* top face */}
+      <polygon
+        points={`${x},${y} ${x + width},${y} ${x + width + SHELF_DEPTH},${y - SHELF_DEPTH} ${x + SHELF_DEPTH},${y - SHELF_DEPTH}`}
+        fill="#f2f2f2"
+        opacity="0.9"
+      />
+      {/* right face */}
+      <polygon
+        points={`${x + width},${y} ${x + width + SHELF_DEPTH},${y - SHELF_DEPTH} ${x + width + SHELF_DEPTH},${y - SHELF_DEPTH + SHELF_THICKNESS} ${x + width},${y + SHELF_THICKNESS}`}
+        fill="#9a9a9a"
+      />
+      {/* front face */}
+      <rect x={x} y={y} width={width} height={SHELF_THICKNESS} fill="url(#shelfGradient)" />
+      {/* bottom shadow */}
+      <rect x={x} y={y + SHELF_THICKNESS - 1} width={width} height="2" fill="#6f6f6f" opacity="0.6" />
+    </g>
+  );
+
 
   return (
     <div className="min-h-screen overflow-x-hidden text-neutral-50">
@@ -627,9 +649,8 @@ export default function Page() {
                           </g>
                         ))}
 
-                        {/* Top shelf at 2000mm from bottom - full width - 3D effect */}
-                        <rect x="0" y={interiorDims.topShelfY - 3} width={interiorDims.interiorW} height="8" fill="#555555" />
-                        <rect x="0" y={interiorDims.topShelfY - 4} width={interiorDims.interiorW} height="8" fill="url(#shelfGradient)" />
+                        {/* Top shelf at 2000mm from bottom - full width - offset 3D effect */}
+                        {renderShelf(0, interiorDims.topShelfY - 4, interiorDims.interiorW, "top-shelf")}
 
                         {/* Shelving unit 1 left side - from bottom to top shelf - 3D effect */}
                         <line x1={interiorDims.shelfUnitStartX - 1} y1={interiorDims.interiorH} x2={interiorDims.shelfUnitStartX - 1} y2={interiorDims.topShelfY} stroke="#888888" strokeWidth="2" strokeLinecap="round" />
@@ -639,18 +660,31 @@ export default function Page() {
                         <line x1={interiorDims.shelfUnitEndX - 1} y1={interiorDims.interiorH} x2={interiorDims.shelfUnitEndX - 1} y2={interiorDims.topShelfY} stroke="#888888" strokeWidth="2" strokeLinecap="round" />
                         <line x1={interiorDims.shelfUnitEndX} y1={interiorDims.interiorH} x2={interiorDims.shelfUnitEndX} y2={interiorDims.topShelfY} stroke="url(#verticalGradient)" strokeWidth="5" strokeLinecap="round" />
 
-                        {/* Shelves for unit 1 - 4 shelves with 3D effect */}
-                        <rect x={interiorDims.shelfUnitStartX} y={interiorDims.shelf1Y - 2} width={interiorDims.shelfUnitEndX - interiorDims.shelfUnitStartX} height="8" fill="#555555" />
-                        <rect x={interiorDims.shelfUnitStartX} y={interiorDims.shelf1Y - 3} width={interiorDims.shelfUnitEndX - interiorDims.shelfUnitStartX} height="8" fill="url(#shelfGradient)" />
-                        
-                        <rect x={interiorDims.shelfUnitStartX} y={interiorDims.shelf2Y - 2} width={interiorDims.shelfUnitEndX - interiorDims.shelfUnitStartX} height="8" fill="#555555" />
-                        <rect x={interiorDims.shelfUnitStartX} y={interiorDims.shelf2Y - 3} width={interiorDims.shelfUnitEndX - interiorDims.shelfUnitStartX} height="8" fill="url(#shelfGradient)" />
-                        
-                        <rect x={interiorDims.shelfUnitStartX} y={interiorDims.shelf3Y - 2} width={interiorDims.shelfUnitEndX - interiorDims.shelfUnitStartX} height="8" fill="#555555" />
-                        <rect x={interiorDims.shelfUnitStartX} y={interiorDims.shelf3Y - 3} width={interiorDims.shelfUnitEndX - interiorDims.shelfUnitStartX} height="8" fill="url(#shelfGradient)" />
-                        
-                        <rect x={interiorDims.shelfUnitStartX} y={interiorDims.shelf4Y - 2} width={interiorDims.shelfUnitEndX - interiorDims.shelfUnitStartX} height="8" fill="#555555" />
-                        <rect x={interiorDims.shelfUnitStartX} y={interiorDims.shelf4Y - 3} width={interiorDims.shelfUnitEndX - interiorDims.shelfUnitStartX} height="8" fill="url(#shelfGradient)" />
+                        {/* Shelves for unit 1 - 4 shelves with offset 3D effect */}
+                        {renderShelf(
+                          interiorDims.shelfUnitStartX,
+                          interiorDims.shelf1Y - 4,
+                          interiorDims.shelfUnitEndX - interiorDims.shelfUnitStartX,
+                          "unit1-shelf1"
+                        )}
+                        {renderShelf(
+                          interiorDims.shelfUnitStartX,
+                          interiorDims.shelf2Y - 4,
+                          interiorDims.shelfUnitEndX - interiorDims.shelfUnitStartX,
+                          "unit1-shelf2"
+                        )}
+                        {renderShelf(
+                          interiorDims.shelfUnitStartX,
+                          interiorDims.shelf3Y - 4,
+                          interiorDims.shelfUnitEndX - interiorDims.shelfUnitStartX,
+                          "unit1-shelf3"
+                        )}
+                        {renderShelf(
+                          interiorDims.shelfUnitStartX,
+                          interiorDims.shelf4Y - 4,
+                          interiorDims.shelfUnitEndX - interiorDims.shelfUnitStartX,
+                          "unit1-shelf4"
+                        )}
 
                         {/* Second shelving unit for wide wardrobes */}
                         {interiorDims.hasTwoUnits && (
@@ -663,18 +697,31 @@ export default function Page() {
                             <line x1={interiorDims.shelfUnit2EndX - 1} y1={interiorDims.interiorH} x2={interiorDims.shelfUnit2EndX - 1} y2={interiorDims.topShelfY} stroke="#888888" strokeWidth="2" strokeLinecap="round" />
                             <line x1={interiorDims.shelfUnit2EndX} y1={interiorDims.interiorH} x2={interiorDims.shelfUnit2EndX} y2={interiorDims.topShelfY} stroke="url(#verticalGradient)" strokeWidth="5" strokeLinecap="round" />
 
-                            {/* Shelves for unit 2 - 4 shelves with 3D effect */}
-                            <rect x={interiorDims.shelfUnit2StartX} y={interiorDims.shelf1Y - 2} width={interiorDims.shelfUnit2EndX - interiorDims.shelfUnit2StartX} height="8" fill="#555555" />
-                            <rect x={interiorDims.shelfUnit2StartX} y={interiorDims.shelf1Y - 3} width={interiorDims.shelfUnit2EndX - interiorDims.shelfUnit2StartX} height="8" fill="url(#shelfGradient)" />
-                            
-                            <rect x={interiorDims.shelfUnit2StartX} y={interiorDims.shelf2Y - 2} width={interiorDims.shelfUnit2EndX - interiorDims.shelfUnit2StartX} height="8" fill="#555555" />
-                            <rect x={interiorDims.shelfUnit2StartX} y={interiorDims.shelf2Y - 3} width={interiorDims.shelfUnit2EndX - interiorDims.shelfUnit2StartX} height="8" fill="url(#shelfGradient)" />
-                            
-                            <rect x={interiorDims.shelfUnit2StartX} y={interiorDims.shelf3Y - 2} width={interiorDims.shelfUnit2EndX - interiorDims.shelfUnit2StartX} height="8" fill="#555555" />
-                            <rect x={interiorDims.shelfUnit2StartX} y={interiorDims.shelf3Y - 3} width={interiorDims.shelfUnit2EndX - interiorDims.shelfUnit2StartX} height="8" fill="url(#shelfGradient)" />
-                            
-                            <rect x={interiorDims.shelfUnit2StartX} y={interiorDims.shelf4Y - 2} width={interiorDims.shelfUnit2EndX - interiorDims.shelfUnit2StartX} height="8" fill="#555555" />
-                            <rect x={interiorDims.shelfUnit2StartX} y={interiorDims.shelf4Y - 3} width={interiorDims.shelfUnit2EndX - interiorDims.shelfUnit2StartX} height="8" fill="url(#shelfGradient)" />
+                            {/* Shelves for unit 2 - 4 shelves with offset 3D effect */}
+                            {renderShelf(
+                              interiorDims.shelfUnit2StartX,
+                              interiorDims.shelf1Y - 4,
+                              interiorDims.shelfUnit2EndX - interiorDims.shelfUnit2StartX,
+                              "unit2-shelf1"
+                            )}
+                            {renderShelf(
+                              interiorDims.shelfUnit2StartX,
+                              interiorDims.shelf2Y - 4,
+                              interiorDims.shelfUnit2EndX - interiorDims.shelfUnit2StartX,
+                              "unit2-shelf2"
+                            )}
+                            {renderShelf(
+                              interiorDims.shelfUnit2StartX,
+                              interiorDims.shelf3Y - 4,
+                              interiorDims.shelfUnit2EndX - interiorDims.shelfUnit2StartX,
+                              "unit2-shelf3"
+                            )}
+                            {renderShelf(
+                              interiorDims.shelfUnit2StartX,
+                              interiorDims.shelf4Y - 4,
+                              interiorDims.shelfUnit2EndX - interiorDims.shelfUnit2StartX,
+                              "unit2-shelf4"
+                            )}
                           </>
                         )}
 
