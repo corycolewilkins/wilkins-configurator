@@ -238,6 +238,11 @@ export default function Page() {
     const shelfUnitStartX = doorSupports.length > 0 ? doorSupports[0] : Math.round((interiorW - unitWidthPx) / 2);
     const shelfUnitEndX = shelfUnitStartX + unitWidthPx;
 
+    // Second shelving unit for wide wardrobes (>=4000mm) - mirrored on the right side
+    const hasTwoUnits = actualWidth >= 4000;
+    const shelfUnit2EndX = hasTwoUnits && doorSupports.length > 0 ? doorSupports[doorSupports.length - 1] : 0;
+    const shelfUnit2StartX = shelfUnit2EndX - unitWidthPx;
+
     // 4 shelves equally spaced between top shelf and bottom
     const shelfSpacing = Math.round((interiorH - topShelfY) / 5);
     const shelf1Y = topShelfY + shelfSpacing;
@@ -248,7 +253,9 @@ export default function Page() {
     // Hanging rails positioned
     const railY = shelf1Y - Math.round(shelfSpacing / 2);
     const railLeftEndX = shelfUnitStartX - Math.round(unitWidthPx * 0.3);
-    const railRightStartX = shelfUnitEndX + Math.round(unitWidthPx * 0.3);
+    const railRightStartX = hasTwoUnits ? shelfUnit2EndX + Math.round(unitWidthPx * 0.3) : shelfUnitEndX + Math.round(unitWidthPx * 0.3);
+    const railMiddleStartX = hasTwoUnits ? shelfUnitEndX + Math.round(unitWidthPx * 0.3) : 0;
+    const railMiddleEndX = hasTwoUnits ? shelfUnit2StartX - Math.round(unitWidthPx * 0.3) : 0;
 
     return {
       interiorW,
@@ -256,6 +263,9 @@ export default function Page() {
       topShelfY,
       shelfUnitStartX,
       shelfUnitEndX,
+      shelfUnit2StartX,
+      shelfUnit2EndX,
+      hasTwoUnits,
       shelf1Y,
       shelf2Y,
       shelf3Y,
@@ -263,6 +273,8 @@ export default function Page() {
       railY,
       railLeftEndX,
       railRightStartX,
+      railMiddleStartX,
+      railMiddleEndX,
       doorSupports,
     };
   }, [widthNumber, height, doors]);
@@ -597,21 +609,43 @@ export default function Page() {
                         {/* Top shelf at 2000mm from bottom - full width */}
                         <line x1="0" y1={interiorDims.topShelfY} x2={interiorDims.interiorW} y2={interiorDims.topShelfY} stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
 
-                        {/* Shelving unit left side - from bottom to top shelf */}
+                        {/* Shelving unit 1 left side - from bottom to top shelf */}
                         <line x1={interiorDims.shelfUnitStartX} y1={interiorDims.interiorH} x2={interiorDims.shelfUnitStartX} y2={interiorDims.topShelfY} stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
 
-                        {/* Shelving unit right side - from bottom to top shelf */}
+                        {/* Shelving unit 1 right side - from bottom to top shelf */}
                         <line x1={interiorDims.shelfUnitEndX} y1={interiorDims.interiorH} x2={interiorDims.shelfUnitEndX} y2={interiorDims.topShelfY} stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
 
-                        {/* Shelves between left and right sides - 4 shelves */}
+                        {/* Shelves for unit 1 - 4 shelves */}
                         <line x1={interiorDims.shelfUnitStartX} y1={interiorDims.shelf1Y} x2={interiorDims.shelfUnitEndX} y2={interiorDims.shelf1Y} stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
                         <line x1={interiorDims.shelfUnitStartX} y1={interiorDims.shelf2Y} x2={interiorDims.shelfUnitEndX} y2={interiorDims.shelf2Y} stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
                         <line x1={interiorDims.shelfUnitStartX} y1={interiorDims.shelf3Y} x2={interiorDims.shelfUnitEndX} y2={interiorDims.shelf3Y} stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
                         <line x1={interiorDims.shelfUnitStartX} y1={interiorDims.shelf4Y} x2={interiorDims.shelfUnitEndX} y2={interiorDims.shelf4Y} stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
 
+                        {/* Second shelving unit for wide wardrobes */}
+                        {interiorDims.hasTwoUnits && (
+                          <>
+                            {/* Shelving unit 2 left side */}
+                            <line x1={interiorDims.shelfUnit2StartX} y1={interiorDims.interiorH} x2={interiorDims.shelfUnit2StartX} y2={interiorDims.topShelfY} stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
+
+                            {/* Shelving unit 2 right side */}
+                            <line x1={interiorDims.shelfUnit2EndX} y1={interiorDims.interiorH} x2={interiorDims.shelfUnit2EndX} y2={interiorDims.topShelfY} stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
+
+                            {/* Shelves for unit 2 - 4 shelves */}
+                            <line x1={interiorDims.shelfUnit2StartX} y1={interiorDims.shelf1Y} x2={interiorDims.shelfUnit2EndX} y2={interiorDims.shelf1Y} stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
+                            <line x1={interiorDims.shelfUnit2StartX} y1={interiorDims.shelf2Y} x2={interiorDims.shelfUnit2EndX} y2={interiorDims.shelf2Y} stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
+                            <line x1={interiorDims.shelfUnit2StartX} y1={interiorDims.shelf3Y} x2={interiorDims.shelfUnit2EndX} y2={interiorDims.shelf3Y} stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
+                            <line x1={interiorDims.shelfUnit2StartX} y1={interiorDims.shelf4Y} x2={interiorDims.shelfUnit2EndX} y2={interiorDims.shelf4Y} stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
+                          </>
+                        )}
+
                         {/* Chrome hanging rails - left side */}
                         <line x1="0" y1={interiorDims.railY} x2={interiorDims.railLeftEndX} y2={interiorDims.railY} stroke="url(#chromeInterior)" strokeWidth="4" strokeLinecap="round" />
                         
+                        {/* Chrome hanging rail - middle (only for two units) */}
+                        {interiorDims.hasTwoUnits && (
+                          <line x1={interiorDims.railMiddleStartX} y1={interiorDims.railY} x2={interiorDims.railMiddleEndX} y2={interiorDims.railY} stroke="url(#chromeInterior)" strokeWidth="4" strokeLinecap="round" />
+                        )}
+
                         {/* Chrome hanging rails - right side */}
                         <line x1={interiorDims.railRightStartX} y1={interiorDims.railY} x2={interiorDims.interiorW} y2={interiorDims.railY} stroke="url(#chromeInterior)" strokeWidth="4" strokeLinecap="round" />
                       </svg>
