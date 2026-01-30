@@ -657,17 +657,17 @@ export default function Page() {
                         {/* Lighter grey background */}
                         <rect width={interiorDims.interiorW} height={interiorDims.interiorH} fill="#2a2a2a" />
 
-                        {/* Vertical supports at each door joint - from bottom to top shelf - offset 3D effect */}
+                        {/* Vertical supports at each door joint - from bottom to under top shelf - offset 3D effect */}
                         {interiorDims.doorSupports.map((supportX, idx) =>
-                          renderUpright(supportX - 3, interiorDims.topShelfY, interiorDims.interiorH, `support-${idx}`)
+                          renderUpright(supportX - 3, interiorDims.topShelfY + SHELF_THICKNESS, interiorDims.interiorH, `support-${idx}`)
                         )}
 
                         {/* Top shelf at 2000mm from bottom - full width - offset 3D effect */}
                         {renderShelf(0, interiorDims.topShelfY - 4, interiorDims.interiorW, "top-shelf")}
 
-                        {/* Shelving unit 1 sides - from bottom to top shelf - offset 3D effect */}
-                        {renderUpright(interiorDims.shelfUnitStartX - 3, interiorDims.topShelfY, interiorDims.interiorH, "unit1-left")}
-                        {renderUpright(interiorDims.shelfUnitEndX - 3, interiorDims.topShelfY, interiorDims.interiorH, "unit1-right")}
+                        {/* Shelving unit 1 sides - from bottom to under top shelf - offset 3D effect */}
+                        {renderUpright(interiorDims.shelfUnitStartX - 3, interiorDims.topShelfY + SHELF_THICKNESS, interiorDims.interiorH, "unit1-left")}
+                        {renderUpright(interiorDims.shelfUnitEndX - 3, interiorDims.topShelfY + SHELF_THICKNESS, interiorDims.interiorH, "unit1-right")}
 
                         {/* Shelves for unit 1 - 4 shelves with offset 3D effect */}
                         {renderShelf(
@@ -707,8 +707,8 @@ export default function Page() {
                         {interiorDims.hasTwoUnits && (
                           <>
                             {/* Shelving unit 2 sides - offset 3D effect */}
-                            {renderUpright(interiorDims.shelfUnit2StartX - 3, interiorDims.topShelfY, interiorDims.interiorH, "unit2-left")}
-                            {renderUpright(interiorDims.shelfUnit2EndX - 3, interiorDims.topShelfY, interiorDims.interiorH, "unit2-right")}
+                            {renderUpright(interiorDims.shelfUnit2StartX - 3, interiorDims.topShelfY + SHELF_THICKNESS, interiorDims.interiorH, "unit2-left")}
+                            {renderUpright(interiorDims.shelfUnit2EndX - 3, interiorDims.topShelfY + SHELF_THICKNESS, interiorDims.interiorH, "unit2-right")}
 
                             {/* Shelves for unit 2 - 4 shelves with offset 3D effect */}
                             {renderShelf(
