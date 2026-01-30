@@ -632,7 +632,7 @@ export default function Page() {
                   <div className="rounded-lg border border-neutral-800 bg-transparent p-4">
                     <p className="text-xs sm:text-sm text-neutral-300 mb-3 font-semibold">Interior Layout Preview</p>
                     <div className="flex justify-center">
-                      <svg viewBox={`0 0 ${interiorDims.interiorW} ${interiorDims.interiorH}`} className="w-full max-w-lg h-auto" xmlns="http://www.w3.org/2000/svg">
+                      <svg viewBox={`0 0 ${interiorDims.interiorW} ${interiorDims.interiorH}`} className="w-full max-w-lg h-auto rounded-lg overflow-hidden" xmlns="http://www.w3.org/2000/svg">
                         <defs>
                           <linearGradient id="chromeInterior" x1="0" y1="0" x2="1" y2="0">
                             <stop offset="0%" stopColor="#bfc4c9" />
@@ -655,7 +655,7 @@ export default function Page() {
                         </defs>
 
                         {/* Light grey background */}
-                        <rect width={interiorDims.interiorW} height={interiorDims.interiorH} fill="#b8b8b8" />
+                        <rect width={interiorDims.interiorW} height={interiorDims.interiorH} fill="#909090" />
 
                         {/* Vertical supports at each door joint - from bottom to top shelf - offset 3D effect */}
                         {interiorDims.doorSupports.map((supportX, idx) =>
