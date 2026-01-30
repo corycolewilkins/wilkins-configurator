@@ -655,7 +655,7 @@ export default function Page() {
                         </defs>
 
                         {/* Lighter grey background */}
-                        <rect width={interiorDims.interiorW} height={interiorDims.interiorH} fill="#2a2a2a" />
+                        <rect width={interiorDims.interiorW} height={interiorDims.interiorH} fill="#4a4a4a" />
 
                         {/* Vertical supports at each door joint - from bottom to top shelf - offset 3D effect */}
                         {interiorDims.doorSupports.map((supportX, idx) =>
