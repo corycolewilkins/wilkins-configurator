@@ -283,7 +283,7 @@ export default function Page() {
   const SHELF_THICKNESS = 8;
   const UPRIGHT_DEPTH = 6;
   const UPRIGHT_WIDTH = 6;
-  const renderShelf = (x: number, y: number, width: number, key: string) => (
+  const renderShelf = (x: number, y: number, width: number, key: string, showRightFace = true) => (
     <g key={key}>
       {/* top face */}
       <polygon
@@ -292,10 +292,12 @@ export default function Page() {
         opacity="0.9"
       />
       {/* right face */}
-      <polygon
-        points={`${x + width},${y} ${x + width + SHELF_DEPTH},${y - SHELF_DEPTH} ${x + width + SHELF_DEPTH},${y - SHELF_DEPTH + SHELF_THICKNESS} ${x + width},${y + SHELF_THICKNESS}`}
-        fill="#9a9a9a"
-      />
+      {showRightFace && (
+        <polygon
+          points={`${x + width},${y} ${x + width + SHELF_DEPTH},${y - SHELF_DEPTH} ${x + width + SHELF_DEPTH},${y - SHELF_DEPTH + SHELF_THICKNESS} ${x + width},${y + SHELF_THICKNESS}`}
+          fill="#9a9a9a"
+        />
+      )}
       {/* front face */}
       <rect x={x} y={y} width={width} height={SHELF_THICKNESS} fill="url(#shelfGradient)" />
       {/* bottom shadow */}
@@ -648,75 +650,108 @@ export default function Page() {
                         {/* Lighter grey background */}
                         <rect width={interiorDims.interiorW} height={interiorDims.interiorH} fill="#2a2a2a" />
 
-                        {/* Vertical supports at each door joint - from bottom to top shelf - offset 3D effect */}
+                        {/* Vertical supports at each door joint - from bottom to under top shelf - offset 3D effect */}
                         {interiorDims.doorSupports.map((supportX, idx) =>
-                          renderUpright(supportX - 3, interiorDims.topShelfY, interiorDims.interiorH, `support-${idx}`)
+                          renderUpright(
+                            supportX - 3,
+                            interiorDims.topShelfY + SHELF_THICKNESS,
+                            interiorDims.interiorH,
+                            `support-${idx}`
+                          )
                         )}
 
                         {/* Top shelf at 2000mm from bottom - full width - offset 3D effect */}
                         {renderShelf(0, interiorDims.topShelfY - 4, interiorDims.interiorW, "top-shelf")}
 
-                        {/* Shelving unit 1 sides - from bottom to top shelf - offset 3D effect */}
-                        {renderUpright(interiorDims.shelfUnitStartX - 3, interiorDims.topShelfY, interiorDims.interiorH, "unit1-left")}
-                        {renderUpright(interiorDims.shelfUnitEndX - 3, interiorDims.topShelfY, interiorDims.interiorH, "unit1-right")}
+                        {/* Shelving unit 1 sides - from bottom to under top shelf - offset 3D effect */}
+                        {renderUpright(
+                          interiorDims.shelfUnitStartX - 3,
+                          interiorDims.topShelfY + SHELF_THICKNESS,
+                          interiorDims.interiorH,
+                          "unit1-left"
+                        )}
+                        {renderUpright(
+                          interiorDims.shelfUnitEndX - 3,
+                          interiorDims.topShelfY + SHELF_THICKNESS,
+                          interiorDims.interiorH,
+                          "unit1-right"
+                        )}
 
                         {/* Shelves for unit 1 - 4 shelves with offset 3D effect */}
                         {renderShelf(
                           interiorDims.shelfUnitStartX,
                           interiorDims.shelf1Y - 4,
                           interiorDims.shelfUnitEndX - interiorDims.shelfUnitStartX,
-                          "unit1-shelf1"
+                          "unit1-shelf1",
+                          false
                         )}
                         {renderShelf(
                           interiorDims.shelfUnitStartX,
                           interiorDims.shelf2Y - 4,
                           interiorDims.shelfUnitEndX - interiorDims.shelfUnitStartX,
-                          "unit1-shelf2"
+                          "unit1-shelf2",
+                          false
                         )}
                         {renderShelf(
                           interiorDims.shelfUnitStartX,
                           interiorDims.shelf3Y - 4,
                           interiorDims.shelfUnitEndX - interiorDims.shelfUnitStartX,
-                          "unit1-shelf3"
+                          "unit1-shelf3",
+                          false
                         )}
                         {renderShelf(
                           interiorDims.shelfUnitStartX,
                           interiorDims.shelf4Y - 4,
                           interiorDims.shelfUnitEndX - interiorDims.shelfUnitStartX,
-                          "unit1-shelf4"
+                          "unit1-shelf4",
+                          false
                         )}
 
                         {/* Second shelving unit for wide wardrobes */}
                         {interiorDims.hasTwoUnits && (
                           <>
                             {/* Shelving unit 2 sides - offset 3D effect */}
-                            {renderUpright(interiorDims.shelfUnit2StartX - 3, interiorDims.topShelfY, interiorDims.interiorH, "unit2-left")}
-                            {renderUpright(interiorDims.shelfUnit2EndX - 3, interiorDims.topShelfY, interiorDims.interiorH, "unit2-right")}
+                            {renderUpright(
+                              interiorDims.shelfUnit2StartX - 3,
+                              interiorDims.topShelfY + SHELF_THICKNESS,
+                              interiorDims.interiorH,
+                              "unit2-left"
+                            )}
+                            {renderUpright(
+                              interiorDims.shelfUnit2EndX - 3,
+                              interiorDims.topShelfY + SHELF_THICKNESS,
+                              interiorDims.interiorH,
+                              "unit2-right"
+                            )}
 
                             {/* Shelves for unit 2 - 4 shelves with offset 3D effect */}
                             {renderShelf(
                               interiorDims.shelfUnit2StartX,
                               interiorDims.shelf1Y - 4,
                               interiorDims.shelfUnit2EndX - interiorDims.shelfUnit2StartX,
-                              "unit2-shelf1"
+                              "unit2-shelf1",
+                              false
                             )}
                             {renderShelf(
                               interiorDims.shelfUnit2StartX,
                               interiorDims.shelf2Y - 4,
                               interiorDims.shelfUnit2EndX - interiorDims.shelfUnit2StartX,
-                              "unit2-shelf2"
+                              "unit2-shelf2",
+                              false
                             )}
                             {renderShelf(
                               interiorDims.shelfUnit2StartX,
                               interiorDims.shelf3Y - 4,
                               interiorDims.shelfUnit2EndX - interiorDims.shelfUnit2StartX,
-                              "unit2-shelf3"
+                              "unit2-shelf3",
+                              false
                             )}
                             {renderShelf(
                               interiorDims.shelfUnit2StartX,
                               interiorDims.shelf4Y - 4,
                               interiorDims.shelfUnit2EndX - interiorDims.shelfUnit2StartX,
-                              "unit2-shelf4"
+                              "unit2-shelf4",
+                              false
                             )}
                           </>
                         )}
