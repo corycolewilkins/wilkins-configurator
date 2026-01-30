@@ -161,8 +161,8 @@ export default function Page() {
 
     // --- Bedroom wall preview sizing ---
   const PREVIEW = {
-    wallMaxW: 280, // px (max width of the wall on screen on mobile, scales up on larger screens)
-    wallMinW: 200, // px (min width of the wall on screen)
+    wallMaxW: 400, // px (max width of the wall on screen on mobile, scales up on larger screens)
+    wallMinW: 250, // px (min width of the wall on screen)
     wallMaxH: 320, // px (max wall height)
     wallMinH: 220, // px (min wall height)
     widthRange: { min: 800, max: 5199 },
@@ -566,7 +566,7 @@ export default function Page() {
                   <div className="rounded-lg border border-neutral-800 bg-transparent p-4">
                     <p className="text-xs sm:text-sm text-neutral-300 mb-3 font-semibold">Interior Layout Preview</p>
                     <div className="flex justify-center">
-                      <svg viewBox={`0 0 ${interiorDims.interiorW} ${interiorDims.interiorH}`} className="w-full max-w-xs h-auto" xmlns="http://www.w3.org/2000/svg">
+                      <svg viewBox={`0 0 ${interiorDims.interiorW} ${interiorDims.interiorH}`} className="w-full max-w-lg h-auto" xmlns="http://www.w3.org/2000/svg">
                         <defs>
                           <linearGradient id="chromeInterior" x1="0" y1="0" x2="1" y2="0">
                             <stop offset="0%" stopColor="#bfc4c9" />
