@@ -587,54 +587,94 @@ export default function Page() {
                             <stop offset="80%" stopColor="#f0f2f4" />
                             <stop offset="100%" stopColor="#b1b7bd" />
                           </linearGradient>
+                          <linearGradient id="shelfGradient" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#ffffff" />
+                            <stop offset="30%" stopColor="#e8e8e8" />
+                            <stop offset="70%" stopColor="#d0d0d0" />
+                            <stop offset="100%" stopColor="#a8a8a8" />
+                          </linearGradient>
+                          <linearGradient id="verticalGradient" x1="0" y1="0" x2="1" y2="0">
+                            <stop offset="0%" stopColor="#b8b8b8" />
+                            <stop offset="50%" stopColor="#ffffff" />
+                            <stop offset="100%" stopColor="#b8b8b8" />
+                          </linearGradient>
                         </defs>
 
-                        {/* Black background */}
-                        <rect width={interiorDims.interiorW} height={interiorDims.interiorH} fill="#000000" />
+                        {/* Lighter grey background */}
+                        <rect width={interiorDims.interiorW} height={interiorDims.interiorH} fill="#2a2a2a" />
 
-                        {/* Vertical supports at each door joint - from bottom to top shelf */}
+                        {/* Vertical supports at each door joint - from bottom to top shelf - 3D effect */}
                         {interiorDims.doorSupports.map((supportX, idx) => (
-                          <line
-                            key={`support-${idx}`}
-                            x1={supportX}
-                            y1={interiorDims.interiorH}
-                            x2={supportX}
-                            y2={interiorDims.topShelfY}
-                            stroke="#ffffff"
-                            strokeWidth="3"
-                            strokeLinecap="round"
-                          />
+                          <g key={`support-${idx}`}>
+                            <line
+                              x1={supportX - 1}
+                              y1={interiorDims.interiorH}
+                              x2={supportX - 1}
+                              y2={interiorDims.topShelfY}
+                              stroke="#888888"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                            />
+                            <line
+                              x1={supportX}
+                              y1={interiorDims.interiorH}
+                              x2={supportX}
+                              y2={interiorDims.topShelfY}
+                              stroke="url(#verticalGradient)"
+                              strokeWidth="5"
+                              strokeLinecap="round"
+                            />
+                          </g>
                         ))}
 
-                        {/* Top shelf at 2000mm from bottom - full width */}
-                        <line x1="0" y1={interiorDims.topShelfY} x2={interiorDims.interiorW} y2={interiorDims.topShelfY} stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
+                        {/* Top shelf at 2000mm from bottom - full width - 3D effect */}
+                        <line x1="0" y1={interiorDims.topShelfY + 2} x2={interiorDims.interiorW} y2={interiorDims.topShelfY + 2} stroke="#666666" strokeWidth="2" strokeLinecap="round" opacity="0.6" />
+                        <line x1="0" y1={interiorDims.topShelfY} x2={interiorDims.interiorW} y2={interiorDims.topShelfY} stroke="url(#shelfGradient)" strokeWidth="6" strokeLinecap="round" />
 
-                        {/* Shelving unit 1 left side - from bottom to top shelf */}
-                        <line x1={interiorDims.shelfUnitStartX} y1={interiorDims.interiorH} x2={interiorDims.shelfUnitStartX} y2={interiorDims.topShelfY} stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
+                        {/* Shelving unit 1 left side - from bottom to top shelf - 3D effect */}
+                        <line x1={interiorDims.shelfUnitStartX - 1} y1={interiorDims.interiorH} x2={interiorDims.shelfUnitStartX - 1} y2={interiorDims.topShelfY} stroke="#888888" strokeWidth="2" strokeLinecap="round" />
+                        <line x1={interiorDims.shelfUnitStartX} y1={interiorDims.interiorH} x2={interiorDims.shelfUnitStartX} y2={interiorDims.topShelfY} stroke="url(#verticalGradient)" strokeWidth="5" strokeLinecap="round" />
 
-                        {/* Shelving unit 1 right side - from bottom to top shelf */}
-                        <line x1={interiorDims.shelfUnitEndX} y1={interiorDims.interiorH} x2={interiorDims.shelfUnitEndX} y2={interiorDims.topShelfY} stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
+                        {/* Shelving unit 1 right side - from bottom to top shelf - 3D effect */}
+                        <line x1={interiorDims.shelfUnitEndX - 1} y1={interiorDims.interiorH} x2={interiorDims.shelfUnitEndX - 1} y2={interiorDims.topShelfY} stroke="#888888" strokeWidth="2" strokeLinecap="round" />
+                        <line x1={interiorDims.shelfUnitEndX} y1={interiorDims.interiorH} x2={interiorDims.shelfUnitEndX} y2={interiorDims.topShelfY} stroke="url(#verticalGradient)" strokeWidth="5" strokeLinecap="round" />
 
-                        {/* Shelves for unit 1 - 4 shelves */}
-                        <line x1={interiorDims.shelfUnitStartX} y1={interiorDims.shelf1Y} x2={interiorDims.shelfUnitEndX} y2={interiorDims.shelf1Y} stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
-                        <line x1={interiorDims.shelfUnitStartX} y1={interiorDims.shelf2Y} x2={interiorDims.shelfUnitEndX} y2={interiorDims.shelf2Y} stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
-                        <line x1={interiorDims.shelfUnitStartX} y1={interiorDims.shelf3Y} x2={interiorDims.shelfUnitEndX} y2={interiorDims.shelf3Y} stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
-                        <line x1={interiorDims.shelfUnitStartX} y1={interiorDims.shelf4Y} x2={interiorDims.shelfUnitEndX} y2={interiorDims.shelf4Y} stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
+                        {/* Shelves for unit 1 - 4 shelves with 3D effect */}
+                        <line x1={interiorDims.shelfUnitStartX} y1={interiorDims.shelf1Y + 2} x2={interiorDims.shelfUnitEndX} y2={interiorDims.shelf1Y + 2} stroke="#666666" strokeWidth="2" strokeLinecap="round" opacity="0.6" />
+                        <line x1={interiorDims.shelfUnitStartX} y1={interiorDims.shelf1Y} x2={interiorDims.shelfUnitEndX} y2={interiorDims.shelf1Y} stroke="url(#shelfGradient)" strokeWidth="6" strokeLinecap="round" />
+                        
+                        <line x1={interiorDims.shelfUnitStartX} y1={interiorDims.shelf2Y + 2} x2={interiorDims.shelfUnitEndX} y2={interiorDims.shelf2Y + 2} stroke="#666666" strokeWidth="2" strokeLinecap="round" opacity="0.6" />
+                        <line x1={interiorDims.shelfUnitStartX} y1={interiorDims.shelf2Y} x2={interiorDims.shelfUnitEndX} y2={interiorDims.shelf2Y} stroke="url(#shelfGradient)" strokeWidth="6" strokeLinecap="round" />
+                        
+                        <line x1={interiorDims.shelfUnitStartX} y1={interiorDims.shelf3Y + 2} x2={interiorDims.shelfUnitEndX} y2={interiorDims.shelf3Y + 2} stroke="#666666" strokeWidth="2" strokeLinecap="round" opacity="0.6" />
+                        <line x1={interiorDims.shelfUnitStartX} y1={interiorDims.shelf3Y} x2={interiorDims.shelfUnitEndX} y2={interiorDims.shelf3Y} stroke="url(#shelfGradient)" strokeWidth="6" strokeLinecap="round" />
+                        
+                        <line x1={interiorDims.shelfUnitStartX} y1={interiorDims.shelf4Y + 2} x2={interiorDims.shelfUnitEndX} y2={interiorDims.shelf4Y + 2} stroke="#666666" strokeWidth="2" strokeLinecap="round" opacity="0.6" />
+                        <line x1={interiorDims.shelfUnitStartX} y1={interiorDims.shelf4Y} x2={interiorDims.shelfUnitEndX} y2={interiorDims.shelf4Y} stroke="url(#shelfGradient)" strokeWidth="6" strokeLinecap="round" />
 
                         {/* Second shelving unit for wide wardrobes */}
                         {interiorDims.hasTwoUnits && (
                           <>
-                            {/* Shelving unit 2 left side */}
-                            <line x1={interiorDims.shelfUnit2StartX} y1={interiorDims.interiorH} x2={interiorDims.shelfUnit2StartX} y2={interiorDims.topShelfY} stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
+                            {/* Shelving unit 2 left side - 3D effect */}
+                            <line x1={interiorDims.shelfUnit2StartX - 1} y1={interiorDims.interiorH} x2={interiorDims.shelfUnit2StartX - 1} y2={interiorDims.topShelfY} stroke="#888888" strokeWidth="2" strokeLinecap="round" />
+                            <line x1={interiorDims.shelfUnit2StartX} y1={interiorDims.interiorH} x2={interiorDims.shelfUnit2StartX} y2={interiorDims.topShelfY} stroke="url(#verticalGradient)" strokeWidth="5" strokeLinecap="round" />
 
-                            {/* Shelving unit 2 right side */}
-                            <line x1={interiorDims.shelfUnit2EndX} y1={interiorDims.interiorH} x2={interiorDims.shelfUnit2EndX} y2={interiorDims.topShelfY} stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
+                            {/* Shelving unit 2 right side - 3D effect */}
+                            <line x1={interiorDims.shelfUnit2EndX - 1} y1={interiorDims.interiorH} x2={interiorDims.shelfUnit2EndX - 1} y2={interiorDims.topShelfY} stroke="#888888" strokeWidth="2" strokeLinecap="round" />
+                            <line x1={interiorDims.shelfUnit2EndX} y1={interiorDims.interiorH} x2={interiorDims.shelfUnit2EndX} y2={interiorDims.topShelfY} stroke="url(#verticalGradient)" strokeWidth="5" strokeLinecap="round" />
 
-                            {/* Shelves for unit 2 - 4 shelves */}
-                            <line x1={interiorDims.shelfUnit2StartX} y1={interiorDims.shelf1Y} x2={interiorDims.shelfUnit2EndX} y2={interiorDims.shelf1Y} stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
-                            <line x1={interiorDims.shelfUnit2StartX} y1={interiorDims.shelf2Y} x2={interiorDims.shelfUnit2EndX} y2={interiorDims.shelf2Y} stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
-                            <line x1={interiorDims.shelfUnit2StartX} y1={interiorDims.shelf3Y} x2={interiorDims.shelfUnit2EndX} y2={interiorDims.shelf3Y} stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
-                            <line x1={interiorDims.shelfUnit2StartX} y1={interiorDims.shelf4Y} x2={interiorDims.shelfUnit2EndX} y2={interiorDims.shelf4Y} stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
+                            {/* Shelves for unit 2 - 4 shelves with 3D effect */}
+                            <line x1={interiorDims.shelfUnit2StartX} y1={interiorDims.shelf1Y + 2} x2={interiorDims.shelfUnit2EndX} y2={interiorDims.shelf1Y + 2} stroke="#666666" strokeWidth="2" strokeLinecap="round" opacity="0.6" />
+                            <line x1={interiorDims.shelfUnit2StartX} y1={interiorDims.shelf1Y} x2={interiorDims.shelfUnit2EndX} y2={interiorDims.shelf1Y} stroke="url(#shelfGradient)" strokeWidth="6" strokeLinecap="round" />
+                            
+                            <line x1={interiorDims.shelfUnit2StartX} y1={interiorDims.shelf2Y + 2} x2={interiorDims.shelfUnit2EndX} y2={interiorDims.shelf2Y + 2} stroke="#666666" strokeWidth="2" strokeLinecap="round" opacity="0.6" />
+                            <line x1={interiorDims.shelfUnit2StartX} y1={interiorDims.shelf2Y} x2={interiorDims.shelfUnit2EndX} y2={interiorDims.shelf2Y} stroke="url(#shelfGradient)" strokeWidth="6" strokeLinecap="round" />
+                            
+                            <line x1={interiorDims.shelfUnit2StartX} y1={interiorDims.shelf3Y + 2} x2={interiorDims.shelfUnit2EndX} y2={interiorDims.shelf3Y + 2} stroke="#666666" strokeWidth="2" strokeLinecap="round" opacity="0.6" />
+                            <line x1={interiorDims.shelfUnit2StartX} y1={interiorDims.shelf3Y} x2={interiorDims.shelfUnit2EndX} y2={interiorDims.shelf3Y} stroke="url(#shelfGradient)" strokeWidth="6" strokeLinecap="round" />
+                            
+                            <line x1={interiorDims.shelfUnit2StartX} y1={interiorDims.shelf4Y + 2} x2={interiorDims.shelfUnit2EndX} y2={interiorDims.shelf4Y + 2} stroke="#666666" strokeWidth="2" strokeLinecap="round" opacity="0.6" />
+                            <line x1={interiorDims.shelfUnit2StartX} y1={interiorDims.shelf4Y} x2={interiorDims.shelfUnit2EndX} y2={interiorDims.shelf4Y} stroke="url(#shelfGradient)" strokeWidth="6" strokeLinecap="round" />
                           </>
                         )}
 
