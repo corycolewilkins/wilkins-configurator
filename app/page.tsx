@@ -662,12 +662,20 @@ export default function Page() {
                           renderUpright(supportX - 3, interiorDims.topShelfY, interiorDims.interiorH, `support-${idx}`)
                         )}
 
-                        {/* Top shelf at 2000mm from bottom - full width - offset 3D effect */}
-                        {renderShelf(0, interiorDims.topShelfY - 4, interiorDims.interiorW, "top-shelf")}
-
                         {/* Shelving unit 1 sides - from bottom to top shelf - offset 3D effect */}
                         {renderUpright(interiorDims.shelfUnitStartX - 3, interiorDims.topShelfY, interiorDims.interiorH, "unit1-left")}
                         {renderUpright(interiorDims.shelfUnitEndX - 3, interiorDims.topShelfY, interiorDims.interiorH, "unit1-right")}
+
+                        {/* Shelving unit 2 sides (if applicable) - offset 3D effect */}
+                        {interiorDims.hasTwoUnits && (
+                          <>
+                            {renderUpright(interiorDims.shelfUnit2StartX - 3, interiorDims.topShelfY, interiorDims.interiorH, "unit2-left")}
+                            {renderUpright(interiorDims.shelfUnit2EndX - 3, interiorDims.topShelfY, interiorDims.interiorH, "unit2-right")}
+                          </>
+                        )}
+
+                        {/* Top shelf at 2000mm from bottom - full width - offset 3D effect */}
+                        {renderShelf(0, interiorDims.topShelfY - 4, interiorDims.interiorW, "top-shelf")}
 
                         {/* Shelves for unit 1 - 4 shelves with offset 3D effect */}
                         {renderShelf(
@@ -706,10 +714,6 @@ export default function Page() {
                         {/* Second shelving unit for wide wardrobes */}
                         {interiorDims.hasTwoUnits && (
                           <>
-                            {/* Shelving unit 2 sides - offset 3D effect */}
-                            {renderUpright(interiorDims.shelfUnit2StartX - 3, interiorDims.topShelfY, interiorDims.interiorH, "unit2-left")}
-                            {renderUpright(interiorDims.shelfUnit2EndX - 3, interiorDims.topShelfY, interiorDims.interiorH, "unit2-right")}
-
                             {/* Shelves for unit 2 - 4 shelves with offset 3D effect */}
                             {renderShelf(
                               interiorDims.shelfUnit2StartX,
