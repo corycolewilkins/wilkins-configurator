@@ -233,7 +233,8 @@ export default function Page() {
 
     // Shelving unit: 400mm wide, positioned at the first door joint (or centered if single door)
     const unitWidthMm = 400;
-    const unitWidthPx = Math.round((unitWidthMm / actualHeight) * interiorH);
+    const actualWidth = Number.isFinite(widthNumber) ? widthNumber : 4000;
+    const unitWidthPx = Math.round((unitWidthMm / actualWidth) * interiorW);
     const shelfUnitStartX = doorSupports.length > 0 ? doorSupports[0] : Math.round((interiorW - unitWidthPx) / 2);
     const shelfUnitEndX = shelfUnitStartX + unitWidthPx;
 
