@@ -300,7 +300,11 @@ export default function Page() {
           opacity="0.9"
         />
       ) : (
-        <rect x={x} y={y - 2} width={width} height="4" fill="#f2f2f2" opacity="0.9" />
+        <polygon
+          points={`${x},${y} ${x + width},${y} ${x + width},${y - SHELF_DEPTH} ${x},${y - SHELF_DEPTH}`}
+          fill="#f2f2f2"
+          opacity="0.9"
+        />
       )}
       {/* right face */}
       {showRightFace && (
