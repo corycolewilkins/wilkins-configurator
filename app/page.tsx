@@ -250,8 +250,9 @@ export default function Page() {
     const shelf3Y = topShelfY + shelfSpacing * 3;
     const shelf4Y = topShelfY + shelfSpacing * 4;
 
-    // Hanging rails positioned
-    const railY = shelf1Y - Math.round(shelfSpacing / 2);
+    // Hanging rails positioned - upper and lower
+    const railUpperY = topShelfY + Math.round(shelfSpacing * 0.5);
+    const railLowerY = topShelfY + Math.round(shelfSpacing * 3.5);
     const railLeftEndX = shelfUnitStartX - Math.round(unitWidthPx * 0.3);
     const railRightStartX = hasTwoUnits ? shelfUnit2EndX + Math.round(unitWidthPx * 0.3) : shelfUnitEndX + Math.round(unitWidthPx * 0.3);
     const railMiddleStartX = hasTwoUnits ? shelfUnitEndX + Math.round(unitWidthPx * 0.3) : 0;
@@ -270,7 +271,8 @@ export default function Page() {
       shelf2Y,
       shelf3Y,
       shelf4Y,
-      railY,
+      railUpperY,
+      railLowerY,
       railLeftEndX,
       railRightStartX,
       railMiddleStartX,
@@ -750,16 +752,37 @@ export default function Page() {
                           </>
                         )}
 
-                        {/* Chrome hanging rails - left side */}
-                        <line x1="0" y1={interiorDims.railY} x2={interiorDims.railLeftEndX} y2={interiorDims.railY} stroke="url(#chromeInterior)" strokeWidth="4" strokeLinecap="round" />
+                        {/* Chrome hanging rails - UPPER SET - left side with 3D effect */}
+                        <line x1="0" y1={interiorDims.railUpperY + 1} x2={interiorDims.railLeftEndX} y2={interiorDims.railUpperY + 1} stroke="#666666" strokeWidth="3" strokeLinecap="round" />
+                        <line x1="0" y1={interiorDims.railUpperY} x2={interiorDims.railLeftEndX} y2={interiorDims.railUpperY} stroke="url(#chromeInterior)" strokeWidth="5" strokeLinecap="round" />
                         
-                        {/* Chrome hanging rail - middle (only for two units) */}
+                        {/* Chrome hanging rail - UPPER SET - middle (only for two units) with 3D effect */}
                         {interiorDims.hasTwoUnits && (
-                          <line x1={interiorDims.railMiddleStartX} y1={interiorDims.railY} x2={interiorDims.railMiddleEndX} y2={interiorDims.railY} stroke="url(#chromeInterior)" strokeWidth="4" strokeLinecap="round" />
+                          <>
+                            <line x1={interiorDims.railMiddleStartX} y1={interiorDims.railUpperY + 1} x2={interiorDims.railMiddleEndX} y2={interiorDims.railUpperY + 1} stroke="#666666" strokeWidth="3" strokeLinecap="round" />
+                            <line x1={interiorDims.railMiddleStartX} y1={interiorDims.railUpperY} x2={interiorDims.railMiddleEndX} y2={interiorDims.railUpperY} stroke="url(#chromeInterior)" strokeWidth="5" strokeLinecap="round" />
+                          </>
                         )}
 
-                        {/* Chrome hanging rails - right side */}
-                        <line x1={interiorDims.railRightStartX} y1={interiorDims.railY} x2={interiorDims.interiorW} y2={interiorDims.railY} stroke="url(#chromeInterior)" strokeWidth="4" strokeLinecap="round" />
+                        {/* Chrome hanging rails - UPPER SET - right side with 3D effect */}
+                        <line x1={interiorDims.railRightStartX} y1={interiorDims.railUpperY + 1} x2={interiorDims.interiorW} y2={interiorDims.railUpperY + 1} stroke="#666666" strokeWidth="3" strokeLinecap="round" />
+                        <line x1={interiorDims.railRightStartX} y1={interiorDims.railUpperY} x2={interiorDims.interiorW} y2={interiorDims.railUpperY} stroke="url(#chromeInterior)" strokeWidth="5" strokeLinecap="round" />
+
+                        {/* Chrome hanging rails - LOWER SET - left side with 3D effect */}
+                        <line x1="0" y1={interiorDims.railLowerY + 1} x2={interiorDims.railLeftEndX} y2={interiorDims.railLowerY + 1} stroke="#666666" strokeWidth="3" strokeLinecap="round" />
+                        <line x1="0" y1={interiorDims.railLowerY} x2={interiorDims.railLeftEndX} y2={interiorDims.railLowerY} stroke="url(#chromeInterior)" strokeWidth="5" strokeLinecap="round" />
+                        
+                        {/* Chrome hanging rail - LOWER SET - middle (only for two units) with 3D effect */}
+                        {interiorDims.hasTwoUnits && (
+                          <>
+                            <line x1={interiorDims.railMiddleStartX} y1={interiorDims.railLowerY + 1} x2={interiorDims.railMiddleEndX} y2={interiorDims.railLowerY + 1} stroke="#666666" strokeWidth="3" strokeLinecap="round" />
+                            <line x1={interiorDims.railMiddleStartX} y1={interiorDims.railLowerY} x2={interiorDims.railMiddleEndX} y2={interiorDims.railLowerY} stroke="url(#chromeInterior)" strokeWidth="5" strokeLinecap="round" />
+                          </>
+                        )}
+
+                        {/* Chrome hanging rails - LOWER SET - right side with 3D effect */}
+                        <line x1={interiorDims.railRightStartX} y1={interiorDims.railLowerY + 1} x2={interiorDims.interiorW} y2={interiorDims.railLowerY + 1} stroke="#666666" strokeWidth="3" strokeLinecap="round" />
+                        <line x1={interiorDims.railRightStartX} y1={interiorDims.railLowerY} x2={interiorDims.interiorW} y2={interiorDims.railLowerY} stroke="url(#chromeInterior)" strokeWidth="5" strokeLinecap="round" />
                       </svg>
                     </div>
                     <p className="mt-2 text-xs text-neutral-400">
