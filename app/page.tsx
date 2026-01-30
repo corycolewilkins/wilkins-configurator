@@ -637,11 +637,11 @@ export default function Page() {
                       <svg viewBox={`0 0 ${interiorDims.interiorW} ${interiorDims.interiorH}`} className="w-full max-w-lg h-auto rounded-lg overflow-hidden" xmlns="http://www.w3.org/2000/svg">
                         <defs>
                           <linearGradient id="chromeInterior" x1="0" y1="0" x2="1" y2="0">
-                            <stop offset="0%" stopColor="#e0e5ea" />
-                            <stop offset="20%" stopColor="#ffffff" />
-                            <stop offset="50%" stopColor="#d5dce3" />
-                            <stop offset="80%" stopColor="#ffffff" />
-                            <stop offset="100%" stopColor="#e3e8ed" />
+                            <stop offset="0%" stopColor="#a8b0b8" />
+                            <stop offset="20%" stopColor="#f5f5f5" />
+                            <stop offset="50%" stopColor="#8a95a0" />
+                            <stop offset="80%" stopColor="#e8e8e8" />
+                            <stop offset="100%" stopColor="#9ca8b4" />
                           </linearGradient>
                           <linearGradient id="shelfGradient" x1="0" y1="0" x2="0" y2="1">
                             <stop offset="0%" stopColor="#ffffff" />
