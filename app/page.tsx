@@ -281,9 +281,9 @@ export default function Page() {
     };
   }, [widthNumber, height, doors]);
 
-  const SHELF_DEPTH = 6;
-  const SHELF_THICKNESS = 8;
-  const UPRIGHT_DEPTH = 6;
+  const SHELF_DEPTH = 8;
+  const SHELF_THICKNESS = 9;
+  const UPRIGHT_DEPTH = 8;
   const UPRIGHT_WIDTH = 6;
   const renderShelf = (
     x: number,
@@ -298,40 +298,44 @@ export default function Page() {
       {showTopOverhang ? (
         <polygon
           points={`${x},${y} ${x + width},${y} ${x + width + SHELF_DEPTH},${y - SHELF_DEPTH} ${x + SHELF_DEPTH},${y - SHELF_DEPTH}`}
-          fill="#f2f2f2"
-          opacity="0.9"
+          fill="url(#shelfTopGradient)"
         />
       ) : (
         <polygon
           points={`${x},${y} ${x + width},${y} ${x + width},${y - SHELF_DEPTH} ${x},${y - SHELF_DEPTH}`}
-          fill="#f2f2f2"
-          opacity="0.9"
+          fill="url(#shelfTopGradient)"
         />
       )}
       {/* right face */}
       {showRightFace && (
         <polygon
           points={`${x + width},${y} ${x + width + SHELF_DEPTH},${y - SHELF_DEPTH} ${x + width + SHELF_DEPTH},${y - SHELF_DEPTH + SHELF_THICKNESS} ${x + width},${y + SHELF_THICKNESS}`}
-          fill="#9a9a9a"
+          fill="url(#shelfSideGradient)"
         />
       )}
       {/* front face */}
       <rect x={x} y={y} width={width} height={SHELF_THICKNESS} fill="url(#shelfGradient)" />
+      {/* front bevel highlight */}
+      <rect x={x} y={y + 1} width={width} height="1" fill="#ffffff" opacity="0.35" />
       {/* bottom shadow */}
-      <rect x={x} y={y + SHELF_THICKNESS - 1} width={width} height="2" fill="#6f6f6f" opacity="0.6" />
+      <rect x={x} y={y + SHELF_THICKNESS - 2} width={width} height="2" fill="#5a5a5a" opacity="0.65" />
     </g>
   );
   const renderUpright = (x: number, yTop: number, yBottom: number, key: string) => (
     <g key={key}>
       {/* front face */}
       <rect x={x} y={yTop} width={UPRIGHT_WIDTH} height={yBottom - yTop} fill="url(#verticalGradient)" />
+      {/* left highlight */}
+      <rect x={x} y={yTop} width="1" height={yBottom - yTop} fill="#ffffff" opacity="0.35" />
       {/* right face */}
       <polygon
         points={`${x + UPRIGHT_WIDTH},${yTop} ${x + UPRIGHT_WIDTH + UPRIGHT_DEPTH},${yTop - UPRIGHT_DEPTH} ${
           x + UPRIGHT_WIDTH + UPRIGHT_DEPTH
         },${yBottom - UPRIGHT_DEPTH} ${x + UPRIGHT_WIDTH},${yBottom}`}
-        fill="#9a9a9a"
+        fill="url(#uprightSideGradient)"
       />
+      {/* right shadow edge */}
+      <rect x={x + UPRIGHT_WIDTH - 1} y={yTop} width="1" height={yBottom - yTop} fill="#5a5a5a" opacity="0.6" />
     </g>
   );
 
@@ -644,15 +648,30 @@ export default function Page() {
                             <stop offset="100%" stopColor="#f0f0f0" />
                           </linearGradient>
                           <linearGradient id="shelfGradient" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#ffffff" />
-                            <stop offset="30%" stopColor="#e8e8e8" />
-                            <stop offset="70%" stopColor="#d0d0d0" />
-                            <stop offset="100%" stopColor="#a8a8a8" />
+                            <stop offset="0%" stopColor="#fdfdfd" />
+                            <stop offset="35%" stopColor="#e6e6e6" />
+                            <stop offset="70%" stopColor="#c8c8c8" />
+                            <stop offset="100%" stopColor="#9d9d9d" />
                           </linearGradient>
                           <linearGradient id="verticalGradient" x1="0" y1="0" x2="1" y2="0">
-                            <stop offset="0%" stopColor="#b8b8b8" />
-                            <stop offset="50%" stopColor="#ffffff" />
-                            <stop offset="100%" stopColor="#b8b8b8" />
+                            <stop offset="0%" stopColor="#b3b3b3" />
+                            <stop offset="45%" stopColor="#f7f7f7" />
+                            <stop offset="100%" stopColor="#9a9a9a" />
+                          </linearGradient>
+                          <linearGradient id="shelfTopGradient" x1="0" y1="1" x2="1" y2="0">
+                            <stop offset="0%" stopColor="#fafafa" />
+                            <stop offset="50%" stopColor="#eaeaea" />
+                            <stop offset="100%" stopColor="#d6d6d6" />
+                          </linearGradient>
+                          <linearGradient id="shelfSideGradient" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#9b9b9b" />
+                            <stop offset="60%" stopColor="#808080" />
+                            <stop offset="100%" stopColor="#6e6e6e" />
+                          </linearGradient>
+                          <linearGradient id="uprightSideGradient" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#969696" />
+                            <stop offset="60%" stopColor="#7b7b7b" />
+                            <stop offset="100%" stopColor="#6a6a6a" />
                           </linearGradient>
                         </defs>
 
