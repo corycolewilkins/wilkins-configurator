@@ -252,11 +252,11 @@ export default function Page() {
 
     // Hanging rails positioned - upper and lower
     const railUpperY = topShelfY + Math.round(shelfSpacing * 0.5);
-    const railLowerY = topShelfY + Math.round(shelfSpacing * 3.5);
-    const railLeftEndX = shelfUnitStartX - Math.round(unitWidthPx * 0.3);
-    const railRightStartX = hasTwoUnits ? shelfUnit2EndX + Math.round(unitWidthPx * 0.3) : shelfUnitEndX + Math.round(unitWidthPx * 0.3);
-    const railMiddleStartX = hasTwoUnits ? shelfUnitEndX + Math.round(unitWidthPx * 0.3) : 0;
-    const railMiddleEndX = hasTwoUnits ? shelfUnit2StartX - Math.round(unitWidthPx * 0.3) : 0;
+    const railLowerY = topShelfY + Math.round(shelfSpacing * 2.5);
+    const railLeftEndX = shelfUnitStartX;
+    const railRightStartX = hasTwoUnits ? shelfUnit2EndX : shelfUnitEndX;
+    const railMiddleStartX = hasTwoUnits ? shelfUnitEndX : 0;
+    const railMiddleEndX = hasTwoUnits ? shelfUnit2StartX : 0;
 
     return {
       interiorW,
