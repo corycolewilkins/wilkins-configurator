@@ -201,7 +201,15 @@ export default function Page() {
   return (
     <div className="min-h-screen overflow-x-hidden text-neutral-50">
       <div className="mx-auto max-w-5xl px-3 sm:px-4 py-6 sm:py-10">
-        <div className="flex flex-col gap-2">
+        <div className="relative flex flex-col gap-2 pl-4">
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute left-0 top-1 h-24 w-[2px] bg-gradient-to-b from-amber-200 via-amber-400 to-amber-700 shadow-[0_0_14px_rgba(245,158,11,0.65)]"
+          />
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute -left-1 top-1 h-24 w-[6px] bg-gradient-to-b from-amber-200/10 via-amber-400/15 to-amber-700/5 blur-[6px]"
+          />
           <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight">Sliding Wardrobe Price Estimator</h1>
           <p className="text-sm sm:text-base text-neutral-300">
             Instant guide price based on your opening size and per-door finish selection. Final pricing is confirmed after
