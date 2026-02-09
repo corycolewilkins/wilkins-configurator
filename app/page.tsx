@@ -540,7 +540,7 @@ export default function Page() {
           </div>
 
           {/* RIGHT: Summary */}
-          <div className="rounded-2xl border-2 border-amber-400/50 bg-transparent p-3 sm:p-4 md:p-5 h-fit lg:sticky lg:top-6 lg:self-start lg:max-h-[calc(100vh-3rem)] lg:overflow-auto">
+          <div className="rounded-2xl border-2 border-amber-400/50 bg-transparent p-3 sm:p-4 md:p-5 h-fit lg:sticky lg:top-6 lg:self-start">
             <h2 className="text-lg font-semibold">Your Guide Price</h2>
 
             <div className="mt-4 rounded-2xl bg-transparent p-5">
