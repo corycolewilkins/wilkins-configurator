@@ -533,6 +533,7 @@ export default function Page() {
                 <li>Base price (doors & running gear): {money(PRICE.base)}</li>
                 <li>Extra doors: +{money(PRICE.extraDoor)} each over 2</li>
                 <li>Coloured glass upgrade: +{money(PRICE.upgradeGlass)} per door</li>
+                <li>Coloured glass has lots of colour options to choose from.</li>
                 <li>Wood finish upgrade: +{money(PRICE.upgradeWood)} per door</li>
                 <li>Decorative bars: +{money(PRICE.decorativeBar)} per bar</li>
                 <li>Optional interior layout: +{money(PRICE.interior)}</li>
