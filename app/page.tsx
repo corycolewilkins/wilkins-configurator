@@ -219,14 +219,14 @@ export default function Page() {
 
         <div className="mt-6 sm:mt-8 grid gap-4 sm:gap-6 lg:grid-cols-[1.2fr_0.8fr]">
           {/* LEFT: Inputs */}
-          <div className="rounded-2xl border border-amber-400/40 bg-transparent p-3 sm:p-4 md:p-5">
+          <div className="rounded-2xl border-2 border-amber-400/50 bg-transparent p-3 sm:p-4 md:p-5">
             <h2 className="text-base sm:text-lg font-semibold">1) Your Opening</h2>
 
             <div className="mt-3 sm:mt-4 grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2">
               <label className="grid gap-1 sm:gap-2">
                 <span className="text-xs sm:text-sm text-neutral-300">Opening width (mm)</span>
                 <input
-                  className="rounded-lg border border-amber-400/40 bg-transparent px-2.5 py-1.5 text-sm sm:text-base text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40"
+                  className="rounded-lg border-2 border-amber-400/50 bg-transparent px-2.5 py-1.5 text-sm sm:text-base text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40"
                   type="number"
                   min={800}
                   max={5199}
@@ -244,7 +244,7 @@ export default function Page() {
               <label className="grid gap-1 sm:gap-2">
                 <span className="text-xs sm:text-sm text-neutral-300">Opening height (mm)</span>
                 <input
-                  className="rounded-lg border border-amber-400/40 bg-transparent px-2.5 py-1.5 text-sm sm:text-base text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40"
+                  className="rounded-lg border-2 border-amber-400/50 bg-transparent px-2.5 py-1.5 text-sm sm:text-base text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40"
                   type="number"
                   min={1800}
                   max={3000}
@@ -260,7 +260,7 @@ export default function Page() {
               </label>
             </div>
 
-            <div className="mt-6 rounded-lg border border-amber-400/40 bg-transparent p-3">
+            <div className="mt-6 rounded-lg border-2 border-amber-400/50 bg-transparent p-3">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                 <div>
                   <p className="text-xs sm:text-sm text-neutral-300">
@@ -286,7 +286,7 @@ export default function Page() {
             <div className="mt-4 grid gap-2">
               <span className="text-xs sm:text-sm text-neutral-300">Number of sliding doors</span>
               <select
-                className="appearance-none rounded-lg border border-amber-400/40 bg-gradient-to-br from-neutral-900/40 to-neutral-950/60 px-2.5 py-1.5 text-sm sm:text-base text-neutral-100 outline-none focus:ring-2 focus:ring-amber-400/40 disabled:opacity-50 hover:bg-gradient-to-br hover:from-neutral-900/40 hover:to-neutral-950/60 focus:bg-gradient-to-br focus:from-neutral-900/40 focus:to-neutral-950/60 active:bg-gradient-to-br active:from-neutral-900/40 active:to-neutral-950/60"
+                className="appearance-none rounded-lg border-2 border-amber-400/50 bg-gradient-to-br from-neutral-900/40 to-neutral-950/60 px-2.5 py-1.5 text-sm sm:text-base text-neutral-100 outline-none focus:ring-2 focus:ring-amber-400/40 disabled:opacity-50 hover:bg-gradient-to-br hover:from-neutral-900/40 hover:to-neutral-950/60 focus:bg-gradient-to-br focus:from-neutral-900/40 focus:to-neutral-950/60 active:bg-gradient-to-br active:from-neutral-900/40 active:to-neutral-950/60"
                 style={{
                   backgroundImage: "linear-gradient(to bottom right, rgba(15,23,42,0.4), rgba(2,6,23,0.6))",
                   backgroundColor: "rgba(2,6,23,0.6)",
@@ -318,7 +318,7 @@ export default function Page() {
             <h2 className="mt-8 text-base sm:text-lg font-semibold">3) Configure Each Door</h2>
 
             {/* Bedroom wall preview */}
-            <div className="mt-4 rounded-lg border border-amber-400/40 bg-transparent p-3">
+            <div className="mt-4 rounded-lg border-2 border-amber-400/50 bg-transparent p-3">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                 <p className="text-sm text-neutral-300">Bedroom wall preview</p>
                 <p className="text-xs text-neutral-400">
@@ -329,7 +329,7 @@ export default function Page() {
               <div className="mt-3 flex justify-center overflow-x-auto">
                 <div
                   className={`relative overflow-hidden rounded-none flex-shrink-0 ${
-                    includeExterior ? "border-8 border-white" : "border border-amber-400/40"
+                    includeExterior ? "border-8 border-white" : "border-2 border-amber-400/50"
                   }`}
                   style={{ width: wallDims.wallW, height: wallDims.wallH }}
                 >
@@ -354,7 +354,7 @@ export default function Page() {
                       {doorFinishes.map((f, i) => (
                         <div
                           key={i}
-                          className="relative overflow-hidden h-full border border-amber-400/50 rounded-none"
+                          className="relative overflow-hidden h-full border-2 border-amber-400/60 rounded-none"
                         >
                           {/* Door finish fill */}
                           {f === "glass" ? (
@@ -431,7 +431,7 @@ export default function Page() {
               {doorFinishes.map((f, idx) => (
                 <div
                   key={idx}
-                  className="flex flex-col gap-2 rounded-lg border border-amber-400/40 bg-transparent p-3 sm:flex-row sm:items-center sm:justify-between"
+                  className="flex flex-col gap-2 rounded-lg border-2 border-amber-400/50 bg-transparent p-3 sm:flex-row sm:items-center sm:justify-between"
                 >
                   <div>
                     <p className="text-sm font-semibold">Door {idx + 1}</p>
@@ -439,7 +439,7 @@ export default function Page() {
                   </div>
 
                   <select
-                    className="appearance-none w-full rounded-lg border border-amber-400/40 bg-gradient-to-br from-neutral-900/40 to-neutral-950/60 px-2.5 py-1.5 text-sm sm:text-base text-neutral-100 outline-none focus:ring-2 focus:ring-amber-400/40 sm:w-full hover:bg-gradient-to-br hover:from-neutral-900/40 hover:to-neutral-950/60 focus:bg-gradient-to-br focus:from-neutral-900/40 focus:to-neutral-950/60 active:bg-gradient-to-br active:from-neutral-900/40 active:to-neutral-950/60"
+                    className="appearance-none w-full rounded-lg border-2 border-amber-400/50 bg-gradient-to-br from-neutral-900/40 to-neutral-950/60 px-2.5 py-1.5 text-sm sm:text-base text-neutral-100 outline-none focus:ring-2 focus:ring-amber-400/40 sm:w-full hover:bg-gradient-to-br hover:from-neutral-900/40 hover:to-neutral-950/60 focus:bg-gradient-to-br focus:from-neutral-900/40 focus:to-neutral-950/60 active:bg-gradient-to-br active:from-neutral-900/40 active:to-neutral-950/60"
                     style={{
                       backgroundImage: "linear-gradient(to bottom right, rgba(15,23,42,0.4), rgba(2,6,23,0.6))",
                       backgroundColor: "rgba(2,6,23,0.6)",
@@ -460,7 +460,7 @@ export default function Page() {
                   </select>
 
                   <select
-                    className="appearance-none w-full rounded-lg border border-amber-400/40 bg-gradient-to-br from-neutral-900/40 to-neutral-950/60 px-2.5 py-1.5 text-sm sm:text-base text-neutral-100 outline-none focus:ring-2 focus:ring-amber-400/40 sm:w-full hover:bg-gradient-to-br hover:from-neutral-900/40 hover:to-neutral-950/60 focus:bg-gradient-to-br focus:from-neutral-900/40 focus:to-neutral-950/60 active:bg-gradient-to-br active:from-neutral-900/40 active:to-neutral-950/60"
+                    className="appearance-none w-full rounded-lg border-2 border-amber-400/50 bg-gradient-to-br from-neutral-900/40 to-neutral-950/60 px-2.5 py-1.5 text-sm sm:text-base text-neutral-100 outline-none focus:ring-2 focus:ring-amber-400/40 sm:w-full hover:bg-gradient-to-br hover:from-neutral-900/40 hover:to-neutral-950/60 focus:bg-gradient-to-br focus:from-neutral-900/40 focus:to-neutral-950/60 active:bg-gradient-to-br active:from-neutral-900/40 active:to-neutral-950/60"
                     style={{
                       backgroundImage: "linear-gradient(to bottom right, rgba(15,23,42,0.4), rgba(2,6,23,0.6))",
                       backgroundColor: "rgba(2,6,23,0.6)",
@@ -486,7 +486,7 @@ export default function Page() {
             <h2 className="mt-8 text-base sm:text-lg font-semibold">4) Interior & Exterior</h2>
 
             <div className="mt-4 grid gap-3">
-              <label className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-lg border border-amber-400/40 bg-transparent p-3">
+              <label className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-lg border-2 border-amber-400/50 bg-transparent p-3">
                 <div>
                   <p className="text-sm font-semibold">Popular Interior Layout</p>
                   <p className="text-xs text-neutral-400">Adds a practical, popular layout inside the wardrobe which includes {widthNumber >= 4000 ? "2 x shelving units" : "1 x shelving unit"}, 1 x 18" deep top shelf and an assortment of hanging rails.</p>
@@ -502,7 +502,7 @@ export default function Page() {
 
 
 
-              <label className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-lg border border-amber-400/40 bg-transparent p-3">
+              <label className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-lg border-2 border-amber-400/50 bg-transparent p-3">
                 <div>
                   <p className="text-sm font-semibold">Exterior Frame</p>
                   <p className="text-xs text-neutral-400">Adds the exterior frame for a fully built-in finish.</p>
@@ -517,7 +517,7 @@ export default function Page() {
               </label>
             </div>
 
-            <div className="mt-6 rounded-lg border border-amber-400/40 bg-transparent p-3 text-xs sm:text-sm text-neutral-300">
+            <div className="mt-6 rounded-lg border-2 border-amber-400/50 bg-transparent p-3 text-xs sm:text-sm text-neutral-300">
               <p className="font-semibold text-neutral-50">What this guide price includes</p>
               <ul className="mt-2 list-disc space-y-1 pl-5">
                 <li>Base price (doors & running gear): {money(PRICE.base)}</li>
@@ -532,7 +532,7 @@ export default function Page() {
           </div>
 
           {/* RIGHT: Summary */}
-          <div className="rounded-2xl border border-amber-400/40 bg-transparent p-3 sm:p-4 md:p-5">
+          <div className="rounded-2xl border-2 border-amber-400/50 bg-transparent p-3 sm:p-4 md:p-5">
             <h2 className="text-lg font-semibold">Your Guide Price</h2>
 
             <div className="mt-4 rounded-2xl bg-transparent p-5">
@@ -587,7 +587,7 @@ export default function Page() {
                     <span>{money(price.total)}</span>
                   </div>
 
-                  <div className="mt-4 rounded-xl border border-amber-400/40 bg-transparent p-3">
+                  <div className="mt-4 rounded-xl border-2 border-amber-400/50 bg-transparent p-3">
                     <p className="text-xs text-neutral-300">
                       Finish breakdown:{" "}
                       <span className="font-semibold text-neutral-50">{counts.mirror}</span> mirror,{" "}
@@ -612,15 +612,15 @@ export default function Page() {
               }}
             >
               <input
-                className="rounded-lg border border-amber-400/40 bg-transparent px-2.5 py-1.5 text-sm text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40"
+                className="rounded-lg border-2 border-amber-400/50 bg-transparent px-2.5 py-1.5 text-sm text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40"
                 placeholder="Name"
               />
               <input
-                className="rounded-lg border border-amber-400/40 bg-transparent px-2.5 py-1.5 text-sm text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40"
+                className="rounded-lg border-2 border-amber-400/50 bg-transparent px-2.5 py-1.5 text-sm text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40"
                 placeholder="Postcode"
               />
               <input
-                className="rounded-lg border border-amber-400/40 bg-transparent px-2.5 py-1.5 text-sm text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40"
+                className="rounded-lg border-2 border-amber-400/50 bg-transparent px-2.5 py-1.5 text-sm text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40"
                 placeholder="Mobile / Email"
               />
               <button
