@@ -616,18 +616,6 @@ export default function Page() {
               )}
             </div>
 
-            <section id="why-us" className="mt-6 rounded-2xl border-2 border-amber-400/50 bg-transparent p-4">
-              <h3 className="text-base font-semibold">Why Us</h3>
-              <p className="mt-2 text-sm text-neutral-300">
-                We focus on made-to-measure wardrobes with clear pricing and a friendly, no-pressure design visit.
-              </p>
-              <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-neutral-300">
-                <li>Made-to-measure fit for your opening</li>
-                <li>Helpful design visit to confirm the best layout</li>
-                <li>Transparent pricing with clear upgrades</li>
-              </ul>
-            </section>
-
             <h3 className="mt-6 text-base font-semibold">Request a Free Home Design Visit</h3>
             <p className="mt-1 text-sm text-neutral-400">
               Leave your details and we’ll get back to arrange a no-obligation home design visit.
@@ -739,6 +727,18 @@ export default function Page() {
                 This quote is a guide only. We’ll confirm final spec and pricing after measuring and checking the room.
               </p>
             </form>
+
+            <section id="why-us" className="mt-6 rounded-2xl border-2 border-amber-400/50 bg-transparent p-4">
+              <h3 className="text-base font-semibold">Why Us</h3>
+              <p className="mt-2 text-sm text-neutral-300">
+                We focus on made-to-measure wardrobes with clear pricing and a friendly, no-pressure design visit.
+              </p>
+              <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-neutral-300">
+                <li>Made-to-measure fit for your opening</li>
+                <li>Helpful design visit to confirm the best layout</li>
+                <li>Transparent pricing with clear upgrades</li>
+              </ul>
+            </section>
           </div>
         </div>
       </div>
