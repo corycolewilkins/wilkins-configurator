@@ -335,10 +335,10 @@ export default function Page() {
 
               <div className="mt-3 flex justify-center overflow-x-auto">
                 <div
-                  className={`relative overflow-hidden rounded-none flex-shrink-0 ${
+                  className={`relative overflow-hidden rounded-none max-w-full ${
                     includeExterior ? "border-8 border-white" : "border-2 border-amber-400/50"
                   }`}
-                  style={{ width: wallDims.wallW, height: wallDims.wallH }}
+                  style={{ width: `min(100%, ${wallDims.wallW}px)`, height: wallDims.wallH }}
                 >
                   {/* Wall background */}
                   <div className="absolute inset-0 bg-gradient-to-b from-neutral-900/40 to-neutral-950/40" />
