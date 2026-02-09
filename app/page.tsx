@@ -91,6 +91,11 @@ export default function Page() {
   // Optional items
   const [includeInterior, setIncludeInterior] = useState<boolean>(false);
   const [includeExterior, setIncludeExterior] = useState<boolean>(false);
+  const heightRequiresExterior = typeof height === "number" && height >= 2485;
+
+  useEffect(() => {
+    if (heightRequiresExterior) setIncludeExterior(true);
+  }, [heightRequiresExterior]);
 
   // Per-door finishes
   const [doorFinishes, setDoorFinishes] = useState<Finish[]>([]);
@@ -256,7 +261,9 @@ export default function Page() {
                   }}
                   placeholder="e.g. 2400"
                 />
-                {/* Removed the helper text under height as requested */}
+                {heightRequiresExterior && (
+                  <span className="text-xs text-red-400">*this height requires exterior framework*</span>
+                )}
               </label>
             </div>
 
@@ -512,6 +519,7 @@ export default function Page() {
                   type="checkbox"
                   checked={includeExterior}
                   onChange={(e) => setIncludeExterior(e.target.checked)}
+                  disabled={heightRequiresExterior}
                   className="h-5 w-5 accent-amber-400 mt-2 sm:mt-0"
                 />
               </label>
