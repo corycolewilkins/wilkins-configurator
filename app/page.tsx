@@ -231,7 +231,7 @@ export default function Page() {
               <label className="grid gap-1 sm:gap-2">
                 <span className="text-xs sm:text-sm text-neutral-300">Opening width (mm)</span>
                 <input
-                  className="rounded-lg border-2 border-amber-400/50 bg-transparent px-2.5 py-1.5 text-sm sm:text-base text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40"
+                  className="rounded-lg border-2 border-amber-400/50 bg-transparent px-2.5 py-1.5 text-base text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40"
                   type="number"
                   min={800}
                   max={5199}
@@ -249,7 +249,7 @@ export default function Page() {
               <label className="grid gap-1 sm:gap-2">
                 <span className="text-xs sm:text-sm text-neutral-300">Opening height (mm)</span>
                 <input
-                  className="rounded-lg border-2 border-amber-400/50 bg-transparent px-2.5 py-1.5 text-sm sm:text-base text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40"
+                  className="rounded-lg border-2 border-amber-400/50 bg-transparent px-2.5 py-1.5 text-base text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40"
                   type="number"
                   min={1800}
                   max={3000}
