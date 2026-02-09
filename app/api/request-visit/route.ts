@@ -3,7 +3,8 @@ import { NextResponse } from "next/server";
 type RequestBody = {
   name?: string;
   postcode?: string;
-  contact?: string;
+  mobile?: string;
+  email?: string;
   guidePrice?: {
     width: number | null;
     height: number | null;
@@ -41,10 +42,11 @@ export async function POST(req: Request) {
 
   const name = String(body.name || "").trim();
   const postcode = String(body.postcode || "").trim();
-  const contact = String(body.contact || "").trim();
+  const mobile = String(body.mobile || "").trim();
+  const email = String(body.email || "").trim();
 
-  if (!name || !postcode || !contact) {
-    return NextResponse.json({ error: "All fields are required." }, { status: 400 });
+  if (!name || !postcode || !mobile) {
+    return NextResponse.json({ error: "Name, postcode, and mobile are required." }, { status: 400 });
   }
 
   const priceLines = body.guidePrice
@@ -72,7 +74,8 @@ export async function POST(req: Request) {
     "",
     `Name: ${name}`,
     `Postcode: ${postcode}`,
-    `Contact: ${contact}`,
+    `Mobile: ${mobile}`,
+    `Email: ${email || "-"}`,
     ...priceLines,
   ].join("\n");
 
@@ -104,7 +107,8 @@ export async function POST(req: Request) {
       <h2>New Request Visit submission</h2>
       <p><strong>Name:</strong> ${escapeHtml(name)}</p>
       <p><strong>Postcode:</strong> ${escapeHtml(postcode)}</p>
-      <p><strong>Contact:</strong> ${escapeHtml(contact)}</p>
+      <p><strong>Mobile:</strong> ${escapeHtml(mobile)}</p>
+      <p><strong>Email:</strong> ${escapeHtml(email || "-")}</p>
       ${guideHtml}
     </div>
   `;
@@ -121,7 +125,7 @@ export async function POST(req: Request) {
       subject: "Request Visit submission",
       text,
       html,
-      reply_to: contact,
+      reply_to: email || undefined,
     }),
   });
 

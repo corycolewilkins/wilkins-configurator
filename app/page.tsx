@@ -624,11 +624,12 @@ export default function Page() {
                 const formData = new FormData(form);
                 const name = String(formData.get("name") || "").trim();
                 const postcode = String(formData.get("postcode") || "").trim();
-                const contact = String(formData.get("contact") || "").trim();
+                const mobile = String(formData.get("mobile") || "").trim();
+                const email = String(formData.get("email") || "").trim();
 
-                if (!name || !postcode || !contact) {
+                if (!name || !postcode || !mobile) {
                   setSubmitState("error");
-                  setSubmitMessage("Please complete all fields before submitting.");
+                  setSubmitMessage("Please enter name, postcode, and mobile number.");
                   return;
                 }
 
@@ -659,7 +660,7 @@ export default function Page() {
                   const res = await fetch("/api/request-visit", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ name, postcode, contact, guidePrice }),
+                    body: JSON.stringify({ name, postcode, mobile, email, guidePrice }),
                   });
 
                   if (!res.ok) {
@@ -688,8 +689,16 @@ export default function Page() {
               />
               <input
                 className="rounded-lg border-2 border-amber-400/50 bg-transparent px-2.5 py-1.5 text-sm text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40"
-                placeholder="Mobile / Email"
-                name="contact"
+                placeholder="Mobile number"
+                name="mobile"
+                inputMode="tel"
+              />
+              <input
+                className="rounded-lg border-2 border-amber-400/50 bg-transparent px-2.5 py-1.5 text-sm text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40"
+                placeholder="Email (optional)"
+                name="email"
+                inputMode="email"
+                autoComplete="email"
               />
               <button
                 type="submit"
