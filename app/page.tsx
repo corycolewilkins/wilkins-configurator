@@ -222,9 +222,9 @@ export default function Page() {
           </p>
         </div>
 
-        <div className="mt-6 sm:mt-8 grid gap-4 sm:gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+        <div className="mt-6 sm:mt-8 grid gap-5 sm:gap-8 lg:gap-10 lg:grid-cols-[1.2fr_0.8fr]">
           {/* LEFT: Inputs */}
-          <div className="rounded-2xl border-2 border-amber-400/50 bg-transparent p-3 sm:p-4 md:p-5">
+          <div className="rounded-2xl border-2 border-amber-400/50 bg-transparent p-4 sm:p-5 md:p-7">
             <h2 className="text-base sm:text-lg font-semibold">1) Your Opening</h2>
 
             <div className="mt-3 sm:mt-4 grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2">
@@ -540,7 +540,7 @@ export default function Page() {
           </div>
 
           {/* RIGHT: Summary */}
-          <div className="rounded-2xl border-2 border-amber-400/50 bg-transparent p-3 sm:p-4 md:p-5 h-fit sticky top-6 self-start max-h-[calc(100vh-3rem)] overflow-auto lg:fixed lg:top-6 lg:w-[25.6rem] lg:right-[max(1rem,calc((100vw-64rem)/2+1rem))]">
+          <div className="rounded-2xl border-2 border-amber-400/50 bg-transparent p-4 sm:p-5 md:p-7 h-fit sticky top-6 self-start max-h-[calc(100vh-3rem)] overflow-auto">
             <h2 className="text-lg font-semibold">Your Guide Price</h2>
 
             <div className="mt-4 rounded-2xl bg-transparent p-5">
