@@ -224,7 +224,7 @@ export default function Page() {
 
         <div className="mt-6 sm:mt-8 grid gap-4 sm:gap-6 lg:grid-cols-[1.2fr_0.8fr]">
           {/* LEFT: Inputs */}
-          <div className="rounded-2xl border-2 border-amber-400/50 bg-transparent p-3 sm:p-4 md:p-5">
+          <div className="rounded-2xl border-2 border-amber-400/50 bg-transparent p-3 sm:p-4 md:p-5 lg:sticky lg:top-6 lg:self-start">
             <h2 className="text-base sm:text-lg font-semibold">1) Your Opening</h2>
 
             <div className="mt-3 sm:mt-4 grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2">
