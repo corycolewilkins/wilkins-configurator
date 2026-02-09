@@ -4,6 +4,23 @@ type RequestBody = {
   name?: string;
   postcode?: string;
   contact?: string;
+  guidePrice?: {
+    width: number | null;
+    height: number | null;
+    doors: number;
+    finishCounts: { mirror: number; glass: number; wood: number };
+    includeInterior: boolean;
+    includeExterior: boolean;
+    breakdown: {
+      base: number;
+      extraDoors: number;
+      upgrades: number;
+      bars: number;
+      interior: number;
+      exterior: number;
+    };
+    total: number;
+  } | null;
 };
 
 export async function POST(req: Request) {
@@ -30,13 +47,57 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "All fields are required." }, { status: 400 });
   }
 
+  const priceLines = body.guidePrice
+    ? [
+        "",
+        "Guide price details",
+        `Width: ${body.guidePrice.width ?? "-"}mm`,
+        `Height: ${body.guidePrice.height ?? "-"}mm`,
+        `Doors: ${body.guidePrice.doors}`,
+        `Finishes: ${body.guidePrice.finishCounts.mirror} mirror, ${body.guidePrice.finishCounts.glass} glass, ${body.guidePrice.finishCounts.wood} wood`,
+        `Interior: ${body.guidePrice.includeInterior ? "Yes" : "No"}`,
+        `Exterior: ${body.guidePrice.includeExterior ? "Yes" : "No"}`,
+        `Base: ${formatCurrency(body.guidePrice.breakdown.base)}`,
+        `Extra doors: ${formatCurrency(body.guidePrice.breakdown.extraDoors)}`,
+        `Finish upgrades: ${formatCurrency(body.guidePrice.breakdown.upgrades)}`,
+        `Decorative bars: ${formatCurrency(body.guidePrice.breakdown.bars)}`,
+        `Interior: ${formatCurrency(body.guidePrice.breakdown.interior)}`,
+        `Exterior: ${formatCurrency(body.guidePrice.breakdown.exterior)}`,
+        `Total: ${formatCurrency(body.guidePrice.total)}`,
+      ]
+    : ["", "Guide price details", "Not available (no valid quote yet)."];
+
   const text = [
     "New Request Visit submission",
     "",
     `Name: ${name}`,
     `Postcode: ${postcode}`,
     `Contact: ${contact}`,
+    ...priceLines,
   ].join("\n");
+
+  const guideHtml = body.guidePrice
+    ? `
+      <h3>Guide price details</h3>
+      <ul>
+        <li>Width: ${body.guidePrice.width ?? "-"}mm</li>
+        <li>Height: ${body.guidePrice.height ?? "-"}mm</li>
+        <li>Doors: ${body.guidePrice.doors}</li>
+        <li>Finishes: ${body.guidePrice.finishCounts.mirror} mirror, ${body.guidePrice.finishCounts.glass} glass, ${body.guidePrice.finishCounts.wood} wood</li>
+        <li>Interior: ${body.guidePrice.includeInterior ? "Yes" : "No"}</li>
+        <li>Exterior: ${body.guidePrice.includeExterior ? "Yes" : "No"}</li>
+      </ul>
+      <ul>
+        <li>Base: ${formatCurrency(body.guidePrice.breakdown.base)}</li>
+        <li>Extra doors: ${formatCurrency(body.guidePrice.breakdown.extraDoors)}</li>
+        <li>Finish upgrades: ${formatCurrency(body.guidePrice.breakdown.upgrades)}</li>
+        <li>Decorative bars: ${formatCurrency(body.guidePrice.breakdown.bars)}</li>
+        <li>Interior: ${formatCurrency(body.guidePrice.breakdown.interior)}</li>
+        <li>Exterior: ${formatCurrency(body.guidePrice.breakdown.exterior)}</li>
+        <li><strong>Total: ${formatCurrency(body.guidePrice.total)}</strong></li>
+      </ul>
+    `
+    : "<p><strong>Guide price details:</strong> Not available (no valid quote yet).</p>";
 
   const html = `
     <div>
@@ -44,6 +105,7 @@ export async function POST(req: Request) {
       <p><strong>Name:</strong> ${escapeHtml(name)}</p>
       <p><strong>Postcode:</strong> ${escapeHtml(postcode)}</p>
       <p><strong>Contact:</strong> ${escapeHtml(contact)}</p>
+      ${guideHtml}
     </div>
   `;
 
@@ -81,4 +143,12 @@ function escapeHtml(value: string) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#39;");
+}
+
+function formatCurrency(value: number) {
+  return new Intl.NumberFormat("en-GB", {
+    style: "currency",
+    currency: "GBP",
+    maximumFractionDigits: 0,
+  }).format(value);
 }

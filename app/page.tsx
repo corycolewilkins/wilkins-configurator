@@ -636,10 +636,30 @@ export default function Page() {
                 setSubmitMessage("");
 
                 try {
+                  const guidePrice = showQuote
+                    ? {
+                        width: typeof width === "number" ? width : null,
+                        height: typeof height === "number" ? height : null,
+                        doors,
+                        finishCounts: counts,
+                        includeInterior,
+                        includeExterior,
+                        breakdown: {
+                          base: PRICE.base,
+                          extraDoors: price.extraDoorsCost,
+                          upgrades: price.upgradesCost,
+                          bars: price.barsCost,
+                          interior: price.interiorCost,
+                          exterior: price.exteriorCost,
+                        },
+                        total: price.total,
+                      }
+                    : null;
+
                   const res = await fetch("/api/request-visit", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ name, postcode, contact }),
+                    body: JSON.stringify({ name, postcode, contact, guidePrice }),
                   });
 
                   if (!res.ok) {
