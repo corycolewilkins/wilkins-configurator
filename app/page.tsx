@@ -73,6 +73,8 @@ export default function Page() {
 
   // Start blank too; we’ll set it automatically once width is valid
   const [doors, setDoors] = useState<number>(0);
+  const [submitState, setSubmitState] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [submitMessage, setSubmitMessage] = useState<string>("");
 
   // When width becomes valid, automatically set doors to the MIN for that band (not max)
   useEffect(() => {
@@ -614,29 +616,77 @@ export default function Page() {
 
             <form
               className="mt-4 grid gap-2"
-              onSubmit={(e) => {
+              onSubmit={async (e) => {
                 e.preventDefault();
-                alert("Form submission wiring comes next (email/Google Sheet/WhatsApp).");
+                if (submitState === "submitting") return;
+
+                const form = e.currentTarget;
+                const formData = new FormData(form);
+                const name = String(formData.get("name") || "").trim();
+                const postcode = String(formData.get("postcode") || "").trim();
+                const contact = String(formData.get("contact") || "").trim();
+
+                if (!name || !postcode || !contact) {
+                  setSubmitState("error");
+                  setSubmitMessage("Please complete all fields before submitting.");
+                  return;
+                }
+
+                setSubmitState("submitting");
+                setSubmitMessage("");
+
+                try {
+                  const res = await fetch("/api/request-visit", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ name, postcode, contact }),
+                  });
+
+                  if (!res.ok) {
+                    const data = await res.json().catch(() => ({}));
+                    throw new Error(data?.error || "Unable to submit request. Please try again.");
+                  }
+
+                  setSubmitState("success");
+                  setSubmitMessage("Thanks! We will be in touch shortly to arrange your visit.");
+                  form.reset();
+                } catch (err) {
+                  setSubmitState("error");
+                  setSubmitMessage(err instanceof Error ? err.message : "Unable to submit request. Please try again.");
+                }
               }}
             >
               <input
                 className="rounded-lg border-2 border-amber-400/50 bg-transparent px-2.5 py-1.5 text-sm text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40"
                 placeholder="Name"
+                name="name"
               />
               <input
                 className="rounded-lg border-2 border-amber-400/50 bg-transparent px-2.5 py-1.5 text-sm text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40"
                 placeholder="Postcode"
+                name="postcode"
               />
               <input
                 className="rounded-lg border-2 border-amber-400/50 bg-transparent px-2.5 py-1.5 text-sm text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40"
                 placeholder="Mobile / Email"
+                name="contact"
               />
               <button
                 type="submit"
-                className="rounded-lg bg-amber-400 px-4 py-2 text-sm font-semibold text-neutral-950 hover:bg-amber-300"
+                className="rounded-lg bg-amber-400 px-4 py-2 text-sm font-semibold text-neutral-950 hover:bg-amber-300 disabled:opacity-60"
+                disabled={submitState === "submitting"}
               >
-                Request Visit
+                {submitState === "submitting" ? "Sending..." : "Request Visit"}
               </button>
+              {submitMessage && (
+                <p
+                  className={`text-xs ${submitState === "success" ? "text-amber-200" : "text-amber-300"}`}
+                  role="status"
+                  aria-live="polite"
+                >
+                  {submitMessage}
+                </p>
+              )}
               <p className="text-xs text-neutral-400">
                 This quote is a guide only. We’ll confirm final spec and pricing after measuring and checking the room.
               </p>
