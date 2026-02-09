@@ -552,12 +552,6 @@ export default function Page() {
               <p className="mt-2 text-sm text-neutral-400">
                 Final pricing is confirmed after a free home design visit to check walls, floors and layout.
               </p>
-              <a
-                href="#why-us"
-                className="mt-4 inline-flex w-full items-center justify-center rounded-lg border-2 border-amber-400/60 px-4 py-2 text-sm font-semibold text-amber-100 hover:border-amber-300 hover:text-amber-50"
-              >
-                Why choose us
-              </a>
 
               {showQuote && (
                 <div className="mt-5 grid gap-2 text-sm">
