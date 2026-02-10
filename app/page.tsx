@@ -99,14 +99,29 @@ export default function Page() {
     });
   }, [band.minDoors, band.maxDoors]);
 
+  // Wardrobe type
+  const [wardrobeType, setWardrobeType] = useState<"basic" | "fitted">("basic");
+
   // Optional items
   const [includeInterior, setIncludeInterior] = useState<boolean>(false);
   const [includeExterior, setIncludeExterior] = useState<boolean>(false);
   const heightRequiresExterior = typeof height === "number" && height >= 2485;
 
   useEffect(() => {
-    if (heightRequiresExterior) setIncludeExterior(true);
-  }, [heightRequiresExterior]);
+    if (wardrobeType === "fitted") {
+      setIncludeInterior(true);
+      setIncludeExterior(true);
+    } else {
+      setIncludeInterior(false);
+      if (!heightRequiresExterior) setIncludeExterior(false);
+    }
+  }, [wardrobeType, heightRequiresExterior]);
+
+  useEffect(() => {
+    if (heightRequiresExterior && wardrobeType === "basic") {
+      setIncludeExterior(true);
+    }
+  }, [heightRequiresExterior, wardrobeType]);
 
   // Per-door finishes
   const [doorFinishes, setDoorFinishes] = useState<Finish[]>([]);
@@ -268,7 +283,41 @@ export default function Page() {
         <div className="mt-6 sm:mt-8 grid gap-5 sm:gap-8 lg:gap-10 lg:grid-cols-[1.2fr_0.8fr]">
           {/* LEFT: Inputs */}
           <div className="rounded-2xl border-2 border-amber-400/50 bg-transparent p-4 sm:p-5 md:p-7">
-            <h2 className="text-base sm:text-lg font-semibold">1) Your Opening</h2>
+            <h2 className="text-base sm:text-lg font-semibold">1) Choose Your Wardrobe Type</h2>
+
+            <div className="mt-3 sm:mt-4 grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2">
+              <label className="flex items-center gap-3 rounded-lg border-2 border-amber-400/50 bg-transparent p-3 cursor-pointer">
+                <input
+                  type="radio"
+                  name="wardrobeType"
+                  value="basic"
+                  checked={wardrobeType === "basic"}
+                  onChange={() => setWardrobeType("basic")}
+                  className="h-5 w-5 accent-amber-400"
+                />
+                <div className="flex-1">
+                  <p className="text-sm font-semibold text-neutral-50">Door & Running Gear</p>
+                  <p className="text-xs text-neutral-400">Base option only</p>
+                </div>
+              </label>
+
+              <label className="flex items-center gap-3 rounded-lg border-2 border-amber-400/50 bg-transparent p-3 cursor-pointer">
+                <input
+                  type="radio"
+                  name="wardrobeType"
+                  value="fitted"
+                  checked={wardrobeType === "fitted"}
+                  onChange={() => setWardrobeType("fitted")}
+                  className="h-5 w-5 accent-amber-400"
+                />
+                <div className="flex-1">
+                  <p className="text-sm font-semibold text-neutral-50">Fully Fitted Wardrobe</p>
+                  <p className="text-xs text-neutral-400">Includes interior & exterior</p>
+                </div>
+              </label>
+            </div>
+
+            <h2 className="mt-8 text-base sm:text-lg font-semibold">2) Your Opening</h2>
 
             <div className="mt-3 sm:mt-4 grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2">
               <label className="grid gap-1 sm:gap-2">
@@ -331,7 +380,7 @@ export default function Page() {
               </div>
             </div>
 
-            <h2 className="mt-8 text-base sm:text-lg font-semibold">2) Door Count</h2>
+            <h2 className="mt-8 text-base sm:text-lg font-semibold">3) Door Count</h2>
 
             <div className="mt-4 grid gap-2">
               <span className="text-xs sm:text-sm text-neutral-300">Number of sliding doors</span>
@@ -365,7 +414,7 @@ export default function Page() {
               )}
             </div>
 
-            <h2 className="mt-8 text-base sm:text-lg font-semibold">3) Configure Each Door</h2>
+            <h2 className="mt-8 text-base sm:text-lg font-semibold">4) Configure Each Door</h2>
 
             {/* Bedroom wall preview */}
             <div className="mt-4 rounded-lg border-2 border-amber-400/50 bg-transparent p-3">
@@ -546,6 +595,7 @@ export default function Page() {
                   type="checkbox"
                   checked={includeInterior}
                   onChange={(e) => setIncludeInterior(e.target.checked)}
+                  disabled={wardrobeType === "fitted"}
                   className="h-5 w-5 accent-amber-400 mt-2 sm:mt-0"
                 />
               </label>
@@ -562,7 +612,7 @@ export default function Page() {
                   type="checkbox"
                   checked={includeExterior}
                   onChange={(e) => setIncludeExterior(e.target.checked)}
-                  disabled={heightRequiresExterior}
+                  disabled={heightRequiresExterior || wardrobeType === "fitted"}
                   className="h-5 w-5 accent-amber-400 mt-2 sm:mt-0"
                 />
               </label>
