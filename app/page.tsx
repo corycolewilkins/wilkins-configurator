@@ -178,6 +178,23 @@ export default function Page() {
   const revealReady = showQuote && emailValid && postcode.trim().length > 0;
   const revealQuote = revealReady && revealUnlocked;
 
+  useEffect(() => {
+    if (revealUnlocked) {
+      setRevealUnlocked(false);
+      setRevealState("idle");
+      setRevealMessage("");
+    }
+  }, [
+    width,
+    height,
+    doors,
+    includeInterior,
+    includeExterior,
+    doorFinishes,
+    doorBars,
+    revealUnlocked,
+  ]);
+
     // --- Bedroom wall preview sizing ---
   const PREVIEW = {
     wallMaxW: 400, // px (max width of the wall on screen on mobile, scales up on larger screens)
