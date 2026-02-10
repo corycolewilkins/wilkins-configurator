@@ -25,10 +25,9 @@ function money(n: number) {
 
 function getDoorBand(widthMm: number) {
   // Door count rules by opening width (min doors, max doors = min + 1)
-  if (widthMm >= 800 && widthMm <= 2399) return { minDoors: 2, maxDoors: 3, label: "800–2399mm" };
-  if (widthMm >= 2400 && widthMm <= 3599) return { minDoors: 3, maxDoors: 4, label: "2400–3599mm" };
-  if (widthMm >= 3600 && widthMm <= 4799) return { minDoors: 4, maxDoors: 5, label: "3600–4799mm" };
-  if (widthMm >= 4800 && widthMm <= 5199) return { minDoors: 5, maxDoors: 6, label: "4800–5199mm" };
+  if (widthMm >= 800 && widthMm <= 2450) return { minDoors: 2, maxDoors: 3, label: "800–2450mm" };
+  if (widthMm >= 2450 && widthMm <= 3600) return { minDoors: 3, maxDoors: 4, label: "2450–3600mm" };
+  if (widthMm >= 3600 && widthMm <= 5000) return { minDoors: 4, maxDoors: 6, label: "3600–5000mm" };
   return { minDoors: 0, maxDoors: 0, label: "Out of range" };
 }
 
