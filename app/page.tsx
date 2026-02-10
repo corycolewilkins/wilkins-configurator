@@ -533,7 +533,7 @@ export default function Page() {
                 <li>Base price (doors & running gear): {money(PRICE.base)}</li>
                 <li>Extra doors: +{money(PRICE.extraDoor)} each over 2</li>
                 <li>Coloured glass upgrade: +{money(PRICE.upgradeGlass)} per door</li>
-                <li>Coloured glass has lots of colour options to choose from.</li>
+                <li>Coloured glass has lots of colour options to choose from, and you can decide later in the process.</li>
                 <li>Wood finish upgrade: +{money(PRICE.upgradeWood)} per door</li>
                 <li>Decorative bars: +{money(PRICE.decorativeBar)} per bar</li>
                 <li>Optional interior layout: +{money(PRICE.interior)}</li>
@@ -611,8 +611,9 @@ export default function Page() {
             </div>
 
             <h3 className="mt-6 text-base font-semibold">Request a Free Home Design Visit</h3>
-            <p className="mt-1 text-sm text-neutral-400">
-              Leave your details and we’ll get back to arrange a no-obligation home design visit.
+              <p className="mt-1 text-sm text-neutral-400">
+              Leave your details and we’ll get back to arrange a no-obligation home design visit. There is a wide
+              range of colours and finishes to choose from, and you can decide later in the process.
             </p>
 
             <form
