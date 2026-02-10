@@ -38,8 +38,8 @@ function clamp(n: number, min: number, max: number) {
 
 function finishLabel(f: Finish) {
   if (f === "mirror") return "Mirror (Standard)";
-  if (f === "glass") return `Coloured Glass (+${money(PRICE.upgradeGlass)} / door)`;
-  return `Wood Finish (+${money(PRICE.upgradeWood)} / door)`;
+  if (f === "glass") return "Coloured Glass";
+  return "Wood Finish";
 }
 
 function finishSwatchClass(f: Finish) {
@@ -50,7 +50,7 @@ function finishSwatchClass(f: Finish) {
 
 function barLabel(bars: BarOption) {
   if (bars === 0) return "No decorative bars";
-  return `${bars} horizontal bars (+${money(bars * PRICE.decorativeBar)})`;
+  return `${bars} horizontal bars`;
 }
 
 function isValidEmail(value: string) {
