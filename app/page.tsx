@@ -588,6 +588,9 @@ export default function Page() {
                     onChange={(e) => setPostcode(e.target.value)}
                   />
                 </div>
+                <p className="text-xs text-neutral-400">
+                  We will not use these to contact you. We will only contact you if you fill out the request visit below.
+                </p>
               </div>
 
               {revealQuote && (
