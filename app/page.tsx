@@ -76,6 +76,7 @@ export default function Page() {
   const [submitState, setSubmitState] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [submitMessage, setSubmitMessage] = useState<string>("");
   const [email, setEmail] = useState<string>("");
+  const [postcode, setPostcode] = useState<string>("");
 
   // When width becomes valid, automatically set doors to the MIN for that band (not max)
   useEffect(() => {
@@ -166,7 +167,7 @@ export default function Page() {
   }, [doors, counts, doorBars, includeInterior, includeExterior, widthNumber]);
 
   const showQuote = !outOfRange && doors > 0;
-  const revealQuote = showQuote && email.trim().length > 0;
+  const revealQuote = showQuote && email.trim().length > 0 && postcode.trim().length > 0;
 
     // --- Bedroom wall preview sizing ---
   const PREVIEW = {
@@ -560,13 +561,34 @@ export default function Page() {
                 </p>
                 {!revealQuote && showQuote && (
                   <span className="absolute inset-0 flex items-center text-sm text-amber-200">
-                    Enter your email to reveal the guide price.
+                    Enter your email and postcode to reveal the guide price.
                   </span>
                 )}
               </div>
               <p className="mt-2 text-sm text-neutral-400">
                 Final pricing is confirmed after a free home design visit to check walls, floors and layout.
               </p>
+
+              <div className="mt-4 grid gap-2">
+                <p className="text-xs uppercase tracking-[0.2em] text-neutral-400">Reveal your guide price</p>
+                <div className="grid gap-2 sm:grid-cols-2">
+                  <input
+                    className="rounded-lg border-2 border-amber-400/50 bg-transparent px-2.5 py-1.5 text-sm text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40"
+                    placeholder="Email address"
+                    inputMode="email"
+                    autoComplete="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                  <input
+                    className="rounded-lg border-2 border-amber-400/50 bg-transparent px-2.5 py-1.5 text-sm text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40"
+                    placeholder="Postcode"
+                    autoComplete="postal-code"
+                    value={postcode}
+                    onChange={(e) => setPostcode(e.target.value)}
+                  />
+                </div>
+              </div>
 
               {revealQuote && (
                 <div className="mt-5 grid gap-2 text-sm">
@@ -640,11 +662,11 @@ export default function Page() {
                 const form = e.currentTarget;
                 const formData = new FormData(form);
                 const name = String(formData.get("name") || "").trim();
-                const postcode = String(formData.get("postcode") || "").trim();
+                const submittedPostcode = String(formData.get("postcode") || "").trim();
                 const mobile = String(formData.get("mobile") || "").trim();
                 const submittedEmail = String(formData.get("email") || "").trim();
 
-                if (!name || !postcode || !mobile) {
+                if (!name || !submittedPostcode || !mobile) {
                   setSubmitState("error");
                   setSubmitMessage("Please enter name, postcode, and mobile number.");
                   return;
@@ -677,7 +699,7 @@ export default function Page() {
                   const res = await fetch("/api/request-visit", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ name, postcode, mobile, email: submittedEmail, guidePrice }),
+                    body: JSON.stringify({ name, postcode: submittedPostcode, mobile, email: submittedEmail, guidePrice }),
                   });
 
                   if (!res.ok) {
@@ -689,6 +711,7 @@ export default function Page() {
                   setSubmitMessage("Thanks! We will be in touch shortly to arrange your visit.");
                   form.reset();
                   setEmail("");
+                  setPostcode("");
                 } catch (err) {
                   setSubmitState("error");
                   setSubmitMessage(err instanceof Error ? err.message : "Unable to submit request. Please try again.");
@@ -704,6 +727,8 @@ export default function Page() {
                 className="rounded-lg border-2 border-amber-400/50 bg-transparent px-2.5 py-1.5 text-sm text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40"
                 placeholder="Postcode"
                 name="postcode"
+                value={postcode}
+                onChange={(e) => setPostcode(e.target.value)}
               />
               <input
                 className="rounded-lg border-2 border-amber-400/50 bg-transparent px-2.5 py-1.5 text-sm text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40"
