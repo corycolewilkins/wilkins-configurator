@@ -100,8 +100,8 @@ export default function Page() {
   }, [band.minDoors, band.maxDoors]);
 
   // Wardrobe type
-  const [wardrobeType, setWardrobeType] = useState<"basic" | "fitted">("basic");
-  const [supplyOnly, setSupplyOnly] = useState<boolean>(false);
+  const [wardrobeType, setWardrobeType] = useState<"basic" | "fitted" | null>(null);
+  const [supplyOnly, setSupplyOnly] = useState<boolean | null>(null);
 
   // Optional items
   const [includeInterior, setIncludeInterior] = useState<boolean>(false);
@@ -334,7 +334,7 @@ export default function Page() {
                       type="radio"
                       name="installType"
                       value="supply"
-                      checked={supplyOnly}
+                      checked={supplyOnly === true}
                       onChange={() => setSupplyOnly(true)}
                       className="h-5 w-5 accent-amber-400"
                     />
@@ -349,7 +349,7 @@ export default function Page() {
                       type="radio"
                       name="installType"
                       value="fitted"
-                      checked={!supplyOnly}
+                      checked={supplyOnly === false}
                       onChange={() => setSupplyOnly(false)}
                       className="h-5 w-5 accent-amber-400"
                     />
