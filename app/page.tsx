@@ -75,6 +75,7 @@ export default function Page() {
   const [doors, setDoors] = useState<number>(0);
   const [submitState, setSubmitState] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [submitMessage, setSubmitMessage] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
 
   // When width becomes valid, automatically set doors to the MIN for that band (not max)
   useEffect(() => {
@@ -165,6 +166,7 @@ export default function Page() {
   }, [doors, counts, doorBars, includeInterior, includeExterior, widthNumber]);
 
   const showQuote = !outOfRange && doors > 0;
+  const revealQuote = showQuote && email.trim().length > 0;
 
     // --- Bedroom wall preview sizing ---
   const PREVIEW = {
@@ -548,12 +550,25 @@ export default function Page() {
 
             <div className="mt-4 rounded-2xl bg-transparent p-5">
               <p className="text-sm text-neutral-300">Estimated guide price</p>
-              <p className="mt-1 text-4xl font-semibold tracking-tight">{showQuote ? money(price.total) : "—"}</p>
+              <div className="relative mt-1">
+                <p
+                  className={`text-4xl font-semibold tracking-tight transition duration-300 ${
+                    revealQuote ? "" : "blur-[7px]"
+                  }`}
+                >
+                  {showQuote ? money(price.total) : "—"}
+                </p>
+                {!revealQuote && showQuote && (
+                  <span className="absolute inset-0 flex items-center text-sm text-amber-200">
+                    Enter your email to reveal the guide price.
+                  </span>
+                )}
+              </div>
               <p className="mt-2 text-sm text-neutral-400">
                 Final pricing is confirmed after a free home design visit to check walls, floors and layout.
               </p>
 
-              {showQuote && (
+              {revealQuote && (
                 <div className="mt-5 grid gap-2 text-sm">
                   <div className="flex items-center justify-between text-neutral-300">
                     <span>Base (doors & running gear)</span>
@@ -627,7 +642,7 @@ export default function Page() {
                 const name = String(formData.get("name") || "").trim();
                 const postcode = String(formData.get("postcode") || "").trim();
                 const mobile = String(formData.get("mobile") || "").trim();
-                const email = String(formData.get("email") || "").trim();
+                const submittedEmail = String(formData.get("email") || "").trim();
 
                 if (!name || !postcode || !mobile) {
                   setSubmitState("error");
@@ -662,7 +677,7 @@ export default function Page() {
                   const res = await fetch("/api/request-visit", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ name, postcode, mobile, email, guidePrice }),
+                    body: JSON.stringify({ name, postcode, mobile, email: submittedEmail, guidePrice }),
                   });
 
                   if (!res.ok) {
@@ -673,6 +688,7 @@ export default function Page() {
                   setSubmitState("success");
                   setSubmitMessage("Thanks! We will be in touch shortly to arrange your visit.");
                   form.reset();
+                  setEmail("");
                 } catch (err) {
                   setSubmitState("error");
                   setSubmitMessage(err instanceof Error ? err.message : "Unable to submit request. Please try again.");
@@ -697,10 +713,12 @@ export default function Page() {
               />
               <input
                 className="rounded-lg border-2 border-amber-400/50 bg-transparent px-2.5 py-1.5 text-sm text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40"
-                placeholder="Email (optional)"
+                placeholder="Email (required to reveal price)"
                 name="email"
                 inputMode="email"
                 autoComplete="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
               <button
                 type="submit"
