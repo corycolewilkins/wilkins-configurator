@@ -101,6 +101,7 @@ export default function Page() {
 
   // Wardrobe type
   const [wardrobeType, setWardrobeType] = useState<"basic" | "fitted">("basic");
+  const [supplyOnly, setSupplyOnly] = useState<boolean>(false);
 
   // Optional items
   const [includeInterior, setIncludeInterior] = useState<boolean>(false);
@@ -111,6 +112,7 @@ export default function Page() {
     if (wardrobeType === "fitted") {
       setIncludeInterior(true);
       setIncludeExterior(true);
+      setSupplyOnly(false);
     } else {
       setIncludeInterior(false);
       if (!heightRequiresExterior) setIncludeExterior(false);
@@ -174,7 +176,11 @@ export default function Page() {
       return { extraDoorsCost: 0, upgradesCost: 0, barsCost: 0, interiorCost: 0, exteriorCost: 0, total: 0 };
     }
 
-    const extraDoorsCost = Math.max(0, doors - 2) * PRICE.extraDoor;
+    // Use different pricing based on supply only flag
+    const basePrice = wardrobeType === "basic" && supplyOnly ? 650 : PRICE.base;
+    const extraDoorPrice = wardrobeType === "basic" && supplyOnly ? 300 : PRICE.extraDoor;
+
+    const extraDoorsCost = Math.max(0, doors - 2) * extraDoorPrice;
     const upgradesCost = counts.glass * PRICE.upgradeGlass + counts.wood * PRICE.upgradeWood;
     const barsCost = doorBars.reduce((sum: number, bars) => sum + (bars * PRICE.decorativeBar), 0);
     
@@ -183,10 +189,10 @@ export default function Page() {
     const interiorCost = interiorPrice;
     const exteriorCost = includeExterior ? PRICE.exterior : 0;
 
-    const total = PRICE.base + extraDoorsCost + upgradesCost + barsCost + interiorCost + exteriorCost;
+    const total = basePrice + extraDoorsCost + upgradesCost + barsCost + interiorCost + exteriorCost;
 
     return { extraDoorsCost, upgradesCost, barsCost, interiorCost, exteriorCost, total };
-  }, [doors, counts, doorBars, includeInterior, includeExterior, widthNumber]);
+  }, [doors, counts, doorBars, includeInterior, includeExterior, widthNumber, wardrobeType, supplyOnly]);
 
   const showQuote = !outOfRange && doors > 0;
   const emailValid = email.trim().length > 0 && isValidEmail(email);
@@ -202,8 +208,10 @@ export default function Page() {
         includeExterior,
         doorFinishes,
         doorBars,
+        wardrobeType,
+        supplyOnly,
       }),
-    [width, height, doors, includeInterior, includeExterior, doorFinishes, doorBars]
+    [width, height, doors, includeInterior, includeExterior, doorFinishes, doorBars, wardrobeType, supplyOnly]
   );
   const prevQuoteSignature = useRef<string | null>(null);
 
@@ -316,6 +324,43 @@ export default function Page() {
                 </div>
               </label>
             </div>
+
+            {wardrobeType === "basic" && (
+              <div className="mt-4 grid gap-2">
+                <p className="text-xs uppercase tracking-[0.2em] text-neutral-400">Installation type</p>
+                <div className="grid gap-2 sm:grid-cols-2">
+                  <label className="flex items-center gap-3 rounded-lg border-2 border-amber-400/50 bg-transparent p-3 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="installType"
+                      value="supply"
+                      checked={supplyOnly}
+                      onChange={() => setSupplyOnly(true)}
+                      className="h-5 w-5 accent-amber-400"
+                    />
+                    <div className="flex-1">
+                      <p className="text-sm font-semibold text-neutral-50">Supply Only</p>
+                      <p className="text-xs text-neutral-400">From £650</p>
+                    </div>
+                  </label>
+
+                  <label className="flex items-center gap-3 rounded-lg border-2 border-amber-400/50 bg-transparent p-3 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="installType"
+                      value="fitted"
+                      checked={!supplyOnly}
+                      onChange={() => setSupplyOnly(false)}
+                      className="h-5 w-5 accent-amber-400"
+                    />
+                    <div className="flex-1">
+                      <p className="text-sm font-semibold text-neutral-50">Fully Fitted</p>
+                      <p className="text-xs text-neutral-400">From £850</p>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            )}
 
             <h2 className="mt-8 text-base sm:text-lg font-semibold">2) Your Opening</h2>
 
@@ -687,6 +732,7 @@ export default function Page() {
                     setRevealMessage("");
 
                     try {
+                      const basePrice = wardrobeType === "basic" && supplyOnly ? 650 : PRICE.base;
                       const guidePrice = showQuote
                         ? {
                             width: typeof width === "number" ? width : null,
@@ -696,7 +742,7 @@ export default function Page() {
                             includeInterior,
                             includeExterior,
                             breakdown: {
-                              base: PRICE.base,
+                              base: basePrice,
                               extraDoors: price.extraDoorsCost,
                               upgrades: price.upgradesCost,
                               bars: price.barsCost,
@@ -747,7 +793,7 @@ export default function Page() {
                 <div className="mt-5 grid gap-2 text-sm">
                   <div className="flex items-center justify-between text-neutral-300">
                     <span>Base (doors & running gear)</span>
-                    <span className="text-neutral-50">{money(PRICE.base)}</span>
+                    <span className="text-neutral-50">{money(wardrobeType === "basic" && supplyOnly ? 650 : PRICE.base)}</span>
                   </div>
 
                   {price.interiorCost > 0 && (
@@ -829,6 +875,7 @@ export default function Page() {
                 setSubmitMessage("");
 
                 try {
+                  const basePrice = wardrobeType === "basic" && supplyOnly ? 650 : PRICE.base;
                   const guidePrice = showQuote
                     ? {
                         width: typeof width === "number" ? width : null,
@@ -838,7 +885,7 @@ export default function Page() {
                         includeInterior,
                         includeExterior,
                         breakdown: {
-                          base: PRICE.base,
+                          base: basePrice,
                           extraDoors: price.extraDoorsCost,
                           upgrades: price.upgradesCost,
                           bars: price.barsCost,
