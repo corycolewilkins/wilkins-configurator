@@ -627,23 +627,25 @@ export default function Page() {
               ))}
             </div>
 
-            <h2 className="mt-8 text-base sm:text-lg font-semibold">4) Interior & Exterior</h2>
+            {!(wardrobeType === "basic" && supplyOnly) && (
+              <>
+                <h2 className="mt-8 text-base sm:text-lg font-semibold">4) Interior & Exterior</h2>
 
-            <div className="mt-4 grid gap-3">
-              <label className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-lg border-2 border-amber-400/50 bg-transparent p-3">
-                <div>
-                  <p className="text-sm font-semibold">Popular Interior Layout</p>
-                  <p className="text-xs text-neutral-400">Adds a practical, popular layout inside the wardrobe which includes {widthNumber >= 4000 ? "2 x shelving units" : "1 x shelving unit"}, 1 x 18" deep top shelf and an assortment of hanging rails.</p>
-                  <p className="mt-1 text-xs text-neutral-200">+{money(widthNumber >= 4000 ? 550 : PRICE.interior)}</p>
-                </div>
-                <input
-                  type="checkbox"
-                  checked={includeInterior}
-                  onChange={(e) => setIncludeInterior(e.target.checked)}
-                  disabled={wardrobeType === "fitted"}
-                  className="h-5 w-5 accent-amber-400 mt-2 sm:mt-0"
-                />
-              </label>
+                <div className="mt-4 grid gap-3">
+                  <label className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-lg border-2 border-amber-400/50 bg-transparent p-3">
+                    <div>
+                      <p className="text-sm font-semibold">Popular Interior Layout</p>
+                      <p className="text-xs text-neutral-400">Adds a practical, popular layout inside the wardrobe which includes {widthNumber >= 4000 ? "2 x shelving units" : "1 x shelving unit"}, 1 x 18" deep top shelf and an assortment of hanging rails.</p>
+                      <p className="mt-1 text-xs text-neutral-200">+{money(widthNumber >= 4000 ? 550 : PRICE.interior)}</p>
+                    </div>
+                    <input
+                      type="checkbox"
+                      checked={includeInterior}
+                      onChange={(e) => setIncludeInterior(e.target.checked)}
+                      disabled={wardrobeType === "fitted"}
+                      className="h-5 w-5 accent-amber-400 mt-2 sm:mt-0"
+                    />
+                  </label>
 
 
 
@@ -661,7 +663,9 @@ export default function Page() {
                   className="h-5 w-5 accent-amber-400 mt-2 sm:mt-0"
                 />
               </label>
-            </div>
+                </div>
+              </>
+            )}
           </div>
 
           {/* RIGHT: Summary */}
