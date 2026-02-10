@@ -291,7 +291,7 @@ export default function Page() {
         <div className="mt-6 sm:mt-8 grid gap-5 sm:gap-8 lg:gap-10 lg:grid-cols-[1.2fr_0.8fr]">
           {/* LEFT: Inputs */}
           <div className="rounded-2xl border-2 border-amber-400/50 bg-transparent p-4 sm:p-5 md:p-7">
-            <h2 className="text-base sm:text-lg font-semibold">1) Choose Your Wardrobe Type</h2>
+            <h2 className="text-base sm:text-lg font-semibold">1) Select Service</h2>
 
             <div className="mt-3 sm:mt-4 grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2">
               <label className="flex items-center gap-3 rounded-lg border-2 border-amber-400/50 bg-transparent p-3 cursor-pointer">
