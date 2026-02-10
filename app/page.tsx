@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 type Finish = "mirror" | "glass" | "wood";
 type BarOption = 0 | 2 | 3;
@@ -177,23 +177,35 @@ export default function Page() {
   const emailValid = email.trim().length > 0 && isValidEmail(email);
   const revealReady = showQuote && emailValid && postcode.trim().length > 0;
   const revealQuote = revealReady && revealUnlocked;
+  const quoteSignature = useMemo(
+    () =>
+      JSON.stringify({
+        width,
+        height,
+        doors,
+        includeInterior,
+        includeExterior,
+        doorFinishes,
+        doorBars,
+      }),
+    [width, height, doors, includeInterior, includeExterior, doorFinishes, doorBars]
+  );
+  const prevQuoteSignature = useRef<string | null>(null);
 
   useEffect(() => {
-    if (revealUnlocked) {
+    if (!revealUnlocked) {
+      prevQuoteSignature.current = quoteSignature;
+      return;
+    }
+
+    if (prevQuoteSignature.current && prevQuoteSignature.current !== quoteSignature) {
       setRevealUnlocked(false);
       setRevealState("idle");
       setRevealMessage("");
     }
-  }, [
-    width,
-    height,
-    doors,
-    includeInterior,
-    includeExterior,
-    doorFinishes,
-    doorBars,
-    revealUnlocked,
-  ]);
+
+    prevQuoteSignature.current = quoteSignature;
+  }, [quoteSignature, revealUnlocked]);
 
     // --- Bedroom wall preview sizing ---
   const PREVIEW = {
