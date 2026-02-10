@@ -284,7 +284,7 @@ export default function Page() {
                     const v = e.target.value;
                     setWidth(v === "" ? "" : parseInt(v, 10));
                   }}
-                  placeholder="e.g. 4100"
+                  placeholder="e.g. 2000"
                 />
                 <span className="text-xs text-neutral-400">Supported range: 800–5199mm</span>
               </label>
@@ -304,9 +304,9 @@ export default function Page() {
                   }}
                   placeholder="e.g. 2400"
                 />
-                {heightRequiresExterior && (
-                  <span className="text-xs text-red-400">*this height requires exterior framework*</span>
-                )}
+                <span className="text-xs text-neutral-400">
+                  {heightRequiresExterior ? "*this height requires exterior framework*" : "Supported range: 1800–3000mm"}
+                </span>
               </label>
             </div>
 
