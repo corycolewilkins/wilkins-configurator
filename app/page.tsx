@@ -881,35 +881,7 @@ export default function Page() {
               </ul>
             </section>
 
-            {revealQuote && (
-              <div className="mt-6 rounded-lg border-2 border-amber-400/50 bg-transparent p-3 text-xs sm:text-sm text-neutral-300">
-                <p className="font-semibold text-neutral-50">What this guide price includes</p>
-                <ul className="mt-2 list-disc space-y-1 pl-5">
-                  <li>Base price (doors & running gear): {money(PRICE.base)}</li>
-                  {price.extraDoorsCost > 0 && (
-                    <li>Extra doors: +{money(PRICE.extraDoor)} each over 2</li>
-                  )}
-                  {counts.glass > 0 && (
-                    <>
-                      <li>Coloured glass upgrade: +{money(PRICE.upgradeGlass)} per door</li>
-                      <li>Coloured glass has lots of colour options to choose from, and you can decide later in the process.</li>
-                    </>
-                  )}
-                  {counts.wood > 0 && (
-                    <li>Wood finish upgrade: +{money(PRICE.upgradeWood)} per door</li>
-                  )}
-                  {price.barsCost > 0 && (
-                    <li>Decorative bars: +{money(PRICE.decorativeBar)} per bar</li>
-                  )}
-                  {includeInterior && (
-                    <li>Optional interior layout: +{money(price.interiorCost)}</li>
-                  )}
-                  {includeExterior && (
-                    <li>Optional exterior frame: +{money(PRICE.exterior)}</li>
-                  )}
-                </ul>
-              </div>
-            )}
+
           </div>
         </div>
       </div>
