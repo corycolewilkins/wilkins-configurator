@@ -81,6 +81,9 @@ export default function Page() {
   const [submitMessage, setSubmitMessage] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [postcode, setPostcode] = useState<string>("");
+  const [revealState, setRevealState] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [revealMessage, setRevealMessage] = useState<string>("");
+  const [revealUnlocked, setRevealUnlocked] = useState<boolean>(false);
 
   // When width becomes valid, automatically set doors to the MIN for that band (not max)
   useEffect(() => {
@@ -172,7 +175,8 @@ export default function Page() {
 
   const showQuote = !outOfRange && doors > 0;
   const emailValid = email.trim().length > 0 && isValidEmail(email);
-  const revealQuote = showQuote && emailValid && postcode.trim().length > 0;
+  const revealReady = showQuote && emailValid && postcode.trim().length > 0;
+  const revealQuote = revealReady && revealUnlocked;
 
     // --- Bedroom wall preview sizing ---
   const PREVIEW = {
@@ -595,6 +599,79 @@ export default function Page() {
                 </div>
                 {email.trim().length > 0 && !emailValid && (
                   <p className="text-xs text-amber-300">Enter a valid email address to reveal the guide price.</p>
+                )}
+                <button
+                  type="button"
+                  className="rounded-lg bg-amber-400 px-4 py-2 text-sm font-semibold text-neutral-950 hover:bg-amber-300 disabled:opacity-60"
+                  disabled={!revealReady || revealState === "submitting"}
+                  onClick={async () => {
+                    if (!showQuote) {
+                      setRevealState("error");
+                      setRevealMessage("Enter a valid width and select a door count to generate a guide price.");
+                      return;
+                    }
+                    if (!emailValid || !postcode.trim()) {
+                      setRevealState("error");
+                      setRevealMessage("Please enter a valid email and postcode to reveal the guide price.");
+                      return;
+                    }
+
+                    if (revealState === "submitting") return;
+
+                    setRevealState("submitting");
+                    setRevealMessage("");
+
+                    try {
+                      const guidePrice = showQuote
+                        ? {
+                            width: typeof width === "number" ? width : null,
+                            height: typeof height === "number" ? height : null,
+                            doors,
+                            finishCounts: counts,
+                            includeInterior,
+                            includeExterior,
+                            breakdown: {
+                              base: PRICE.base,
+                              extraDoors: price.extraDoorsCost,
+                              upgrades: price.upgradesCost,
+                              bars: price.barsCost,
+                              interior: price.interiorCost,
+                              exterior: price.exteriorCost,
+                            },
+                            total: price.total,
+                          }
+                        : null;
+
+                      const res = await fetch("/api/reveal-quote", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ email, postcode, guidePrice }),
+                      });
+
+                      if (!res.ok) {
+                        const data = await res.json().catch(() => ({}));
+                        throw new Error(data?.error || "Unable to reveal guide price. Please try again.");
+                      }
+
+                      setRevealState("success");
+                      setRevealMessage("Guide price revealed. Thank you!");
+                      setRevealUnlocked(true);
+                    } catch (err) {
+                      setRevealState("error");
+                      setRevealMessage(err instanceof Error ? err.message : "Unable to reveal guide price. Please try again.");
+                    }
+                  }}
+                >
+                  {revealState === "submitting" ? "Revealing..." : "Reveal"}
+                </button>
+                {revealMessage && (
+                  <p
+                    className={`text-xs ${revealState === "success" ? "text-amber-200" : "text-amber-300"}`}
+                    role="status"
+                    aria-live="polite"
+                  >
+                    {revealMessage}
+                  </p>
                 )}
                 <p className="text-xs text-neutral-400">
                   We will not use these to contact you. We will only contact you if you fill out the request visit below.
