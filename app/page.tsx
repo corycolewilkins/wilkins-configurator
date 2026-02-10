@@ -567,20 +567,6 @@ export default function Page() {
                 />
               </label>
             </div>
-
-            <div className="mt-6 rounded-lg border-2 border-amber-400/50 bg-transparent p-3 text-xs sm:text-sm text-neutral-300">
-              <p className="font-semibold text-neutral-50">What this guide price includes</p>
-              <ul className="mt-2 list-disc space-y-1 pl-5">
-                <li>Base price (doors & running gear): {money(PRICE.base)}</li>
-                <li>Extra doors: +{money(PRICE.extraDoor)} each over 2</li>
-                <li>Coloured glass upgrade: +{money(PRICE.upgradeGlass)} per door</li>
-                <li>Coloured glass has lots of colour options to choose from, and you can decide later in the process.</li>
-                <li>Wood finish upgrade: +{money(PRICE.upgradeWood)} per door</li>
-                <li>Decorative bars: +{money(PRICE.decorativeBar)} per bar</li>
-                <li>Optional interior layout: +{money(PRICE.interior)}</li>
-                <li>Optional exterior frame: +{money(PRICE.exterior)}</li>
-              </ul>
-            </div>
           </div>
 
           {/* RIGHT: Summary */}
@@ -894,6 +880,20 @@ export default function Page() {
                 <li>Transparent pricing with clear upgrades</li>
               </ul>
             </section>
+
+            <div className="mt-6 rounded-lg border-2 border-amber-400/50 bg-transparent p-3 text-xs sm:text-sm text-neutral-300">
+              <p className="font-semibold text-neutral-50">What this guide price includes</p>
+              <ul className="mt-2 list-disc space-y-1 pl-5">
+                <li>Base price (doors & running gear): {money(PRICE.base)}</li>
+                <li>Extra doors: +{money(PRICE.extraDoor)} each over 2</li>
+                <li>Coloured glass upgrade: +{money(PRICE.upgradeGlass)} per door</li>
+                <li>Coloured glass has lots of colour options to choose from, and you can decide later in the process.</li>
+                <li>Wood finish upgrade: +{money(PRICE.upgradeWood)} per door</li>
+                <li>Decorative bars: +{money(PRICE.decorativeBar)} per bar</li>
+                <li>Optional interior layout: +{money(PRICE.interior)}</li>
+                <li>Optional exterior frame: +{money(PRICE.exterior)}</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
