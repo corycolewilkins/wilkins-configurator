@@ -53,6 +53,10 @@ function barLabel(bars: BarOption) {
   return `${bars} horizontal bars (+${money(bars * PRICE.decorativeBar)})`;
 }
 
+function isValidEmail(value: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+}
+
 export default function Page() {
   // Start BLANK (no prefilled measurements)
   const [width, setWidth] = useState<number | "">("");
@@ -167,7 +171,8 @@ export default function Page() {
   }, [doors, counts, doorBars, includeInterior, includeExterior, widthNumber]);
 
   const showQuote = !outOfRange && doors > 0;
-  const revealQuote = showQuote && email.trim().length > 0 && postcode.trim().length > 0;
+  const emailValid = email.trim().length > 0 && isValidEmail(email);
+  const revealQuote = showQuote && emailValid && postcode.trim().length > 0;
 
     // --- Bedroom wall preview sizing ---
   const PREVIEW = {
@@ -588,6 +593,9 @@ export default function Page() {
                     onChange={(e) => setPostcode(e.target.value)}
                   />
                 </div>
+                {email.trim().length > 0 && !emailValid && (
+                  <p className="text-xs text-amber-300">Enter a valid email address to reveal the guide price.</p>
+                )}
                 <p className="text-xs text-neutral-400">
                   We will not use these to contact you. We will only contact you if you fill out the request visit below.
                 </p>
