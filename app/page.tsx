@@ -935,9 +935,10 @@ export default function Page() {
             </div>
 
             <h3 className="mt-6 text-base font-semibold">Request a Free Home Design Visit</h3>
-              <p className="mt-1 text-sm text-neutral-400">
-              Leave your details and we’ll get back to arrange a no-obligation home design visit. There is a wide
-              range of colours and finishes to choose from, and you can decide later in the process.
+            <p className="mt-1 text-sm text-neutral-400">
+              Leave your details and we’ll get back to arrange a no-obligation home design visit.{' '}
+              <span className="text-amber-200">There's a wide range of colours and finishes to choose from</span>, and
+              you can decide later in the process.
             </p>
 
             <form
