@@ -39,7 +39,7 @@ export default function RootLayout({
           {`window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-DVDZKCGQ74');`}
+            gtag('config', 'G-DVDZKCGQ74', { debug_mode: true });`}
         </Script>
       </body>
     </html>
