@@ -687,7 +687,6 @@ export default function Page() {
                         setIncludeInterior(e.target.checked);
                         trackEvent("toggle_interior", { enabled: e.target.checked ? 1 : 0 });
                       }}
-                      disabled={wardrobeType === "fitted"}
                       className="h-5 w-5 accent-amber-400 mt-2 sm:mt-0"
                     />
                   </label>
@@ -707,7 +706,7 @@ export default function Page() {
                     setIncludeExterior(e.target.checked);
                     trackEvent("toggle_exterior", { enabled: e.target.checked ? 1 : 0 });
                   }}
-                  disabled={heightRequiresExterior || wardrobeType === "fitted"}
+                  disabled={heightRequiresExterior}
                   className="h-5 w-5 accent-amber-400 mt-2 sm:mt-0"
                 />
               </label>
