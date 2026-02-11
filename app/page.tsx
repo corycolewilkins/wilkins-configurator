@@ -20,9 +20,10 @@ const trackEvent = (eventName: string, eventData?: Record<string, string | numbe
   }
 
   if (window.parent && window.parent !== window) {
+    console.log("[Estimator] Sending event to parent:", eventName, eventData);
     window.parent.postMessage(
       { source: "wilkins-estimator", eventName, eventData },
-      "https://www.wilkinswardrobes.uk"
+      "*"
     );
   }
 };
