@@ -13,8 +13,17 @@ declare global {
 
 // Helper to track GA events
 const trackEvent = (eventName: string, eventData?: Record<string, string | number>) => {
-  if (typeof window !== "undefined" && window.gtag) {
+  if (typeof window === "undefined") return;
+
+  if (window.gtag) {
     window.gtag("event", eventName, eventData);
+  }
+
+  if (window.parent && window.parent !== window) {
+    window.parent.postMessage(
+      { source: "wilkins-estimator", eventName, eventData },
+      "https://www.wilkinswardrobes.uk"
+    );
   }
 };
 
