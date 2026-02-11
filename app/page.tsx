@@ -626,7 +626,7 @@ export default function Page() {
               ))}
             </div>
 
-            {!(wardrobeType === "basic" && supplyOnly) && (
+            {wardrobeType === "basic" && !supplyOnly && (
               <>
                 <h2 className="mt-8 text-base sm:text-lg font-semibold">4) Interior & Exterior</h2>
 
