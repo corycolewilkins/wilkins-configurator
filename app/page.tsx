@@ -5,6 +5,19 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 type Finish = "mirror" | "glass" | "wood";
 type BarOption = 0 | 2 | 3;
 
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void;
+  }
+}
+
+// Helper to track GA events
+const trackEvent = (eventName: string, eventData?: Record<string, string | number>) => {
+  if (typeof window !== "undefined" && window.gtag) {
+    window.gtag("event", eventName, eventData);
+  }
+};
+
 const PRICE = {
   base: 850, // BASE = doors + running gear + fitting (NO interior, NO exterior)
   extraDoor: 400,
@@ -62,7 +75,7 @@ export default function Page() {
   const [height, setHeight] = useState<number | "">("");
 
   const widthNumber = typeof width === "number" ? width : NaN;
-  const outOfRange = !Number.isFinite(widthNumber) || widthNumber < 800 || widthNumber > 5199;
+  const outOfRange = !Number.isFinite(widthNumber) || widthNumber < 800 || widthNumber > 5000;
 
   const band = useMemo(() => {
     if (outOfRange) return { minDoors: 0, maxDoors: 0, label: "Out of range" };
@@ -235,7 +248,7 @@ export default function Page() {
     wallMinW: 250, // px (min width of the wall on screen)
     wallMaxH: 320, // px (max wall height)
     wallMinH: 220, // px (min wall height)
-    widthRange: { min: 800, max: 5199 },
+    widthRange: { min: 800, max: 5000 },
     heightRange: { min: 1800, max: 3000 },
   } as const;
 
@@ -299,7 +312,10 @@ export default function Page() {
                   name="wardrobeType"
                   value="basic"
                   checked={wardrobeType === "basic"}
-                  onChange={() => setWardrobeType("basic")}
+                  onChange={() => {
+                    setWardrobeType("basic");
+                    trackEvent("select_service", { service: "basic" });
+                  }}
                   className="h-5 w-5 accent-amber-400"
                 />
                 <div className="flex-1">
@@ -314,7 +330,10 @@ export default function Page() {
                   name="wardrobeType"
                   value="fitted"
                   checked={wardrobeType === "fitted"}
-                  onChange={() => setWardrobeType("fitted")}
+                  onChange={() => {
+                    setWardrobeType("fitted");
+                    trackEvent("select_service", { service: "fitted" });
+                  }}
                   className="h-5 w-5 accent-amber-400"
                 />
                 <div className="flex-1">
@@ -334,7 +353,10 @@ export default function Page() {
                       name="installType"
                       value="supply"
                       checked={supplyOnly === true}
-                      onChange={() => setSupplyOnly(true)}
+                      onChange={() => {
+                        setSupplyOnly(true);
+                        trackEvent("select_install_type", { type: "supply_only" });
+                      }}
                       className="h-5 w-5 accent-amber-400"
                     />
                     <div className="flex-1">
@@ -349,7 +371,10 @@ export default function Page() {
                       name="installType"
                       value="fitted"
                       checked={supplyOnly === false}
-                      onChange={() => setSupplyOnly(false)}
+                      onChange={() => {
+                        setSupplyOnly(false);
+                        trackEvent("select_install_type", { type: "fully_fitted" });
+                      }}
                       className="h-5 w-5 accent-amber-400"
                     />
                     <div className="flex-1">
@@ -370,16 +395,20 @@ export default function Page() {
                   className="rounded-lg border-2 border-amber-400/50 bg-transparent px-2.5 py-1.5 text-base text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40"
                   type="number"
                   min={800}
-                  max={5199}
+                  max={5000}
                   step={1}
                   value={width}
                   onChange={(e) => {
                     const v = e.target.value;
-                    setWidth(v === "" ? "" : parseInt(v, 10));
+                    const next = v === "" ? "" : parseInt(v, 10);
+                    setWidth(next);
+                    if (typeof next === "number" && Number.isFinite(next)) {
+                      trackEvent("update_width", { value: next });
+                    }
                   }}
                   placeholder="e.g. 2000"
                 />
-                <span className="text-xs text-neutral-400">Supported range: 800–5199mm</span>
+                <span className="text-xs text-neutral-400">Supported range: 800–5000mm</span>
               </label>
 
               <label className="grid gap-1 sm:gap-2">
@@ -393,7 +422,11 @@ export default function Page() {
                   value={height}
                   onChange={(e) => {
                     const v = e.target.value;
-                    setHeight(v === "" ? "" : parseInt(v, 10));
+                    const next = v === "" ? "" : parseInt(v, 10);
+                    setHeight(next);
+                    if (typeof next === "number" && Number.isFinite(next)) {
+                      trackEvent("update_height", { value: next });
+                    }
                   }}
                   placeholder="e.g. 2400"
                 />
@@ -438,7 +471,13 @@ export default function Page() {
                   MozAppearance: "none",
                 }}
                 value={doors || ""}
-                onChange={(e) => setDoors(parseInt(e.target.value, 10))}
+                onChange={(e) => {
+                  const next = parseInt(e.target.value, 10);
+                  setDoors(next);
+                  if (Number.isFinite(next)) {
+                    trackEvent("update_doors", { value: next });
+                  }
+                }}
                 disabled={outOfRange}
               >
                 <option value="" disabled>
@@ -452,7 +491,7 @@ export default function Page() {
               </select>
 
               {outOfRange ? (
-                <p className="text-sm text-amber-200">Enter a width between 800–5199mm to enable door options.</p>
+                <p className="text-sm text-amber-200">Enter a width between 800–5000mm to enable door options.</p>
               ) : (
                 <p className="text-sm text-neutral-400">Defaults to the minimum door count for your width band.</p>
               )}
@@ -593,8 +632,10 @@ export default function Page() {
                     value={f}
                     onChange={(e) => {
                       const next = [...doorFinishes];
-                      next[idx] = e.target.value as Finish;
+                      const value = e.target.value as Finish;
+                      next[idx] = value;
                       setDoorFinishes(next);
+                      trackEvent("update_finish", { doorIndex: idx + 1, finish: value });
                     }}
                   >
                     <option value="mirror">{finishLabel("mirror")}</option>
@@ -614,8 +655,10 @@ export default function Page() {
                     value={doorBars[idx]}
                     onChange={(e) => {
                       const next = [...doorBars];
-                      next[idx] = parseInt(e.target.value, 10) as BarOption;
+                      const value = parseInt(e.target.value, 10) as BarOption;
+                      next[idx] = value;
                       setDoorBars(next);
+                      trackEvent("update_bars", { doorIndex: idx + 1, bars: value });
                     }}
                   >
                     <option value="0">{barLabel(0)}</option>
@@ -640,7 +683,10 @@ export default function Page() {
                     <input
                       type="checkbox"
                       checked={includeInterior}
-                      onChange={(e) => setIncludeInterior(e.target.checked)}
+                      onChange={(e) => {
+                        setIncludeInterior(e.target.checked);
+                        trackEvent("toggle_interior", { enabled: e.target.checked ? 1 : 0 });
+                      }}
                       disabled={wardrobeType === "fitted"}
                       className="h-5 w-5 accent-amber-400 mt-2 sm:mt-0"
                     />
@@ -657,7 +703,10 @@ export default function Page() {
                 <input
                   type="checkbox"
                   checked={includeExterior}
-                  onChange={(e) => setIncludeExterior(e.target.checked)}
+                  onChange={(e) => {
+                    setIncludeExterior(e.target.checked);
+                    trackEvent("toggle_exterior", { enabled: e.target.checked ? 1 : 0 });
+                  }}
                   disabled={heightRequiresExterior || wardrobeType === "fitted"}
                   className="h-5 w-5 accent-amber-400 mt-2 sm:mt-0"
                 />
@@ -701,6 +750,12 @@ export default function Page() {
                     autoComplete="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    onBlur={(e) =>
+                      trackEvent("reveal_email_blur", {
+                        provided: isValidEmail(e.target.value) ? 1 : 0,
+                        length: e.target.value.trim().length,
+                      })
+                    }
                   />
                   <input
                     className="rounded-lg border-2 border-amber-400/50 bg-transparent px-2.5 py-1.5 text-sm text-neutral-50 outline-none focus:ring-2 focus:ring-amber-400/40"
@@ -708,6 +763,12 @@ export default function Page() {
                     autoComplete="postal-code"
                     value={postcode}
                     onChange={(e) => setPostcode(e.target.value)}
+                    onBlur={(e) =>
+                      trackEvent("reveal_postcode_blur", {
+                        provided: e.target.value.trim().length > 0 ? 1 : 0,
+                        length: e.target.value.trim().length,
+                      })
+                    }
                   />
                 </div>
                 {email.trim().length > 0 && !emailValid && (
@@ -735,6 +796,15 @@ export default function Page() {
                     setRevealMessage("");
 
                     try {
+                      trackEvent("click_reveal_button", {
+                        wardrobeType: wardrobeType || "none",
+                        supplyOnly: supplyOnly ? 1 : 0,
+                        width: typeof width === "number" ? width : 0,
+                        height: typeof height === "number" ? height : 0,
+                        doors,
+                        guidePrice: price.total,
+                      });
+
                       const basePrice = wardrobeType === "basic" && supplyOnly ? 650 : PRICE.base;
                       const guidePrice = showQuote
                         ? {
@@ -769,6 +839,7 @@ export default function Page() {
 
                       setRevealState("success");
                       setRevealMessage("Guide price revealed. Thank you!");
+                      trackEvent("reveal_success", { guidePrice: price.total });
                       setRevealUnlocked(true);
                     } catch (err) {
                       setRevealState("error");
@@ -878,6 +949,12 @@ export default function Page() {
                 setSubmitMessage("");
 
                 try {
+                  trackEvent("submit_visit_request", {
+                    wardrobeType: wardrobeType || "none",
+                    supplyOnly: supplyOnly ? 1 : 0,
+                    guidePrice: price.total,
+                  });
+
                   const basePrice = wardrobeType === "basic" && supplyOnly ? 650 : PRICE.base;
                   const guidePrice = showQuote
                     ? {
@@ -912,6 +989,7 @@ export default function Page() {
 
                   setSubmitState("success");
                   setSubmitMessage("Thanks! We will be in touch shortly to arrange your visit.");
+                  trackEvent("visit_request_success", { guidePrice: price.total });
                   form.reset();
                   setEmail("");
                   setPostcode("");
