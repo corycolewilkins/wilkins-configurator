@@ -630,28 +630,33 @@ export default function Page() {
                     <p className="text-xs text-neutral-400">Choose the finish for this door.</p>
                   </div>
 
-                  <select
-                    className="appearance-none w-full rounded-lg border-2 border-amber-400/50 bg-gradient-to-br from-neutral-900/40 to-neutral-950/60 px-2.5 py-1.5 text-sm sm:text-base text-neutral-100 outline-none focus:ring-2 focus:ring-amber-400/40 sm:w-full hover:bg-gradient-to-br hover:from-neutral-900/40 hover:to-neutral-950/60 focus:bg-gradient-to-br focus:from-neutral-900/40 focus:to-neutral-950/60 active:bg-gradient-to-br active:from-neutral-900/40 active:to-neutral-950/60"
-                    style={{
-                      backgroundImage: "linear-gradient(to bottom right, rgba(15,23,42,0.4), rgba(2,6,23,0.6))",
-                      backgroundColor: "rgba(2,6,23,0.6)",
-                      color: "#E6E7E8",
-                      WebkitAppearance: "none",
-                      MozAppearance: "none",
-                    }}
-                    value={f}
-                    onChange={(e) => {
-                      const next = [...doorFinishes];
-                      const value = e.target.value as Finish;
-                      next[idx] = value;
-                      setDoorFinishes(next);
-                      trackEvent("update_finish", { doorIndex: idx + 1, finish: value });
-                    }}
-                  >
-                    <option value="mirror">{finishLabel("mirror")}</option>
-                    <option value="glass">{finishLabel("glass")}</option>
-                    <option value="wood">{finishLabel("wood")}</option>
-                  </select>
+                  <div className="w-full">
+                    <select
+                      className="appearance-none w-full rounded-lg border-2 border-amber-400/50 bg-gradient-to-br from-neutral-900/40 to-neutral-950/60 px-2.5 py-1.5 text-sm sm:text-base text-neutral-100 outline-none focus:ring-2 focus:ring-amber-400/40 sm:w-full hover:bg-gradient-to-br hover:from-neutral-900/40 hover:to-neutral-950/60 focus:bg-gradient-to-br focus:from-neutral-900/40 focus:to-neutral-950/60 active:bg-gradient-to-br active:from-neutral-900/40 active:to-neutral-950/60"
+                      style={{
+                        backgroundImage: "linear-gradient(to bottom right, rgba(15,23,42,0.4), rgba(2,6,23,0.6))",
+                        backgroundColor: "rgba(2,6,23,0.6)",
+                        color: "#E6E7E8",
+                        WebkitAppearance: "none",
+                        MozAppearance: "none",
+                      }}
+                      value={f}
+                      onChange={(e) => {
+                        const next = [...doorFinishes];
+                        const value = e.target.value as Finish;
+                        next[idx] = value;
+                        setDoorFinishes(next);
+                        trackEvent("update_finish", { doorIndex: idx + 1, finish: value });
+                      }}
+                    >
+                      <option value="mirror">{finishLabel("mirror")}</option>
+                      <option value="glass">{finishLabel("glass")}</option>
+                      <option value="wood">{finishLabel("wood")}</option>
+                    </select>
+                    {f === "glass" && (
+                      <p className="mt-1 text-xs text-amber-200">Multiple colour options available</p>
+                    )}
+                  </div>
 
                   <select
                     className="appearance-none w-full rounded-lg border-2 border-amber-400/50 bg-gradient-to-br from-neutral-900/40 to-neutral-950/60 px-2.5 py-1.5 text-sm sm:text-base text-neutral-100 outline-none focus:ring-2 focus:ring-amber-400/40 sm:w-full hover:bg-gradient-to-br hover:from-neutral-900/40 hover:to-neutral-950/60 focus:bg-gradient-to-br focus:from-neutral-900/40 focus:to-neutral-950/60 active:bg-gradient-to-br active:from-neutral-900/40 active:to-neutral-950/60"
