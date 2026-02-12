@@ -856,7 +856,9 @@ export default function Page() {
                       }
 
                       setRevealState("success");
-                      setRevealMessage("Guide price revealed. Thank you!");
+                      setRevealMessage(
+                        "Your guide price is ready. You can email this quote to yourself or request a design visit whenever you're ready."
+                      );
                       trackEvent("reveal_success", { guidePrice: price.total });
                       setRevealUnlocked(true);
                       setEmailQuoteState("idle");
