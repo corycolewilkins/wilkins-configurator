@@ -926,7 +926,9 @@ export default function Page() {
                         }
 
                         setEmailQuoteState("success");
-                        setEmailQuoteMessage("Quote request received. We'll be in touch shortly.");
+                        setEmailQuoteMessage(
+                          "We'll send this guide price and breakdown to your email so you can save or share it."
+                        );
                         trackEvent("email_quote_success", {
                           guidePrice: price.total,
                           width: typeof width === "number" ? width : 0,
@@ -966,9 +968,11 @@ export default function Page() {
                     {emailQuoteMessage}
                   </p>
                 )}
-                <p className="text-xs text-neutral-400">
-                  We will not use these to contact you. We will only contact you if you fill out the request visit below.
-                </p>
+                {!revealUnlocked && (
+                  <p className="text-xs text-neutral-400">
+                    We will not use these to contact you. We will only contact you if you fill out the request visit below.
+                  </p>
+                )}
               </div>
 
               {revealQuote && (
