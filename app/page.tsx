@@ -106,7 +106,7 @@ export default function Page() {
   const [revealState, setRevealState] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [revealMessage, setRevealMessage] = useState<string>("");
   const [revealUnlocked, setRevealUnlocked] = useState<boolean>(false);
-  const [emailQuoteState, setEmailQuoteState] = useState<"idle" | "success" | "error">("idle");
+  const [emailQuoteState, setEmailQuoteState] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [emailQuoteMessage, setEmailQuoteMessage] = useState<string>("");
 
   // When width becomes valid, automatically set doors to the MIN for that band (not max)
@@ -249,6 +249,8 @@ export default function Page() {
       setRevealUnlocked(false);
       setRevealState("idle");
       setRevealMessage("");
+      setEmailQuoteState("idle");
+      setEmailQuoteMessage("");
     }
 
     prevQuoteSignature.current = quoteSignature;
@@ -857,6 +859,8 @@ export default function Page() {
                       setRevealMessage("Guide price revealed. Thank you!");
                       trackEvent("reveal_success", { guidePrice: price.total });
                       setRevealUnlocked(true);
+                      setEmailQuoteState("idle");
+                      setEmailQuoteMessage("");
                     } catch (err) {
                       setRevealState("error");
                       setRevealMessage(err instanceof Error ? err.message : "Unable to reveal guide price. Please try again.");
@@ -869,20 +873,77 @@ export default function Page() {
                   <button
                     type="button"
                     className="rounded-lg border-2 border-amber-400/60 px-4 py-2 text-sm font-semibold text-amber-100 hover:border-amber-300/80 disabled:cursor-not-allowed disabled:opacity-60"
-                    disabled={emailQuoteState === "success"}
-                    onClick={() => {
-                      setEmailQuoteState("success");
-                      setEmailQuoteMessage("Quote request received. We'll be in touch shortly.");
-                      trackEvent("email_quote_request", {
-                        guidePrice: price.total,
-                        width: typeof width === "number" ? width : 0,
-                        height: typeof height === "number" ? height : 0,
-                        doors,
-                        hasEmail: emailValid ? 1 : 0,
-                      });
+                    disabled={emailQuoteState === "success" || emailQuoteState === "submitting"}
+                    onClick={async () => {
+                      if (!showQuote) {
+                        setEmailQuoteState("error");
+                        setEmailQuoteMessage("Enter a valid width and select a door count to generate a guide price.");
+                        return;
+                      }
+                      if (!emailValid || !postcode.trim()) {
+                        setEmailQuoteState("error");
+                        setEmailQuoteMessage("Please enter a valid email and postcode to request the quote.");
+                        return;
+                      }
+                      if (emailQuoteState === "submitting" || emailQuoteState === "success") return;
+
+                      setEmailQuoteState("submitting");
+                      setEmailQuoteMessage("");
+
+                      try {
+                        const basePrice = wardrobeType === "basic" && supplyOnly ? 650 : PRICE.base;
+                        const guidePrice = showQuote
+                          ? {
+                              width: typeof width === "number" ? width : null,
+                              height: typeof height === "number" ? height : null,
+                              doors,
+                              finishCounts: counts,
+                              includeInterior,
+                              includeExterior,
+                              breakdown: {
+                                base: basePrice,
+                                extraDoors: price.extraDoorsCost,
+                                upgrades: price.upgradesCost,
+                                bars: price.barsCost,
+                                interior: price.interiorCost,
+                                exterior: price.exteriorCost,
+                              },
+                              total: price.total,
+                            }
+                          : null;
+
+                        const res = await fetch("/api/email-quote", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({ email, postcode, guidePrice }),
+                        });
+
+                        if (!res.ok) {
+                          const data = await res.json().catch(() => ({}));
+                          throw new Error(data?.error || "Unable to request quote email. Please try again.");
+                        }
+
+                        setEmailQuoteState("success");
+                        setEmailQuoteMessage("Quote request received. We'll be in touch shortly.");
+                        trackEvent("email_quote_success", {
+                          guidePrice: price.total,
+                          width: typeof width === "number" ? width : 0,
+                          height: typeof height === "number" ? height : 0,
+                          doors,
+                        });
+                      } catch (err) {
+                        setEmailQuoteState("error");
+                        setEmailQuoteMessage(
+                          err instanceof Error ? err.message : "Unable to request quote email. Please try again."
+                        );
+                      }
                     }}
                   >
-                    {emailQuoteState === "success" ? "Requested" : "Email me this quote"}
+                    {emailQuoteState === "success"
+                      ? "Requested"
+                      : emailQuoteState === "submitting"
+                        ? "Sending..."
+                        : "Email me this quote"}
                   </button>
                 )}
                 {revealMessage && (
