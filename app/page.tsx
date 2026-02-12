@@ -106,6 +106,8 @@ export default function Page() {
   const [revealState, setRevealState] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [revealMessage, setRevealMessage] = useState<string>("");
   const [revealUnlocked, setRevealUnlocked] = useState<boolean>(false);
+  const [emailQuoteState, setEmailQuoteState] = useState<"idle" | "success" | "error">("idle");
+  const [emailQuoteMessage, setEmailQuoteMessage] = useState<string>("");
 
   // When width becomes valid, automatically set doors to the MIN for that band (not max)
   useEffect(() => {
@@ -863,6 +865,26 @@ export default function Page() {
                 >
                   {revealState === "submitting" ? "Revealing..." : "Reveal"}
                 </button>
+                {revealUnlocked && (
+                  <button
+                    type="button"
+                    className="rounded-lg border-2 border-amber-400/60 px-4 py-2 text-sm font-semibold text-amber-100 hover:border-amber-300/80 disabled:cursor-not-allowed disabled:opacity-60"
+                    disabled={emailQuoteState === "success"}
+                    onClick={() => {
+                      setEmailQuoteState("success");
+                      setEmailQuoteMessage("Quote request received. We'll be in touch shortly.");
+                      trackEvent("email_quote_request", {
+                        guidePrice: price.total,
+                        width: typeof width === "number" ? width : 0,
+                        height: typeof height === "number" ? height : 0,
+                        doors,
+                        hasEmail: emailValid ? 1 : 0,
+                      });
+                    }}
+                  >
+                    {emailQuoteState === "success" ? "Requested" : "Email me this quote"}
+                  </button>
+                )}
                 {revealMessage && (
                   <p
                     className={`text-xs ${revealState === "success" ? "text-amber-200" : "text-amber-300"}`}
@@ -870,6 +892,15 @@ export default function Page() {
                     aria-live="polite"
                   >
                     {revealMessage}
+                  </p>
+                )}
+                {emailQuoteMessage && (
+                  <p
+                    className={`text-xs ${emailQuoteState === "success" ? "text-amber-200" : "text-amber-300"}`}
+                    role="status"
+                    aria-live="polite"
+                  >
+                    {emailQuoteMessage}
                   </p>
                 )}
                 <p className="text-xs text-neutral-400">
