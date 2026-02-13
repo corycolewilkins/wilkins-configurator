@@ -31,7 +31,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Email and postcode are required." }, { status: 400 });
   }
 
-  const limit = toPositiveInt(process.env.REVEAL_RATE_LIMIT_MAX, 5);
+  const limit = 5;
   const windowMs = toPositiveInt(process.env.REVEAL_RATE_LIMIT_WINDOW_MS, 10 * 60 * 1000);
   const identifier = `${getClientIp(req)}:${email.toLowerCase()}`;
   const rate = checkRateLimit(`reveal:${identifier}`, { limit, windowMs });
