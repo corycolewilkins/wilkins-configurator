@@ -4,6 +4,37 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 
 type Finish = "mirror" | "glass" | "wood";
 type BarOption = 0 | 2 | 3;
+type WardrobeType = "basic" | "fitted";
+
+type QuoteInput = {
+  width: number | null;
+  height: number | null;
+  doors: number;
+  doorFinishes: Finish[];
+  doorBars: BarOption[];
+  includeInterior: boolean;
+  includeExterior: boolean;
+  wardrobeType: WardrobeType | null;
+  supplyOnly: boolean | null;
+};
+
+type GuidePrice = {
+  width: number | null;
+  height: number | null;
+  doors: number;
+  finishCounts: { mirror: number; glass: number; wood: number };
+  includeInterior: boolean;
+  includeExterior: boolean;
+  breakdown: {
+    base: number;
+    extraDoors: number;
+    upgrades: number;
+    bars: number;
+    interior: number;
+    exterior: number;
+  };
+  total: number;
+};
 
 declare global {
   interface Window {
@@ -28,12 +59,7 @@ const trackEvent = (eventName: string, eventData?: Record<string, string | numbe
   }
 };
 
-const PRICE = {
-  base: 850, // BASE = doors + running gear + fitting (NO interior, NO exterior)
-  extraDoor: 400,
-  upgradeGlass: 120,
-  upgradeWood: 150,
-  decorativeBar: 20,
+const OPTION_PRICE = {
   interior: 450,
   exterior: 450,
 } as const;
@@ -106,6 +132,7 @@ export default function Page() {
   const [revealState, setRevealState] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [revealMessage, setRevealMessage] = useState<string>("");
   const [revealUnlocked, setRevealUnlocked] = useState<boolean>(false);
+  const [revealedGuidePrice, setRevealedGuidePrice] = useState<GuidePrice | null>(null);
   const [emailQuoteState, setEmailQuoteState] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [emailQuoteMessage, setEmailQuoteMessage] = useState<string>("");
 
@@ -124,7 +151,7 @@ export default function Page() {
   }, [band.minDoors, band.maxDoors]);
 
   // Wardrobe type
-  const [wardrobeType, setWardrobeType] = useState<"basic" | "fitted" | null>(null);
+  const [wardrobeType, setWardrobeType] = useState<WardrobeType | null>(null);
   const [supplyOnly, setSupplyOnly] = useState<boolean | null>(null);
 
   // Optional items
@@ -183,45 +210,24 @@ export default function Page() {
     });
   }, [doors]);
 
-  const counts = useMemo(() => {
-    let mirror = 0,
-      glass = 0,
-      wood = 0;
-    for (const f of doorFinishes) {
-      if (f === "mirror") mirror++;
-      else if (f === "glass") glass++;
-      else wood++;
-    }
-    return { mirror, glass, wood };
-  }, [doorFinishes]);
-
-  const price = useMemo(() => {
-    if (doors <= 0) {
-      return { extraDoorsCost: 0, upgradesCost: 0, barsCost: 0, interiorCost: 0, exteriorCost: 0, total: 0 };
-    }
-
-    // Use different pricing based on supply only flag
-    const basePrice = wardrobeType === "basic" && supplyOnly ? 650 : PRICE.base;
-    const extraDoorPrice = wardrobeType === "basic" && supplyOnly ? 300 : PRICE.extraDoor;
-
-    const extraDoorsCost = Math.max(0, doors - 2) * extraDoorPrice;
-    const upgradesCost = counts.glass * PRICE.upgradeGlass + counts.wood * PRICE.upgradeWood;
-    const barsCost = doorBars.reduce((sum: number, bars) => sum + (bars * PRICE.decorativeBar), 0);
-    
-    // Interior cost increases for wider openings (>=4000mm)
-    const interiorPrice = includeInterior ? (widthNumber >= 4000 ? 550 : PRICE.interior) : 0;
-    const interiorCost = interiorPrice;
-    const exteriorCost = includeExterior ? PRICE.exterior : 0;
-
-    const total = basePrice + extraDoorsCost + upgradesCost + barsCost + interiorCost + exteriorCost;
-
-    return { extraDoorsCost, upgradesCost, barsCost, interiorCost, exteriorCost, total };
-  }, [doors, counts, doorBars, includeInterior, includeExterior, widthNumber, wardrobeType, supplyOnly]);
-
   const showQuote = !outOfRange && doors > 0;
   const emailValid = email.trim().length > 0 && isValidEmail(email);
   const revealReady = showQuote && emailValid && postcode.trim().length > 0;
-  const revealQuote = revealReady && revealUnlocked;
+  const quoteInput = useMemo<QuoteInput | null>(() => {
+    if (!showQuote) return null;
+    return {
+      width: typeof width === "number" ? width : null,
+      height: typeof height === "number" ? height : null,
+      doors,
+      doorFinishes,
+      doorBars,
+      includeInterior,
+      includeExterior,
+      wardrobeType,
+      supplyOnly,
+    };
+  }, [showQuote, width, height, doors, doorFinishes, doorBars, includeInterior, includeExterior, wardrobeType, supplyOnly]);
+  const revealQuote = revealReady && revealUnlocked && !!revealedGuidePrice;
   const quoteSignature = useMemo(
     () =>
       JSON.stringify({
@@ -247,6 +253,7 @@ export default function Page() {
 
     if (prevQuoteSignature.current && prevQuoteSignature.current !== quoteSignature) {
       setRevealUnlocked(false);
+      setRevealedGuidePrice(null);
       setRevealState("idle");
       setRevealMessage("");
       setEmailQuoteState("idle");
@@ -292,7 +299,18 @@ export default function Page() {
     const doorH = Math.max(140, wallH - doorTopGap - skirting);
 
     return { wallW, wallH, doorH, doorTopGap, skirting };
-  }, [widthNumber, height, PREVIEW.widthRange.min, PREVIEW.widthRange.max, PREVIEW.heightRange.min, PREVIEW.heightRange.max]);
+  }, [
+    widthNumber,
+    height,
+    PREVIEW.widthRange.min,
+    PREVIEW.widthRange.max,
+    PREVIEW.heightRange.min,
+    PREVIEW.heightRange.max,
+    PREVIEW.wallMinW,
+    PREVIEW.wallMaxW,
+    PREVIEW.wallMinH,
+    PREVIEW.wallMaxH,
+  ]);
 
   
   return (
@@ -696,8 +714,8 @@ export default function Page() {
                   <label className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-lg border-2 border-amber-400/50 bg-transparent p-3">
                     <div>
                       <p className="text-sm font-semibold">Popular Interior Layout</p>
-                      <p className="text-xs text-neutral-400">Adds a practical, popular layout inside the wardrobe which includes {widthNumber >= 4000 ? "2 x shelving units" : "1 x shelving unit"}, 1 x 18" deep top shelf and an assortment of hanging rails.</p>
-                      <p className="mt-1 text-xs text-neutral-200">+{money(widthNumber >= 4000 ? 550 : PRICE.interior)}</p>
+                      <p className="text-xs text-neutral-400">Adds a practical, popular layout inside the wardrobe which includes {widthNumber >= 4000 ? "2 x shelving units" : "1 x shelving unit"}, 1 x 18&quot; deep top shelf and an assortment of hanging rails.</p>
+                      <p className="mt-1 text-xs text-neutral-200">+{money(widthNumber >= 4000 ? 550 : OPTION_PRICE.interior)}</p>
                     </div>
                     <input
                       type="checkbox"
@@ -716,7 +734,7 @@ export default function Page() {
                 <div>
                   <p className="text-sm font-semibold">Exterior Frame</p>
                   <p className="text-xs text-neutral-400">Adds the exterior frame for a fully built-in finish.</p>
-                  <p className="mt-1 text-xs text-neutral-200">+{money(PRICE.exterior)}</p>
+                  <p className="mt-1 text-xs text-neutral-200">+{money(OPTION_PRICE.exterior)}</p>
                 </div>
                 <input
                   type="checkbox"
@@ -742,11 +760,9 @@ export default function Page() {
               <p className="text-sm text-neutral-300">Estimated guide price</p>
               <div className="relative mt-1">
                 <p
-                  className={`text-4xl font-semibold tracking-tight transition duration-300 ${
-                    revealQuote ? "" : "blur-[7px]"
-                  }`}
+                  className="text-4xl font-semibold tracking-tight"
                 >
-                  {showQuote ? money(price.total) : "—"}
+                  {revealQuote && revealedGuidePrice ? money(revealedGuidePrice.total) : showQuote ? "••••" : "—"}
                 </p>
                 {!revealQuote && showQuote && (
                   <span className="absolute inset-0 flex items-center text-sm text-amber-200">
@@ -820,46 +836,34 @@ export default function Page() {
                         width: typeof width === "number" ? width : 0,
                         height: typeof height === "number" ? height : 0,
                         doors,
-                        guidePrice: price.total,
                       });
 
-                      const basePrice = wardrobeType === "basic" && supplyOnly ? 650 : PRICE.base;
-                      const guidePrice = showQuote
-                        ? {
-                            width: typeof width === "number" ? width : null,
-                            height: typeof height === "number" ? height : null,
-                            doors,
-                            finishCounts: counts,
-                            includeInterior,
-                            includeExterior,
-                            breakdown: {
-                              base: basePrice,
-                              extraDoors: price.extraDoorsCost,
-                              upgrades: price.upgradesCost,
-                              bars: price.barsCost,
-                              interior: price.interiorCost,
-                              exterior: price.exteriorCost,
-                            },
-                            total: price.total,
-                          }
-                        : null;
+                      if (!quoteInput) {
+                        throw new Error("Enter a valid width and select a door count to generate a guide price.");
+                      }
 
                       const res = await fetch("/api/reveal-quote", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ email, postcode, guidePrice }),
+                        body: JSON.stringify({ email, postcode, quoteInput }),
                       });
 
+                      const data = await res.json().catch(() => ({}));
+
                       if (!res.ok) {
-                        const data = await res.json().catch(() => ({}));
                         throw new Error(data?.error || "Unable to reveal guide price. Please try again.");
+                      }
+
+                      if (!data?.guidePrice) {
+                        throw new Error("Unable to reveal guide price. Please try again.");
                       }
 
                       setRevealState("success");
                       setRevealMessage(
                         "Your guide price is ready. You can email this quote to yourself or request a design visit whenever you're ready."
                       );
-                      trackEvent("reveal_success", { guidePrice: price.total });
+                      setRevealedGuidePrice(data.guidePrice as GuidePrice);
+                      trackEvent("reveal_success", { guidePrice: data.guidePrice.total });
                       setRevealUnlocked(true);
                       setEmailQuoteState("idle");
                       setEmailQuoteMessage("");
@@ -871,7 +875,7 @@ export default function Page() {
                 >
                   {revealState === "submitting" ? "Revealing..." : "Reveal"}
                 </button>
-                {revealUnlocked && (
+                {revealQuote && (
                   <button
                     type="button"
                     className="rounded-lg border-2 border-amber-400/60 px-4 py-2 text-sm font-semibold text-amber-100 hover:border-amber-300/80 disabled:cursor-not-allowed disabled:opacity-60"
@@ -887,37 +891,21 @@ export default function Page() {
                         setEmailQuoteMessage("Please enter a valid email and postcode to request the quote.");
                         return;
                       }
+                      if (!quoteInput || !revealedGuidePrice) {
+                        setEmailQuoteState("error");
+                        setEmailQuoteMessage("Reveal the guide price first before requesting the quote email.");
+                        return;
+                      }
                       if (emailQuoteState === "submitting" || emailQuoteState === "success") return;
 
                       setEmailQuoteState("submitting");
                       setEmailQuoteMessage("");
 
                       try {
-                        const basePrice = wardrobeType === "basic" && supplyOnly ? 650 : PRICE.base;
-                        const guidePrice = showQuote
-                          ? {
-                              width: typeof width === "number" ? width : null,
-                              height: typeof height === "number" ? height : null,
-                              doors,
-                              finishCounts: counts,
-                              includeInterior,
-                              includeExterior,
-                              breakdown: {
-                                base: basePrice,
-                                extraDoors: price.extraDoorsCost,
-                                upgrades: price.upgradesCost,
-                                bars: price.barsCost,
-                                interior: price.interiorCost,
-                                exterior: price.exteriorCost,
-                              },
-                              total: price.total,
-                            }
-                          : null;
-
                         const res = await fetch("/api/email-quote", {
                           method: "POST",
                           headers: { "Content-Type": "application/json" },
-                          body: JSON.stringify({ email, postcode, guidePrice }),
+                          body: JSON.stringify({ email, postcode, quoteInput }),
                         });
 
                         if (!res.ok) {
@@ -930,7 +918,7 @@ export default function Page() {
                           "We'll send this guide price and breakdown to your email so you can save or share it."
                         );
                         trackEvent("email_quote_success", {
-                          guidePrice: price.total,
+                          guidePrice: revealedGuidePrice.total,
                           width: typeof width === "number" ? width : 0,
                           height: typeof height === "number" ? height : 0,
                           doors,
@@ -968,48 +956,48 @@ export default function Page() {
                     {emailQuoteMessage}
                   </p>
                 )}
-                {!revealUnlocked && (
+                {!revealQuote && (
                   <p className="text-xs text-neutral-400">
                     We will not use these to contact you. We will only contact you if you fill out the request visit below.
                   </p>
                 )}
               </div>
 
-              {revealQuote && (
+              {revealQuote && revealedGuidePrice && (
                 <div className="mt-5 grid gap-2 text-sm">
                   <div className="flex items-center justify-between text-neutral-300">
                     <span>Base (doors & running gear)</span>
-                    <span className="text-neutral-50">{money(wardrobeType === "basic" && supplyOnly ? 650 : PRICE.base)}</span>
+                    <span className="text-neutral-50">{money(revealedGuidePrice.breakdown.base)}</span>
                   </div>
 
-                  {price.interiorCost > 0 && (
+                  {revealedGuidePrice.breakdown.interior > 0 && (
                     <div className="flex items-center justify-between text-neutral-300">
                       <span>Interior layout</span>
-                      <span className="text-neutral-50">{money(price.interiorCost)}</span>
+                      <span className="text-neutral-50">{money(revealedGuidePrice.breakdown.interior)}</span>
                     </div>
                   )}
 
-                  {price.exteriorCost > 0 && (
+                  {revealedGuidePrice.breakdown.exterior > 0 && (
                     <div className="flex items-center justify-between text-neutral-300">
                       <span>Exterior frame</span>
-                      <span className="text-neutral-50">{money(price.exteriorCost)}</span>
+                      <span className="text-neutral-50">{money(revealedGuidePrice.breakdown.exterior)}</span>
                     </div>
                   )}
 
                   <div className="flex items-center justify-between text-neutral-300">
                     <span>Extra doors</span>
-                    <span className="text-neutral-50">{money(price.extraDoorsCost)}</span>
+                    <span className="text-neutral-50">{money(revealedGuidePrice.breakdown.extraDoors)}</span>
                   </div>
 
                   <div className="flex items-center justify-between text-neutral-300">
                     <span>Finish upgrades</span>
-                    <span className="text-neutral-50">{money(price.upgradesCost)}</span>
+                    <span className="text-neutral-50">{money(revealedGuidePrice.breakdown.upgrades)}</span>
                   </div>
 
-                  {price.barsCost > 0 && (
+                  {revealedGuidePrice.breakdown.bars > 0 && (
                     <div className="flex items-center justify-between text-neutral-300">
                       <span>Decorative bars</span>
-                      <span className="text-neutral-50">{money(price.barsCost)}</span>
+                      <span className="text-neutral-50">{money(revealedGuidePrice.breakdown.bars)}</span>
                     </div>
                   )}
 
@@ -1017,15 +1005,15 @@ export default function Page() {
 
                   <div className="flex items-center justify-between font-semibold">
                     <span>Total</span>
-                    <span>{money(price.total)}</span>
+                    <span>{money(revealedGuidePrice.total)}</span>
                   </div>
 
                   <div className="mt-4 rounded-xl border-2 border-amber-400/50 bg-transparent p-3">
                     <p className="text-xs text-neutral-300">
                       Finish breakdown:{" "}
-                      <span className="font-semibold text-neutral-50">{counts.mirror}</span> mirror,{" "}
-                      <span className="font-semibold text-neutral-50">{counts.glass}</span> coloured glass,{" "}
-                      <span className="font-semibold text-neutral-50">{counts.wood}</span> wood.
+                      <span className="font-semibold text-neutral-50">{revealedGuidePrice.finishCounts.mirror}</span> mirror,{" "}
+                      <span className="font-semibold text-neutral-50">{revealedGuidePrice.finishCounts.glass}</span> coloured glass,{" "}
+                      <span className="font-semibold text-neutral-50">{revealedGuidePrice.finishCounts.wood}</span> wood.
                     </p>
                   </div>
                 </div>
@@ -1035,7 +1023,7 @@ export default function Page() {
             <h3 className="mt-6 text-base font-semibold">Request a Free Home Design Visit</h3>
             <p className="mt-1 text-sm text-neutral-400">
               Leave your details and we’ll get back to arrange a no-obligation home design visit.{' '}
-              <span className="text-amber-200">There's a wide range of colours and finishes to choose from</span>, and
+              <span className="text-amber-200">There&apos;s a wide range of colours and finishes to choose from</span>, and
               you can decide later in the process.
             </p>
 
@@ -1065,34 +1053,19 @@ export default function Page() {
                   trackEvent("submit_visit_request", {
                     wardrobeType: wardrobeType || "none",
                     supplyOnly: supplyOnly ? 1 : 0,
-                    guidePrice: price.total,
+                    guidePrice: revealedGuidePrice?.total ?? 0,
                   });
-
-                  const basePrice = wardrobeType === "basic" && supplyOnly ? 650 : PRICE.base;
-                  const guidePrice = showQuote
-                    ? {
-                        width: typeof width === "number" ? width : null,
-                        height: typeof height === "number" ? height : null,
-                        doors,
-                        finishCounts: counts,
-                        includeInterior,
-                        includeExterior,
-                        breakdown: {
-                          base: basePrice,
-                          extraDoors: price.extraDoorsCost,
-                          upgrades: price.upgradesCost,
-                          bars: price.barsCost,
-                          interior: price.interiorCost,
-                          exterior: price.exteriorCost,
-                        },
-                        total: price.total,
-                      }
-                    : null;
 
                   const res = await fetch("/api/request-visit", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ name, postcode: submittedPostcode, mobile, email: submittedEmail, guidePrice }),
+                    body: JSON.stringify({
+                      name,
+                      postcode: submittedPostcode,
+                      mobile,
+                      email: submittedEmail,
+                      quoteInput,
+                    }),
                   });
 
                   if (!res.ok) {
@@ -1102,7 +1075,7 @@ export default function Page() {
 
                   setSubmitState("success");
                   setSubmitMessage("Thanks! We will be in touch shortly to arrange your visit.");
-                  trackEvent("visit_request_success", { guidePrice: price.total });
+                  trackEvent("visit_request_success", { guidePrice: revealedGuidePrice?.total ?? 0 });
                   form.reset();
                   setEmail("");
                   setPostcode("");

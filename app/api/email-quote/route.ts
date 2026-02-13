@@ -1,25 +1,10 @@
 import { NextResponse } from "next/server";
+import { calculateGuidePrice, type GuidePriceInput } from "@/lib/guide-price";
 
 type EmailQuoteBody = {
   email?: string;
   postcode?: string;
-  guidePrice?: {
-    width: number | null;
-    height: number | null;
-    doors: number;
-    finishCounts: { mirror: number; glass: number; wood: number };
-    includeInterior: boolean;
-    includeExterior: boolean;
-    breakdown: {
-      base: number;
-      extraDoors: number;
-      upgrades: number;
-      bars: number;
-      interior: number;
-      exterior: number;
-    };
-    total: number;
-  } | null;
+  quoteInput?: GuidePriceInput | null;
 };
 
 export async function POST(req: Request) {
@@ -45,23 +30,28 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Email and postcode are required." }, { status: 400 });
   }
 
-  const priceLines = body.guidePrice
+  const guidePrice = calculateGuidePrice(body.quoteInput);
+  if (!guidePrice) {
+    return NextResponse.json({ error: "Unable to generate guide price from current selections." }, { status: 400 });
+  }
+
+  const priceLines = guidePrice
     ? [
         "",
         "Guide price details",
-        `Width: ${body.guidePrice.width ?? "-"}mm`,
-        `Height: ${body.guidePrice.height ?? "-"}mm`,
-        `Doors: ${body.guidePrice.doors}`,
-        `Finishes: ${body.guidePrice.finishCounts.mirror} mirror, ${body.guidePrice.finishCounts.glass} glass, ${body.guidePrice.finishCounts.wood} wood`,
-        `Interior: ${body.guidePrice.includeInterior ? "Yes" : "No"}`,
-        `Exterior: ${body.guidePrice.includeExterior ? "Yes" : "No"}`,
-        `Base: ${formatCurrency(body.guidePrice.breakdown.base)}`,
-        `Extra doors: ${formatCurrency(body.guidePrice.breakdown.extraDoors)}`,
-        `Finish upgrades: ${formatCurrency(body.guidePrice.breakdown.upgrades)}`,
-        `Decorative bars: ${formatCurrency(body.guidePrice.breakdown.bars)}`,
-        `Interior: ${formatCurrency(body.guidePrice.breakdown.interior)}`,
-        `Exterior: ${formatCurrency(body.guidePrice.breakdown.exterior)}`,
-        `Total: ${formatCurrency(body.guidePrice.total)}`,
+        `Width: ${guidePrice.width ?? "-"}mm`,
+        `Height: ${guidePrice.height ?? "-"}mm`,
+        `Doors: ${guidePrice.doors}`,
+        `Finishes: ${guidePrice.finishCounts.mirror} mirror, ${guidePrice.finishCounts.glass} glass, ${guidePrice.finishCounts.wood} wood`,
+        `Interior: ${guidePrice.includeInterior ? "Yes" : "No"}`,
+        `Exterior: ${guidePrice.includeExterior ? "Yes" : "No"}`,
+        `Base: ${formatCurrency(guidePrice.breakdown.base)}`,
+        `Extra doors: ${formatCurrency(guidePrice.breakdown.extraDoors)}`,
+        `Finish upgrades: ${formatCurrency(guidePrice.breakdown.upgrades)}`,
+        `Decorative bars: ${formatCurrency(guidePrice.breakdown.bars)}`,
+        `Interior: ${formatCurrency(guidePrice.breakdown.interior)}`,
+        `Exterior: ${formatCurrency(guidePrice.breakdown.exterior)}`,
+        `Total: ${formatCurrency(guidePrice.total)}`,
       ]
     : ["", "Guide price details", "Not available (no valid quote yet)."];
 
@@ -73,25 +63,25 @@ export async function POST(req: Request) {
     ...priceLines,
   ].join("\n");
 
-  const guideHtml = body.guidePrice
+  const guideHtml = guidePrice
     ? `
       <h3>Guide price details</h3>
       <ul>
-        <li>Width: ${body.guidePrice.width ?? "-"}mm</li>
-        <li>Height: ${body.guidePrice.height ?? "-"}mm</li>
-        <li>Doors: ${body.guidePrice.doors}</li>
-        <li>Finishes: ${body.guidePrice.finishCounts.mirror} mirror, ${body.guidePrice.finishCounts.glass} glass, ${body.guidePrice.finishCounts.wood} wood</li>
-        <li>Interior: ${body.guidePrice.includeInterior ? "Yes" : "No"}</li>
-        <li>Exterior: ${body.guidePrice.includeExterior ? "Yes" : "No"}</li>
+        <li>Width: ${guidePrice.width ?? "-"}mm</li>
+        <li>Height: ${guidePrice.height ?? "-"}mm</li>
+        <li>Doors: ${guidePrice.doors}</li>
+        <li>Finishes: ${guidePrice.finishCounts.mirror} mirror, ${guidePrice.finishCounts.glass} glass, ${guidePrice.finishCounts.wood} wood</li>
+        <li>Interior: ${guidePrice.includeInterior ? "Yes" : "No"}</li>
+        <li>Exterior: ${guidePrice.includeExterior ? "Yes" : "No"}</li>
       </ul>
       <ul>
-        <li>Base: ${formatCurrency(body.guidePrice.breakdown.base)}</li>
-        <li>Extra doors: ${formatCurrency(body.guidePrice.breakdown.extraDoors)}</li>
-        <li>Finish upgrades: ${formatCurrency(body.guidePrice.breakdown.upgrades)}</li>
-        <li>Decorative bars: ${formatCurrency(body.guidePrice.breakdown.bars)}</li>
-        <li>Interior: ${formatCurrency(body.guidePrice.breakdown.interior)}</li>
-        <li>Exterior: ${formatCurrency(body.guidePrice.breakdown.exterior)}</li>
-        <li><strong>Total: ${formatCurrency(body.guidePrice.total)}</strong></li>
+        <li>Base: ${formatCurrency(guidePrice.breakdown.base)}</li>
+        <li>Extra doors: ${formatCurrency(guidePrice.breakdown.extraDoors)}</li>
+        <li>Finish upgrades: ${formatCurrency(guidePrice.breakdown.upgrades)}</li>
+        <li>Decorative bars: ${formatCurrency(guidePrice.breakdown.bars)}</li>
+        <li>Interior: ${formatCurrency(guidePrice.breakdown.interior)}</li>
+        <li>Exterior: ${formatCurrency(guidePrice.breakdown.exterior)}</li>
+        <li><strong>Total: ${formatCurrency(guidePrice.total)}</strong></li>
       </ul>
     `
     : "<p><strong>Guide price details:</strong> Not available (no valid quote yet).</p>";
