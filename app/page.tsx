@@ -760,9 +760,11 @@ export default function Page() {
               <p className="text-sm text-neutral-300">Estimated guide price</p>
               <div className="relative mt-1">
                 <p
-                  className="text-4xl font-semibold tracking-tight"
+                  className={`text-4xl font-semibold tracking-tight transition duration-300 ${
+                    revealQuote ? "" : "blur-[7px]"
+                  }`}
                 >
-                  {revealQuote && revealedGuidePrice ? money(revealedGuidePrice.total) : showQuote ? "••••" : "—"}
+                  {revealQuote && revealedGuidePrice ? money(revealedGuidePrice.total) : showQuote ? "£x,xxx" : "—"}
                 </p>
                 {!revealQuote && showQuote && (
                   <span className="absolute inset-0 flex items-center text-sm text-amber-200">
