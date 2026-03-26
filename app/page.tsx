@@ -314,7 +314,7 @@ export default function Page() {
 
   
   return (
-    <div className="min-h-screen overflow-x-hidden text-neutral-50">
+    <div className="wilkins-theme min-h-screen overflow-x-hidden text-neutral-50">
       <div className="mx-auto max-w-5xl px-3 sm:px-4 py-6 sm:py-10">
         <div className="relative flex flex-col gap-2 pl-5">
           <span
@@ -325,10 +325,12 @@ export default function Page() {
             aria-hidden="true"
             className="pointer-events-none absolute -left-2 top-0 h-full w-[10px] bg-gradient-to-b from-amber-200/10 via-amber-400/20 to-amber-700/10 blur-[8px]"
           />
-          <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight">Sliding Wardrobe Price Estimator</h1>
+          <p className="text-xs uppercase tracking-[0.25em] text-neutral-400">Wilkins Sliding Wardrobes</p>
+          <h1 className="text-3xl sm:text-5xl font-semibold tracking-tight leading-tight">Bespoke Fitted Sliding Wardrobes in South Wales</h1>
+          <p className="text-sm text-neutral-400">★★★★★ 5.0 on Google · 30 reviews · 100% recommended on Facebook</p>
           <p className="text-sm sm:text-base text-neutral-300">
-            Instant guide price based on your opening size and per-door finish selection. Final pricing is confirmed after
-            a free home design visit.
+            Design your ideal wardrobe and get an instant guide price based on your opening size and finish choices.
+            Final pricing is confirmed after a free home design visit.
           </p>
         </div>
 
