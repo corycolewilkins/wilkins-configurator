@@ -39,19 +39,19 @@ body {
 }
 
 .wilkins-theme .text-neutral-300 {
-  color: #334155;
+  color: #1f2937;
 }
 
 .wilkins-theme .text-neutral-400 {
-  color: #64748b;
+  color: #475569;
 }
 
 .wilkins-theme [class*="border-amber-400"] {
-  border-color: rgba(192, 151, 85, 0.45);
+  border-color: rgba(175, 133, 69, 0.6);
 }
 
 .wilkins-theme [class*="focus:ring-amber-400"]:focus {
-  box-shadow: 0 0 0 2px rgba(192, 151, 85, 0.25);
+  box-shadow: 0 0 0 3px rgba(175, 133, 69, 0.3);
 }
 
 .wilkins-theme [class*="bg-transparent"] {
@@ -62,8 +62,18 @@ body {
 .wilkins-theme select,
 .wilkins-theme input,
 .wilkins-theme textarea {
-  background-color: rgba(255, 255, 255, 0.92);
+  background-color: rgba(255, 255, 255, 0.96);
   color: #0f172a;
+}
+
+.wilkins-theme input::placeholder,
+.wilkins-theme textarea::placeholder {
+  color: #6b7280;
+  opacity: 1;
+}
+
+.wilkins-theme [class*="text-amber"] {
+  color: #8a6730;
 }
 
 .wilkins-theme select[class*="bg-gradient-to-br"] {
